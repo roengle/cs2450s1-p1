@@ -124,8 +124,6 @@ public class PointClickGUI extends javax.swing.JFrame {
             }
         });
 
-        DisplayIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tempIcon.jpg"))); // NOI18N
-
         javax.swing.GroupLayout DisplayPanelLayout = new javax.swing.GroupLayout(DisplayPanel);
         DisplayPanel.setLayout(DisplayPanelLayout);
         DisplayPanelLayout.setHorizontalGroup(
@@ -137,20 +135,20 @@ public class PointClickGUI extends javax.swing.JFrame {
                     .addComponent(HighscoresButton)
                     .addComponent(CreditsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(DisplayIcon))
-                .addContainerGap(252, Short.MAX_VALUE))
+                .addContainerGap(267, Short.MAX_VALUE))
         );
         DisplayPanelLayout.setVerticalGroup(
             DisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(DisplayPanelLayout.createSequentialGroup()
                 .addGap(67, 67, 67)
                 .addComponent(DisplayIcon)
-                .addGap(58, 58, 58)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
                 .addComponent(PlayButton)
                 .addGap(18, 18, 18)
                 .addComponent(HighscoresButton)
                 .addGap(18, 18, 18)
                 .addComponent(CreditsButton)
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addGap(90, 90, 90))
         );
 
         javax.swing.GroupLayout PlayPanelLayout = new javax.swing.GroupLayout(PlayPanel);
