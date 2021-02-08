@@ -5,8 +5,11 @@
  */
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 
 /**
  *
@@ -21,12 +24,24 @@ public class PointClickGUI extends javax.swing.JFrame {
      */
     public PointClickGUI() {
         initComponents();
-        
+
         DisplayPanel.setVisible(false);
         PlayPanel.setVisible(false);
         HighscorePanel.setVisible(false);
         CreditsPanel.setVisible(false);
         
+        //Set System Timer
+        Timer dateTimer = new Timer(1000, new ActionListener(){ //Updates every second
+            public void actionPerformed(ActionEvent e)
+            {
+                Date date = new Date();                                 
+                SimpleDateFormat sdf = new SimpleDateFormat("MMM d, y | HH:mm:ss");
+                systemTimeText.setText(sdf.format(date));
+            }
+        });
+        dateTimer.start();
+        
+        //Set Screen Change Timer
         Timer timer = new Timer(3000, new ActionListener(){     //Switches screen after 3 seconds
             public void actionPerformed(ActionEvent e)
             {
@@ -34,8 +49,9 @@ public class PointClickGUI extends javax.swing.JFrame {
                 DisplayPanel.setVisible(true);
             }
         });
-        timer.setRepeats(false);
+        timer.setRepeats(false);   //Runs once
         timer.start();
+        
     }
         
     
@@ -58,6 +74,35 @@ public class PointClickGUI extends javax.swing.JFrame {
         CreditsButton = new javax.swing.JButton();
         DisplayIcon = new javax.swing.JLabel();
         PlayPanel = new javax.swing.JPanel();
+        systemTimeText = new javax.swing.JTextField();
+        AButton = new javax.swing.JButton();
+        BButton = new javax.swing.JButton();
+        CButton = new javax.swing.JButton();
+        DButton = new javax.swing.JButton();
+        EButton = new javax.swing.JButton();
+        FButton = new javax.swing.JButton();
+        KButton = new javax.swing.JButton();
+        LButton = new javax.swing.JButton();
+        GButton = new javax.swing.JButton();
+        HButton = new javax.swing.JButton();
+        IButton = new javax.swing.JButton();
+        JButton = new javax.swing.JButton();
+        MButton = new javax.swing.JButton();
+        ZButton = new javax.swing.JButton();
+        NButton = new javax.swing.JButton();
+        OButton = new javax.swing.JButton();
+        PButton = new javax.swing.JButton();
+        QButton = new javax.swing.JButton();
+        RButton = new javax.swing.JButton();
+        SButton = new javax.swing.JButton();
+        XButton = new javax.swing.JButton();
+        YButton = new javax.swing.JButton();
+        TButton = new javax.swing.JButton();
+        UButton = new javax.swing.JButton();
+        VButton = new javax.swing.JButton();
+        WButton = new javax.swing.JButton();
+        randomTest = new javax.swing.JTextField();
+        skipButton = new javax.swing.JButton();
         HighscorePanel = new javax.swing.JPanel();
         HSLabel = new javax.swing.JLabel();
         ScoresLabel = new javax.swing.JLabel();
@@ -71,6 +116,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -151,15 +197,249 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addGap(90, 90, 90))
         );
 
+        systemTimeText.setEditable(false);
+        systemTimeText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        systemTimeText.setText("Feb 8, 2021, | 13:28:07");
+        systemTimeText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                systemTimeTextActionPerformed(evt);
+            }
+        });
+
+        AButton.setText("A");
+
+        BButton.setText("B");
+
+        CButton.setText("C");
+        CButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CButtonActionPerformed(evt);
+            }
+        });
+
+        DButton.setText("D");
+
+        EButton.setText("E");
+        EButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EButtonActionPerformed(evt);
+            }
+        });
+
+        FButton.setText("F");
+        FButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FButtonActionPerformed(evt);
+            }
+        });
+
+        KButton.setText("K");
+        KButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                KButtonActionPerformed(evt);
+            }
+        });
+
+        LButton.setText("L");
+        LButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LButtonActionPerformed(evt);
+            }
+        });
+
+        GButton.setText("G");
+
+        HButton.setText("H");
+
+        IButton.setText("I");
+        IButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IButtonActionPerformed(evt);
+            }
+        });
+
+        JButton.setText("J");
+
+        MButton.setText("M");
+
+        ZButton.setText("Z");
+
+        NButton.setText("N");
+
+        OButton.setText("O");
+
+        PButton.setText("P");
+        PButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PButtonActionPerformed(evt);
+            }
+        });
+
+        QButton.setText("Q");
+
+        RButton.setText("R");
+        RButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RButtonActionPerformed(evt);
+            }
+        });
+
+        SButton.setText("S");
+        SButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SButtonActionPerformed(evt);
+            }
+        });
+
+        XButton.setText("X");
+        XButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                XButtonActionPerformed(evt);
+            }
+        });
+
+        YButton.setText("Y");
+        YButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                YButtonActionPerformed(evt);
+            }
+        });
+
+        TButton.setText("T");
+
+        UButton.setText("U");
+
+        VButton.setText("V");
+        VButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VButtonActionPerformed(evt);
+            }
+        });
+
+        WButton.setText("W");
+
+        randomTest.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        randomTest.setText("Random word test");
+        randomTest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                randomTestActionPerformed(evt);
+            }
+        });
+
+        skipButton.setText("Skip");
+
         javax.swing.GroupLayout PlayPanelLayout = new javax.swing.GroupLayout(PlayPanel);
         PlayPanel.setLayout(PlayPanelLayout);
         PlayPanelLayout.setHorizontalGroup(
             PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PlayPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(systemTimeText, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(PlayPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PlayPanelLayout.createSequentialGroup()
+                        .addComponent(NButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(OButton, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(PButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(QButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(RButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(SButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(UButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(VButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(WButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(XButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(YButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ZButton))
+                    .addGroup(PlayPanelLayout.createSequentialGroup()
+                        .addComponent(AButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(DButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PlayPanelLayout.createSequentialGroup()
+                                .addComponent(EButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(FButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(GButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(HButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(IButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(JButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(KButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(LButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(MButton))
+                            .addGroup(PlayPanelLayout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(randomTest, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(12, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PlayPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(skipButton)
+                .addContainerGap())
         );
         PlayPanelLayout.setVerticalGroup(
             PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(PlayPanelLayout.createSequentialGroup()
+                .addComponent(systemTimeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51)
+                .addComponent(skipButton)
+                .addGap(33, 33, 33)
+                .addComponent(randomTest, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
+                .addGroup(PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AButton)
+                    .addComponent(BButton)
+                    .addComponent(CButton)
+                    .addComponent(DButton)
+                    .addComponent(EButton)
+                    .addComponent(FButton)
+                    .addComponent(GButton)
+                    .addComponent(HButton)
+                    .addComponent(IButton)
+                    .addComponent(JButton)
+                    .addComponent(KButton)
+                    .addComponent(LButton)
+                    .addComponent(MButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(NButton)
+                    .addComponent(OButton)
+                    .addComponent(PButton)
+                    .addComponent(QButton)
+                    .addComponent(RButton)
+                    .addComponent(SButton)
+                    .addComponent(TButton)
+                    .addComponent(UButton)
+                    .addComponent(VButton)
+                    .addComponent(WButton)
+                    .addComponent(XButton)
+                    .addComponent(YButton)
+                    .addComponent(ZButton))
+                .addGap(43, 43, 43))
         );
 
         HSLabel.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
@@ -217,31 +497,32 @@ public class PointClickGUI extends javax.swing.JFrame {
         jLabel3.setText("Credits");
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        jLabel4.setText("Member1");
+        jLabel4.setText("Robert Berger Engle, Bronco #");
 
-        jLabel5.setText("Member2");
+        jLabel5.setText("Cynthia Luong, Bronco #");
 
-        jLabel6.setText("Member3");
+        jLabel6.setText("Kenneth Shuto, 012585989");
 
-        jLabel7.setText("Member4");
+        jLabel7.setText("Rida Siddiqui, Bronco #");
 
         javax.swing.GroupLayout CreditsPanelLayout = new javax.swing.GroupLayout(CreditsPanel);
         CreditsPanel.setLayout(CreditsPanelLayout);
         CreditsPanelLayout.setHorizontalGroup(
             CreditsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CreditsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(CreditsBackButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreditsPanelLayout.createSequentialGroup()
-                .addContainerGap(266, Short.MAX_VALUE)
-                .addGroup(CreditsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7))
-                .addGap(263, 263, 263))
+                .addGroup(CreditsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(CreditsPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(CreditsBackButton))
+                    .addGroup(CreditsPanelLayout.createSequentialGroup()
+                        .addGap(222, 222, 222)
+                        .addGroup(CreditsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7))))
+                .addContainerGap(230, Short.MAX_VALUE))
         );
         CreditsPanelLayout.setVerticalGroup(
             CreditsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -313,11 +594,18 @@ public class PointClickGUI extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void PlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayButtonActionPerformed
         DisplayPanel.setVisible(false);
         PlayPanel.setVisible(true);
+        
+        //Pick random word from the set ("abstract", "cemetery", "nurse", "pharmacy", "climbing")
+        int random = r.nextInt(wordList.length);
+        String word = wordList[random];
+        randomTest.setText(word);
+        
     }//GEN-LAST:event_PlayButtonActionPerformed
 
     private void CreditsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreditsButtonActionPerformed
@@ -340,6 +628,62 @@ public class PointClickGUI extends javax.swing.JFrame {
         DisplayPanel.setVisible(true);
     }//GEN-LAST:event_CreditsBackButtonActionPerformed
 
+    private void systemTimeTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_systemTimeTextActionPerformed
+        
+    }//GEN-LAST:event_systemTimeTextActionPerformed
+
+    private void CButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CButtonActionPerformed
+
+    private void FButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FButtonActionPerformed
+
+    private void EButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_EButtonActionPerformed
+
+    private void KButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_KButtonActionPerformed
+
+    private void LButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LButtonActionPerformed
+
+    private void IButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_IButtonActionPerformed
+
+    private void PButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PButtonActionPerformed
+
+    private void RButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_RButtonActionPerformed
+
+    private void SButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SButtonActionPerformed
+
+    private void XButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_XButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_XButtonActionPerformed
+
+    private void YButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_YButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_YButtonActionPerformed
+
+    private void VButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_VButtonActionPerformed
+
+    private void randomTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomTestActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_randomTestActionPerformed
+
     
     
     /**
@@ -353,7 +697,7 @@ public class PointClickGUI extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -381,19 +725,45 @@ public class PointClickGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AButton;
+    private javax.swing.JButton BButton;
+    private javax.swing.JButton CButton;
     private javax.swing.JButton CreditsBackButton;
     private javax.swing.JButton CreditsButton;
     private javax.swing.JPanel CreditsPanel;
+    private javax.swing.JButton DButton;
     private javax.swing.JLabel DisplayIcon;
     private javax.swing.JPanel DisplayPanel;
+    private javax.swing.JButton EButton;
+    private javax.swing.JButton FButton;
+    private javax.swing.JButton GButton;
+    private javax.swing.JButton HButton;
     private javax.swing.JButton HSBackButton;
     private javax.swing.JLabel HSLabel;
     private javax.swing.JPanel HighscorePanel;
     private javax.swing.JButton HighscoresButton;
+    private javax.swing.JButton IButton;
+    private javax.swing.JButton JButton;
+    private javax.swing.JButton KButton;
+    private javax.swing.JButton LButton;
+    private javax.swing.JButton MButton;
+    private javax.swing.JButton NButton;
+    private javax.swing.JButton OButton;
+    private javax.swing.JButton PButton;
     private javax.swing.JButton PlayButton;
     private javax.swing.JPanel PlayPanel;
+    private javax.swing.JButton QButton;
+    private javax.swing.JButton RButton;
+    private javax.swing.JButton SButton;
     private javax.swing.JLabel ScoresLabel;
     private javax.swing.JPanel StartPanel;
+    private javax.swing.JButton TButton;
+    private javax.swing.JButton UButton;
+    private javax.swing.JButton VButton;
+    private javax.swing.JButton WButton;
+    private javax.swing.JButton XButton;
+    private javax.swing.JButton YButton;
+    private javax.swing.JButton ZButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -401,5 +771,8 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JTextField randomTest;
+    private javax.swing.JButton skipButton;
+    private javax.swing.JTextField systemTimeText;
     // End of variables declaration//GEN-END:variables
 }
