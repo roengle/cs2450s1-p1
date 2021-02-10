@@ -1,3 +1,5 @@
+package edu.cpp.cs2450s1.p1;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
+import javax.swing.JButton;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 
@@ -181,14 +184,14 @@ public class PointClickGUI extends javax.swing.JFrame {
                     .addComponent(HighscoresButton)
                     .addComponent(CreditsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(DisplayIcon))
-                .addContainerGap(267, Short.MAX_VALUE))
+                .addContainerGap(262, Short.MAX_VALUE))
         );
         DisplayPanelLayout.setVerticalGroup(
             DisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(DisplayPanelLayout.createSequentialGroup()
                 .addGap(67, 67, 67)
                 .addComponent(DisplayIcon)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
                 .addComponent(PlayButton)
                 .addGap(18, 18, 18)
                 .addComponent(HighscoresButton)
@@ -207,6 +210,11 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         AButton.setText("A");
+        AButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AButtonActionPerformed(evt);
+            }
+        });
 
         BButton.setText("B");
 
@@ -497,13 +505,13 @@ public class PointClickGUI extends javax.swing.JFrame {
         jLabel3.setText("Credits");
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        jLabel4.setText("Robert Berger Engle, Bronco #");
+        jLabel4.setText("Robert Berger Engle, Bronco #014011517");
 
-        jLabel5.setText("Cynthia Luong, Bronco #");
+        jLabel5.setText("Cynthia Luong, Bronco #011673490");
 
         jLabel6.setText("Kenneth Shuto, 012585989");
 
-        jLabel7.setText("Rida Siddiqui, Bronco #");
+        jLabel7.setText("Rida Siddiqui, Bronco #014147900");
 
         javax.swing.GroupLayout CreditsPanelLayout = new javax.swing.GroupLayout(CreditsPanel);
         CreditsPanel.setLayout(CreditsPanelLayout);
@@ -522,7 +530,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(jLabel6)
                             .addComponent(jLabel7))))
-                .addContainerGap(230, Short.MAX_VALUE))
+                .addContainerGap(167, Short.MAX_VALUE))
         );
         CreditsPanelLayout.setVerticalGroup(
             CreditsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -642,6 +650,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
     private void EButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EButtonActionPerformed
         // TODO add your handling code here:
+        ((JButton)(evt.getSource())).setEnabled(false);
     }//GEN-LAST:event_EButtonActionPerformed
 
     private void KButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KButtonActionPerformed
@@ -683,6 +692,11 @@ public class PointClickGUI extends javax.swing.JFrame {
     private void randomTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomTestActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_randomTestActionPerformed
+
+    private void AButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AButtonActionPerformed
+        // TODO add your handling code here:
+        ((JButton)(evt.getSource())).setEnabled(false);
+    }//GEN-LAST:event_AButtonActionPerformed
 
     
     
