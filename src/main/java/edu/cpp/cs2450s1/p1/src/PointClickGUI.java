@@ -1,4 +1,4 @@
-package edu.cpp.cs2450s1.p1;
+package edu.cpp.cs2450s1.p1.src;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
