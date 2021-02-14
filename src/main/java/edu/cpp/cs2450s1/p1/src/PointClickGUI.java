@@ -28,15 +28,16 @@ public class PointClickGUI extends javax.swing.JFrame {
      * Creates new form PointClickFrame
      */
     public PointClickGUI() {
+        
         initComponents();
 
         DisplayPanel.setVisible(false);
         PlayPanel.setVisible(false);
         HighscorePanel.setVisible(false);
         CreditsPanel.setVisible(false);
+        EndPanel.setVisible(false);
         
-        //Set starting score
-        score = new Integer(100);
+        
         
         //Set System Timer
         Timer dateTimer = new Timer(1000, new ActionListener(){ //Updates every second
@@ -75,6 +76,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         //Check if there are six incorrect guesses
         if(score <= 40){
             //Trigger end game event
+            endGame();
         }
     }
     
@@ -84,7 +86,18 @@ public class PointClickGUI extends javax.swing.JFrame {
      * button. 
      */
     private void endGame(){
+        txtEndScore.setText(String.format("%d",score));
+        PlayPanel.setVisible(false);
+        EndPanel.setVisible(true);
         
+        //Reset buttons
+        JButton[] buttons = new JButton[]{AButton,BButton,CButton,DButton,EButton,FButton,GButton,HButton,IButton, 
+            JButton,KButton,LButton,MButton,NButton,OButton,PButton,QButton,RButton,
+            SButton,TButton,UButton,VButton,WButton,XButton,YButton,ZButton};
+        
+        for(JButton b : buttons){
+            b.setEnabled(true);
+        }
     }
     
     /**
@@ -109,9 +122,9 @@ public class PointClickGUI extends javax.swing.JFrame {
         String btnLetter = btnPressed.getText().toLowerCase();
         //Check if letter is in current word
         if(this.chosenWord.contains(btnLetter)){
-            
+            //TODO: Fill me in
         }else{
-            
+            penaliseScore();
         }
     }
 
@@ -174,6 +187,12 @@ public class PointClickGUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        EndPanel = new javax.swing.JPanel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        txtEndScore = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -195,7 +214,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addGroup(StartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(139, Short.MAX_VALUE))
+                .addContainerGap(158, Short.MAX_VALUE))
         );
         StartPanelLayout.setVerticalGroup(
             StartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -204,7 +223,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(89, 89, 89)
                 .addComponent(jLabel2)
-                .addContainerGap(121, Short.MAX_VALUE))
+                .addContainerGap(144, Short.MAX_VALUE))
         );
 
         DisplayPanel.setPreferredSize(new java.awt.Dimension(600, 400));
@@ -457,6 +476,11 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         skipButton.setText("Skip");
+        skipButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                skipButtonActionPerformed(evt);
+            }
+        });
 
         txtScore.setEditable(false);
         txtScore.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -687,6 +711,77 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        EndPanel.setMinimumSize(new java.awt.Dimension(600, 400));
+
+        jTextField1.setEditable(false);
+        jTextField1.setFont(new java.awt.Font("Courier New", 1, 36)); // NOI18N
+        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField1.setText("Game Over!");
+        jTextField1.setBorder(null);
+
+        jTextField2.setEditable(false);
+        jTextField2.setFont(new java.awt.Font("Courier New", 2, 14)); // NOI18N
+        jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField2.setText("Please play again!");
+        jTextField2.setBorder(null);
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+
+        txtEndScore.setEditable(false);
+        txtEndScore.setFont(new java.awt.Font("Courier New", 1, 18)); // NOI18N
+        txtEndScore.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtEndScore.setBorder(null);
+
+        jTextField3.setEditable(false);
+        jTextField3.setFont(new java.awt.Font("Courier New", 2, 14)); // NOI18N
+        jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField3.setText("Your Final Score:");
+        jTextField3.setBorder(null);
+
+        jButton1.setText("End");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EndBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout EndPanelLayout = new javax.swing.GroupLayout(EndPanel);
+        EndPanel.setLayout(EndPanelLayout);
+        EndPanelLayout.setHorizontalGroup(
+            EndPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EndPanelLayout.createSequentialGroup()
+                .addGroup(EndPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(EndPanelLayout.createSequentialGroup()
+                        .addGap(218, 218, 218)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(EndPanelLayout.createSequentialGroup()
+                        .addGap(183, 183, 183)
+                        .addGroup(EndPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtEndScore)
+                            .addComponent(jTextField2)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                            .addComponent(jTextField3))))
+                .addContainerGap(184, Short.MAX_VALUE))
+        );
+        EndPanelLayout.setVerticalGroup(
+            EndPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EndPanelLayout.createSequentialGroup()
+                .addGap(67, 67, 67)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(txtEndScore, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(100, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -712,6 +807,11 @@ public class PointClickGUI extends javax.swing.JFrame {
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(DisplayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(EndPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -736,6 +836,11 @@ public class PointClickGUI extends javax.swing.JFrame {
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(DisplayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(EndPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(6, 6, 6)))
         );
 
         pack();
@@ -743,6 +848,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void PlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayButtonActionPerformed
+        //Change window visibility
         DisplayPanel.setVisible(false);
         PlayPanel.setVisible(true);
         
@@ -752,6 +858,9 @@ public class PointClickGUI extends javax.swing.JFrame {
         //Set our boxes chosen word
         //TODO: This is for testing. The user won't actually know the word.
         randomTest.setText(chosenWord);
+        
+        //Set starting score
+        this.score = 100;
         
         //Set score textbox
         txtScore.setText(String.format("Score: %d", (int)this.score));
@@ -894,6 +1003,22 @@ public class PointClickGUI extends javax.swing.JFrame {
         genericGameBtnPressed(evt);
     }//GEN-LAST:event_ZButtonActionPerformed
 
+    /* SKIP BUTTON PRESSED */
+    private void skipButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_skipButtonActionPerformed
+        score = 0;
+        //TODO: Think of additional things to implement here.
+        endGame();
+    }//GEN-LAST:event_skipButtonActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void EndBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EndBtnActionPerformed
+        EndPanel.setVisible(false);
+        DisplayPanel.setVisible(true);
+    }//GEN-LAST:event_EndBtnActionPerformed
+
     
     
     /**
@@ -945,6 +1070,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JLabel DisplayIcon;
     private javax.swing.JPanel DisplayPanel;
     private javax.swing.JButton EButton;
+    private javax.swing.JPanel EndPanel;
     private javax.swing.JButton FButton;
     private javax.swing.JButton GButton;
     private javax.swing.JButton HButton;
@@ -974,6 +1100,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JButton XButton;
     private javax.swing.JButton YButton;
     private javax.swing.JButton ZButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -981,9 +1108,13 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField randomTest;
     private javax.swing.JButton skipButton;
     private javax.swing.JTextField systemTimeText;
+    private javax.swing.JTextField txtEndScore;
     private javax.swing.JTextField txtScore;
     // End of variables declaration//GEN-END:variables
 }
