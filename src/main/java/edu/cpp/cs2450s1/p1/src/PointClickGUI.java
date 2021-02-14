@@ -21,6 +21,8 @@ import javax.swing.UIManager;
 public class PointClickGUI extends javax.swing.JFrame {
     Random r = new Random();
     String[] wordList = {"abstract", "cemetery", "nurse", "pharmacy", "climbing"};
+    Integer score;
+    String chosenWord;
 
     /**
      * Creates new form PointClickFrame
@@ -32,6 +34,9 @@ public class PointClickGUI extends javax.swing.JFrame {
         PlayPanel.setVisible(false);
         HighscorePanel.setVisible(false);
         CreditsPanel.setVisible(false);
+        
+        //Set starting score
+        score = new Integer(100);
         
         //Set System Timer
         Timer dateTimer = new Timer(1000, new ActionListener(){ //Updates every second
@@ -57,7 +62,58 @@ public class PointClickGUI extends javax.swing.JFrame {
         
     }
         
+    /**
+     * Is called when the user guesses incorrectly. Deducts 10 from the user's score and adds one limb
+     * onto the hangman picture. After doing this, the methods checks if the user has guessed incorrectly 6 times
+     * (by checking if the score equals 40). If so, the end game event occurs.
+     */
+    private void penaliseScore() {
+        //Decrement score by 10
+        score -= 10;
+        //Set the score text box with the new score value
+        txtScore.setText(String.format("Score: %d", score));
+        //Check if there are six incorrect guesses
+        if(score <= 40){
+            //Trigger end game event
+        }
+    }
     
+    /**
+     * Ends the game. Is called when (1) the user has guessed incorrectly 6 times,
+     * (2) the user guesses all letters in the word, or (3) the user clicks on the "skip"
+     * button. 
+     */
+    private void endGame(){
+        
+    }
+    
+    /**
+     * A method used for all the A-Z game buttons to prevent repeating code. Performs the following
+     * functions:
+     * 
+     * 1)Disables the button
+     * 2)Checks if the letter is in the current word
+     *  2a)If it is in the word, fills in the letter(s) in the word.
+     *      2aa)Checks if the word is complete. If so, call endGame.
+     *  2b)If it isn't in the word, calls penaliseScore
+     * 
+     * @param evt the ActionEvent that comes from the button
+     */
+    private void genericGameBtnPressed(ActionEvent evt){
+        //Get the JButton object that was pressed
+        JButton btnPressed = ((JButton)evt.getSource());
+        //Disable the JButton
+        btnPressed.setEnabled(false);
+        
+        //Get the letter in lowercase(our buttons have uppercase letters)
+        String btnLetter = btnPressed.getText().toLowerCase();
+        //Check if letter is in current word
+        if(this.chosenWord.contains(btnLetter)){
+            
+        }else{
+            
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -106,6 +162,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         WButton = new javax.swing.JButton();
         randomTest = new javax.swing.JTextField();
         skipButton = new javax.swing.JButton();
+        txtScore = new javax.swing.JTextField();
         HighscorePanel = new javax.swing.JPanel();
         HSLabel = new javax.swing.JLabel();
         ScoresLabel = new javax.swing.JLabel();
@@ -217,6 +274,11 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         BButton.setText("B");
+        BButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BButtonActionPerformed(evt);
+            }
+        });
 
         CButton.setText("C");
         CButton.addActionListener(new java.awt.event.ActionListener() {
@@ -226,6 +288,11 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         DButton.setText("D");
+        DButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DButtonActionPerformed(evt);
+            }
+        });
 
         EButton.setText("E");
         EButton.addActionListener(new java.awt.event.ActionListener() {
@@ -256,8 +323,18 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         GButton.setText("G");
+        GButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GButtonActionPerformed(evt);
+            }
+        });
 
         HButton.setText("H");
+        HButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HButtonActionPerformed(evt);
+            }
+        });
 
         IButton.setText("I");
         IButton.addActionListener(new java.awt.event.ActionListener() {
@@ -267,14 +344,39 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         JButton.setText("J");
+        JButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JButtonActionPerformed(evt);
+            }
+        });
 
         MButton.setText("M");
+        MButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MButtonActionPerformed(evt);
+            }
+        });
 
         ZButton.setText("Z");
+        ZButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ZButtonActionPerformed(evt);
+            }
+        });
 
         NButton.setText("N");
+        NButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NButtonActionPerformed(evt);
+            }
+        });
 
         OButton.setText("O");
+        OButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OButtonActionPerformed(evt);
+            }
+        });
 
         PButton.setText("P");
         PButton.addActionListener(new java.awt.event.ActionListener() {
@@ -284,6 +386,11 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         QButton.setText("Q");
+        QButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                QButtonActionPerformed(evt);
+            }
+        });
 
         RButton.setText("R");
         RButton.addActionListener(new java.awt.event.ActionListener() {
@@ -314,8 +421,18 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         TButton.setText("T");
+        TButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TButtonActionPerformed(evt);
+            }
+        });
 
         UButton.setText("U");
+        UButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UButtonActionPerformed(evt);
+            }
+        });
 
         VButton.setText("V");
         VButton.addActionListener(new java.awt.event.ActionListener() {
@@ -325,6 +442,11 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         WButton.setText("W");
+        WButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                WButtonActionPerformed(evt);
+            }
+        });
 
         randomTest.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         randomTest.setText("Random word test");
@@ -336,13 +458,19 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         skipButton.setText("Skip");
 
+        txtScore.setEditable(false);
+        txtScore.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtScore.setText("Score:");
+        txtScore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtScoreActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout PlayPanelLayout = new javax.swing.GroupLayout(PlayPanel);
         PlayPanel.setLayout(PlayPanelLayout);
         PlayPanelLayout.setHorizontalGroup(
             PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PlayPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(systemTimeText, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(PlayPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -408,12 +536,21 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(skipButton)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PlayPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(systemTimeText, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(PlayPanelLayout.createSequentialGroup()
+                        .addComponent(txtScore)
+                        .addContainerGap())))
         );
         PlayPanelLayout.setVerticalGroup(
             PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PlayPanelLayout.createSequentialGroup()
                 .addComponent(systemTimeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
+                .addGap(5, 5, 5)
+                .addComponent(txtScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(skipButton)
                 .addGap(33, 33, 33)
                 .addComponent(randomTest, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -611,8 +748,13 @@ public class PointClickGUI extends javax.swing.JFrame {
         
         //Pick random word from the set ("abstract", "cemetery", "nurse", "pharmacy", "climbing")
         int random = r.nextInt(wordList.length);
-        String word = wordList[random];
-        randomTest.setText(word);
+        chosenWord = wordList[random];
+        //Set our boxes chosen word
+        //TODO: This is for testing. The user won't actually know the word.
+        randomTest.setText(chosenWord);
+        
+        //Set score textbox
+        txtScore.setText(String.format("Score: %d", (int)this.score));
         
     }//GEN-LAST:event_PlayButtonActionPerformed
 
@@ -641,52 +783,51 @@ public class PointClickGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_systemTimeTextActionPerformed
 
     private void CButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CButtonActionPerformed
-        // TODO add your handling code here:
+        genericGameBtnPressed(evt);
     }//GEN-LAST:event_CButtonActionPerformed
 
     private void FButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FButtonActionPerformed
-        // TODO add your handling code here:
+        genericGameBtnPressed(evt);
     }//GEN-LAST:event_FButtonActionPerformed
 
     private void EButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EButtonActionPerformed
-        // TODO add your handling code here:
-        ((JButton)(evt.getSource())).setEnabled(false);
+        genericGameBtnPressed(evt);
     }//GEN-LAST:event_EButtonActionPerformed
 
     private void KButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KButtonActionPerformed
-        // TODO add your handling code here:
+        genericGameBtnPressed(evt);
     }//GEN-LAST:event_KButtonActionPerformed
 
     private void LButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LButtonActionPerformed
-        // TODO add your handling code here:
+        genericGameBtnPressed(evt);
     }//GEN-LAST:event_LButtonActionPerformed
 
     private void IButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IButtonActionPerformed
-        // TODO add your handling code here:
+        genericGameBtnPressed(evt);
     }//GEN-LAST:event_IButtonActionPerformed
 
     private void PButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PButtonActionPerformed
-        // TODO add your handling code here:
+        genericGameBtnPressed(evt);
     }//GEN-LAST:event_PButtonActionPerformed
 
     private void RButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RButtonActionPerformed
-        // TODO add your handling code here:
+        genericGameBtnPressed(evt);
     }//GEN-LAST:event_RButtonActionPerformed
 
     private void SButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SButtonActionPerformed
-        // TODO add your handling code here:
+        genericGameBtnPressed(evt);
     }//GEN-LAST:event_SButtonActionPerformed
 
     private void XButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_XButtonActionPerformed
-        // TODO add your handling code here:
+        genericGameBtnPressed(evt);
     }//GEN-LAST:event_XButtonActionPerformed
 
     private void YButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_YButtonActionPerformed
-        // TODO add your handling code here:
+        genericGameBtnPressed(evt);
     }//GEN-LAST:event_YButtonActionPerformed
 
     private void VButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VButtonActionPerformed
-        // TODO add your handling code here:
+        genericGameBtnPressed(evt);
     }//GEN-LAST:event_VButtonActionPerformed
 
     private void randomTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomTestActionPerformed
@@ -694,9 +835,64 @@ public class PointClickGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_randomTestActionPerformed
 
     private void AButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AButtonActionPerformed
-        // TODO add your handling code here:
-        ((JButton)(evt.getSource())).setEnabled(false);
+        genericGameBtnPressed(evt);
     }//GEN-LAST:event_AButtonActionPerformed
+
+    private void txtScoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtScoreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtScoreActionPerformed
+
+    private void BButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BButtonActionPerformed
+        genericGameBtnPressed(evt);
+    }//GEN-LAST:event_BButtonActionPerformed
+
+    private void DButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DButtonActionPerformed
+        genericGameBtnPressed(evt);
+    }//GEN-LAST:event_DButtonActionPerformed
+
+    private void GButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GButtonActionPerformed
+        genericGameBtnPressed(evt);
+    }//GEN-LAST:event_GButtonActionPerformed
+
+    private void HButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HButtonActionPerformed
+        genericGameBtnPressed(evt);
+    }//GEN-LAST:event_HButtonActionPerformed
+
+    private void JButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButtonActionPerformed
+        genericGameBtnPressed(evt);
+    }//GEN-LAST:event_JButtonActionPerformed
+
+    private void MButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MButtonActionPerformed
+        genericGameBtnPressed(evt);
+    }//GEN-LAST:event_MButtonActionPerformed
+
+    private void NButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NButtonActionPerformed
+        genericGameBtnPressed(evt);
+    }//GEN-LAST:event_NButtonActionPerformed
+
+    private void OButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OButtonActionPerformed
+        genericGameBtnPressed(evt);
+    }//GEN-LAST:event_OButtonActionPerformed
+
+    private void QButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QButtonActionPerformed
+        genericGameBtnPressed(evt);
+    }//GEN-LAST:event_QButtonActionPerformed
+
+    private void TButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TButtonActionPerformed
+        genericGameBtnPressed(evt);
+    }//GEN-LAST:event_TButtonActionPerformed
+
+    private void UButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UButtonActionPerformed
+        genericGameBtnPressed(evt);
+    }//GEN-LAST:event_UButtonActionPerformed
+
+    private void WButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WButtonActionPerformed
+        genericGameBtnPressed(evt);
+    }//GEN-LAST:event_WButtonActionPerformed
+
+    private void ZButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ZButtonActionPerformed
+        genericGameBtnPressed(evt);
+    }//GEN-LAST:event_ZButtonActionPerformed
 
     
     
@@ -788,5 +984,6 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JTextField randomTest;
     private javax.swing.JButton skipButton;
     private javax.swing.JTextField systemTimeText;
+    private javax.swing.JTextField txtScore;
     // End of variables declaration//GEN-END:variables
 }
