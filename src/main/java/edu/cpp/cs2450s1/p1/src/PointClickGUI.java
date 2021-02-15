@@ -13,7 +13,7 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.Timer;
 import javax.swing.UIManager;
-
+import java.io.*;
 /**
  *
  * @author Team SwingSharp
@@ -261,27 +261,31 @@ public class PointClickGUI extends javax.swing.JFrame {
             }
         });
 
-        DisplayIcon.setText("Icon goes here");
+        DisplayIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        DisplayIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon.jpg"))); // NOI18N
+        DisplayIcon.setMaximumSize(new java.awt.Dimension(190, 184));
+        DisplayIcon.setMinimumSize(new java.awt.Dimension(190, 184));
+        DisplayIcon.setPreferredSize(new java.awt.Dimension(190, 184));
 
         javax.swing.GroupLayout DisplayPanelLayout = new javax.swing.GroupLayout(DisplayPanel);
         DisplayPanel.setLayout(DisplayPanelLayout);
         DisplayPanelLayout.setHorizontalGroup(
             DisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DisplayPanelLayout.createSequentialGroup()
-                .addContainerGap(261, Short.MAX_VALUE)
+                .addContainerGap(206, Short.MAX_VALUE)
                 .addGroup(DisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(PlayButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(HighscoresButton)
                     .addComponent(CreditsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(DisplayIcon))
-                .addGap(254, 254, 254))
+                    .addComponent(DisplayIcon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(204, Short.MAX_VALUE))
         );
         DisplayPanelLayout.setVerticalGroup(
             DisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DisplayPanelLayout.createSequentialGroup()
-                .addContainerGap(158, Short.MAX_VALUE)
-                .addComponent(DisplayIcon)
-                .addGap(90, 90, 90)
+                .addContainerGap()
+                .addComponent(DisplayIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PlayButton)
                 .addGap(18, 18, 18)
                 .addComponent(HighscoresButton)
