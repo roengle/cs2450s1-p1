@@ -36,6 +36,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         HighscorePanel.setVisible(false);
         CreditsPanel.setVisible(false);
         EndPanel.setVisible(false);
+        randomTest.setVisible(false);
         
         
         
@@ -71,9 +72,27 @@ public class PointClickGUI extends javax.swing.JFrame {
     private void penaliseScore() {
         //Decrement score by 10
         score -= 10;
-        //TODO: Add image based on score
-        //Ex: if(score = 90) display hangman1
-        //    if(score = 80) display hangman2 etc...
+        //Add image based on score
+        switch(score){
+            case 90:
+                headImage.setVisible(true);
+                break;
+            case 80:
+                bodyImage.setVisible(true);
+                break;
+            case 70:
+                leftArmImage.setVisible(true);
+                break;
+            case 60:
+                rightArmImage.setVisible(true);
+                break;
+            case 50:
+                leftLegImage.setVisible(true);
+                break;
+            case 40:
+                rightLegImage.setVisible(true);
+                break;  
+        }
         
         //Set the score text box with the new score value
         txtScore.setText(String.format("Score: %d", score));
@@ -148,6 +167,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        randomTest = new javax.swing.JTextField();
         StartPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -157,37 +177,45 @@ public class PointClickGUI extends javax.swing.JFrame {
         CreditsButton = new javax.swing.JButton();
         DisplayIcon = new javax.swing.JLabel();
         PlayPanel = new javax.swing.JPanel();
-        systemTimeText = new javax.swing.JTextField();
-        AButton = new javax.swing.JButton();
+        platformImage = new javax.swing.JLabel();
+        blankLabel = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         BButton = new javax.swing.JButton();
-        CButton = new javax.swing.JButton();
-        DButton = new javax.swing.JButton();
         EButton = new javax.swing.JButton();
         FButton = new javax.swing.JButton();
-        KButton = new javax.swing.JButton();
-        LButton = new javax.swing.JButton();
-        GButton = new javax.swing.JButton();
-        HButton = new javax.swing.JButton();
-        IButton = new javax.swing.JButton();
-        JButton = new javax.swing.JButton();
-        MButton = new javax.swing.JButton();
-        ZButton = new javax.swing.JButton();
-        NButton = new javax.swing.JButton();
-        OButton = new javax.swing.JButton();
-        PButton = new javax.swing.JButton();
         QButton = new javax.swing.JButton();
-        RButton = new javax.swing.JButton();
-        SButton = new javax.swing.JButton();
+        ZButton = new javax.swing.JButton();
+        PButton = new javax.swing.JButton();
         XButton = new javax.swing.JButton();
-        YButton = new javax.swing.JButton();
+        CButton = new javax.swing.JButton();
+        LButton = new javax.swing.JButton();
         TButton = new javax.swing.JButton();
-        UButton = new javax.swing.JButton();
+        NButton = new javax.swing.JButton();
+        KButton = new javax.swing.JButton();
+        AButton = new javax.swing.JButton();
+        GButton = new javax.swing.JButton();
+        MButton = new javax.swing.JButton();
+        SButton = new javax.swing.JButton();
         VButton = new javax.swing.JButton();
+        JButton = new javax.swing.JButton();
+        OButton = new javax.swing.JButton();
+        IButton = new javax.swing.JButton();
         WButton = new javax.swing.JButton();
-        randomTest = new javax.swing.JTextField();
+        YButton = new javax.swing.JButton();
+        HButton = new javax.swing.JButton();
+        RButton = new javax.swing.JButton();
+        DButton = new javax.swing.JButton();
+        UButton = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        systemTimeText = new javax.swing.JTextField();
         skipButton = new javax.swing.JButton();
         txtScore = new javax.swing.JTextField();
-        blankLabel = new javax.swing.JLabel();
+        bodyImage = new javax.swing.JLabel();
+        leftArmImage = new javax.swing.JLabel();
+        rightArmImage = new javax.swing.JLabel();
+        leftLegImage = new javax.swing.JLabel();
+        rightLegImage = new javax.swing.JLabel();
+        headImage = new javax.swing.JLabel();
         HighscorePanel = new javax.swing.JPanel();
         HSLabel = new javax.swing.JLabel();
         ScoresLabel = new javax.swing.JLabel();
@@ -205,6 +233,15 @@ public class PointClickGUI extends javax.swing.JFrame {
         txtEndScore = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+
+        randomTest.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        randomTest.setText("Random word test");
+        randomTest.setEnabled(false);
+        randomTest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                randomTestActionPerformed(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -285,49 +322,25 @@ public class PointClickGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DisplayPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(DisplayIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(36, 36, 36)
                 .addComponent(PlayButton)
                 .addGap(18, 18, 18)
                 .addComponent(HighscoresButton)
                 .addGap(18, 18, 18)
                 .addComponent(CreditsButton)
-                .addGap(93, 93, 93))
+                .addGap(63, 63, 63))
         );
 
-        systemTimeText.setEditable(false);
-        systemTimeText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        systemTimeText.setText("Feb 8, 2021, | 13:28:07");
-        systemTimeText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                systemTimeTextActionPerformed(evt);
-            }
-        });
+        platformImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Hangman_Base.png"))); // NOI18N
 
-        AButton.setText("A");
-        AButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AButtonActionPerformed(evt);
-            }
-        });
+        blankLabel.setFont(new java.awt.Font("Calibri", 0, 36)); // NOI18N
+        blankLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        blankLabel.setText("_ _ _ _ _ _");
 
         BButton.setText("B");
         BButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BButtonActionPerformed(evt);
-            }
-        });
-
-        CButton.setText("C");
-        CButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CButtonActionPerformed(evt);
-            }
-        });
-
-        DButton.setText("D");
-        DButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DButtonActionPerformed(evt);
             }
         });
 
@@ -345,52 +358,10 @@ public class PointClickGUI extends javax.swing.JFrame {
             }
         });
 
-        KButton.setText("K");
-        KButton.addActionListener(new java.awt.event.ActionListener() {
+        QButton.setText("Q");
+        QButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                KButtonActionPerformed(evt);
-            }
-        });
-
-        LButton.setText("L");
-        LButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LButtonActionPerformed(evt);
-            }
-        });
-
-        GButton.setText("G");
-        GButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GButtonActionPerformed(evt);
-            }
-        });
-
-        HButton.setText("H");
-        HButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                HButtonActionPerformed(evt);
-            }
-        });
-
-        IButton.setText("I");
-        IButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                IButtonActionPerformed(evt);
-            }
-        });
-
-        JButton.setText("J");
-        JButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JButtonActionPerformed(evt);
-            }
-        });
-
-        MButton.setText("M");
-        MButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MButtonActionPerformed(evt);
+                QButtonActionPerformed(evt);
             }
         });
 
@@ -401,45 +372,10 @@ public class PointClickGUI extends javax.swing.JFrame {
             }
         });
 
-        NButton.setText("N");
-        NButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NButtonActionPerformed(evt);
-            }
-        });
-
-        OButton.setText("O");
-        OButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OButtonActionPerformed(evt);
-            }
-        });
-
         PButton.setText("P");
         PButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PButtonActionPerformed(evt);
-            }
-        });
-
-        QButton.setText("Q");
-        QButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                QButtonActionPerformed(evt);
-            }
-        });
-
-        RButton.setText("R");
-        RButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RButtonActionPerformed(evt);
-            }
-        });
-
-        SButton.setText("S");
-        SButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SButtonActionPerformed(evt);
             }
         });
 
@@ -450,10 +386,17 @@ public class PointClickGUI extends javax.swing.JFrame {
             }
         });
 
-        YButton.setText("Y");
-        YButton.addActionListener(new java.awt.event.ActionListener() {
+        CButton.setText("C");
+        CButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                YButtonActionPerformed(evt);
+                CButtonActionPerformed(evt);
+            }
+        });
+
+        LButton.setText("L");
+        LButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LButtonActionPerformed(evt);
             }
         });
 
@@ -464,10 +407,45 @@ public class PointClickGUI extends javax.swing.JFrame {
             }
         });
 
-        UButton.setText("U");
-        UButton.addActionListener(new java.awt.event.ActionListener() {
+        NButton.setText("N");
+        NButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UButtonActionPerformed(evt);
+                NButtonActionPerformed(evt);
+            }
+        });
+
+        KButton.setText("K");
+        KButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                KButtonActionPerformed(evt);
+            }
+        });
+
+        AButton.setText("A");
+        AButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AButtonActionPerformed(evt);
+            }
+        });
+
+        GButton.setText("G");
+        GButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GButtonActionPerformed(evt);
+            }
+        });
+
+        MButton.setText("M");
+        MButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MButtonActionPerformed(evt);
+            }
+        });
+
+        SButton.setText("S");
+        SButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SButtonActionPerformed(evt);
             }
         });
 
@@ -478,6 +456,27 @@ public class PointClickGUI extends javax.swing.JFrame {
             }
         });
 
+        JButton.setText("J");
+        JButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JButtonActionPerformed(evt);
+            }
+        });
+
+        OButton.setText("O");
+        OButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OButtonActionPerformed(evt);
+            }
+        });
+
+        IButton.setText("I");
+        IButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IButtonActionPerformed(evt);
+            }
+        });
+
         WButton.setText("W");
         WButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -485,42 +484,49 @@ public class PointClickGUI extends javax.swing.JFrame {
             }
         });
 
-        randomTest.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        randomTest.setText("Random word test");
-        randomTest.addActionListener(new java.awt.event.ActionListener() {
+        YButton.setText("Y");
+        YButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                randomTestActionPerformed(evt);
+                YButtonActionPerformed(evt);
             }
         });
 
-        skipButton.setText("Skip");
-        skipButton.addActionListener(new java.awt.event.ActionListener() {
+        HButton.setText("H");
+        HButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                skipButtonActionPerformed(evt);
+                HButtonActionPerformed(evt);
             }
         });
 
-        txtScore.setEditable(false);
-        txtScore.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtScore.setText("Score:");
-        txtScore.addActionListener(new java.awt.event.ActionListener() {
+        RButton.setText("R");
+        RButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtScoreActionPerformed(evt);
+                RButtonActionPerformed(evt);
             }
         });
 
-        blankLabel.setFont(new java.awt.Font("Calibri", 0, 36)); // NOI18N
-        blankLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        blankLabel.setText("_ _ _ _ _ _");
+        DButton.setText("D");
+        DButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DButtonActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout PlayPanelLayout = new javax.swing.GroupLayout(PlayPanel);
-        PlayPanel.setLayout(PlayPanelLayout);
-        PlayPanelLayout.setHorizontalGroup(
-            PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PlayPanelLayout.createSequentialGroup()
+        UButton.setText("U");
+        UButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PlayPanelLayout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(NButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(OButton, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -546,7 +552,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                         .addComponent(YButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ZButton))
-                    .addGroup(PlayPanelLayout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(AButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(BButton)
@@ -555,58 +561,30 @@ public class PointClickGUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(DButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(PlayPanelLayout.createSequentialGroup()
-                                .addGap(21, 21, 21)
-                                .addComponent(randomTest, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(PlayPanelLayout.createSequentialGroup()
-                                .addGroup(PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(blankLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(PlayPanelLayout.createSequentialGroup()
-                                        .addComponent(EButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(FButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(GButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(HButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(IButton)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(JButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(KButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(LButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(MButton)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PlayPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(skipButton)
+                        .addComponent(EButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(FButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(GButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(HButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(IButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(JButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(KButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(LButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(MButton)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PlayPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(systemTimeText, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(PlayPanelLayout.createSequentialGroup()
-                        .addComponent(txtScore)
-                        .addContainerGap())))
         );
-        PlayPanelLayout.setVerticalGroup(
-            PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PlayPanelLayout.createSequentialGroup()
-                .addComponent(systemTimeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
-                .addComponent(txtScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(skipButton)
-                .addGap(33, 33, 33)
-                .addComponent(randomTest, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addComponent(blankLabel)
-                .addGap(27, 27, 27)
-                .addGroup(PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(AButton)
                     .addComponent(BButton)
                     .addComponent(CButton)
@@ -621,7 +599,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                     .addComponent(LButton)
                     .addComponent(MButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(NButton)
                     .addComponent(OButton)
                     .addComponent(PButton)
@@ -635,7 +613,138 @@ public class PointClickGUI extends javax.swing.JFrame {
                     .addComponent(XButton)
                     .addComponent(YButton)
                     .addComponent(ZButton))
-                .addGap(43, 43, 43))
+                .addContainerGap())
+        );
+
+        systemTimeText.setEditable(false);
+        systemTimeText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        systemTimeText.setText("Feb 8, 2021, | 13:28:07");
+        systemTimeText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                systemTimeTextActionPerformed(evt);
+            }
+        });
+
+        skipButton.setText("Skip");
+        skipButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                skipButtonActionPerformed(evt);
+            }
+        });
+
+        txtScore.setEditable(false);
+        txtScore.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtScore.setText("Score:");
+        txtScore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtScoreActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtScore))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addGap(92, 92, 92)
+                        .addComponent(skipButton))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(systemTimeText)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(systemTimeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(txtScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(skipButton)
+                .addContainerGap())
+        );
+
+        bodyImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/body.PNG"))); // NOI18N
+
+        leftArmImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/left_arm.PNG"))); // NOI18N
+
+        rightArmImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/right_arm.PNG"))); // NOI18N
+
+        leftLegImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/left_leg.PNG"))); // NOI18N
+
+        rightLegImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/right_leg.PNG"))); // NOI18N
+
+        headImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/face.PNG"))); // NOI18N
+
+        javax.swing.GroupLayout PlayPanelLayout = new javax.swing.GroupLayout(PlayPanel);
+        PlayPanel.setLayout(PlayPanelLayout);
+        PlayPanelLayout.setHorizontalGroup(
+            PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PlayPanelLayout.createSequentialGroup()
+                .addGap(150, 150, 150)
+                .addGroup(PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PlayPanelLayout.createSequentialGroup()
+                        .addGap(180, 180, 180)
+                        .addGroup(PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PlayPanelLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(rightArmImage, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(leftArmImage, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(leftLegImage, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(PlayPanelLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(rightLegImage, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(PlayPanelLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(headImage))
+                            .addGroup(PlayPanelLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(bodyImage, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(26, 26, 26)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(platformImage)))
+            .addGroup(PlayPanelLayout.createSequentialGroup()
+                .addGap(196, 196, 196)
+                .addComponent(blankLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        PlayPanelLayout.setVerticalGroup(
+            PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PlayPanelLayout.createSequentialGroup()
+                .addGroup(PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PlayPanelLayout.createSequentialGroup()
+                        .addGap(100, 100, 100)
+                        .addGroup(PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PlayPanelLayout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(rightArmImage, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(PlayPanelLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(leftArmImage))
+                            .addGroup(PlayPanelLayout.createSequentialGroup()
+                                .addGap(50, 50, 50)
+                                .addComponent(leftLegImage))
+                            .addGroup(PlayPanelLayout.createSequentialGroup()
+                                .addGap(50, 50, 50)
+                                .addComponent(rightLegImage))
+                            .addComponent(headImage)
+                            .addGroup(PlayPanelLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(bodyImage, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(PlayPanelLayout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addComponent(platformImage, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(blankLabel)
+                .addGap(11, 11, 11)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         HSLabel.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
@@ -877,6 +986,13 @@ public class PointClickGUI extends javax.swing.JFrame {
         DisplayPanel.setVisible(false);
         PlayPanel.setVisible(true);
         
+        headImage.setVisible(false);
+        bodyImage.setVisible(false);
+        leftArmImage.setVisible(false);
+        rightArmImage.setVisible(false);
+        leftLegImage.setVisible(false);
+        rightLegImage.setVisible(false);
+        
         //Pick random word from the set ("abstract", "cemetery", "nurse", "pharmacy", "climbing")
         int random = r.nextInt(wordList.length);
         chosenWord = wordList[random];
@@ -971,10 +1087,6 @@ public class PointClickGUI extends javax.swing.JFrame {
         genericGameBtnPressed(evt);
     }//GEN-LAST:event_VButtonActionPerformed
 
-    private void randomTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomTestActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_randomTestActionPerformed
-
     private void AButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AButtonActionPerformed
         genericGameBtnPressed(evt);
     }//GEN-LAST:event_AButtonActionPerformed
@@ -1050,6 +1162,10 @@ public class PointClickGUI extends javax.swing.JFrame {
         EndPanel.setVisible(false);
         DisplayPanel.setVisible(true);
     }//GEN-LAST:event_EndBtnActionPerformed
+
+    private void randomTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomTestActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_randomTestActionPerformed
 
     
     
@@ -1133,6 +1249,8 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JButton YButton;
     private javax.swing.JButton ZButton;
     private javax.swing.JLabel blankLabel;
+    private javax.swing.JLabel bodyImage;
+    private javax.swing.JLabel headImage;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -1141,10 +1259,17 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JLabel leftArmImage;
+    private javax.swing.JLabel leftLegImage;
+    private javax.swing.JLabel platformImage;
     private javax.swing.JTextField randomTest;
+    private javax.swing.JLabel rightArmImage;
+    private javax.swing.JLabel rightLegImage;
     private javax.swing.JButton skipButton;
     private javax.swing.JTextField systemTimeText;
     private javax.swing.JTextField txtEndScore;
