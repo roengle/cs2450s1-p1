@@ -1725,6 +1725,7 @@ public class PointClickGUI extends javax.swing.JFrame {
        changeButtonLocation(BluePanel);
        changeButtonLocation(GreenPanel);
        changeButtonLocation(RedPanel);
+       changeButtonLocation(YellowPanel);
        
     }//GEN-LAST:event_YellowPanelMouseClicked
 
