@@ -12,9 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.Timer;
-import javax.swing.UIManager;
-import java.io.*;
 /**
  *
  * @author Team SwingSharp
@@ -22,12 +21,13 @@ import java.io.*;
 public class PointClickGUI extends javax.swing.JFrame {
     Random r = new Random();
     String[] wordList = {"abstract", "cemetery", "nurse", "pharmacy", "climbing"};
-    String[] colorList = {"RED", "YELLOW", "GREEN", "BLUE", "PURPLE"};
-    Integer score;
-    String chosenWord;
-    static int round = 1;
-    static int randomColorText, randomColor, chosenColor;
+    String[] colorWordList = {"Green", "Red", "Yellow", "Purple", "Blue"};
     
+    int randomColorText;
+    Integer score, score2;
+    String chosenWord;
+    String chosenColorWord;
+    static int round = 0;
 
     /**
      * Creates new form PointClickFrame
@@ -43,7 +43,8 @@ public class PointClickGUI extends javax.swing.JFrame {
         CreditsPanel.setVisible(false);
         EndPanel.setVisible(false);
         randomTest.setVisible(false);
-        
+        DisplayScorePanel.setVisible(false);
+        EnterNamePanel.setVisible(false);
         
         
         //Set System Timer
@@ -116,6 +117,7 @@ public class PointClickGUI extends javax.swing.JFrame {
      * button. 
      */
     private void endGame(){    //Game: Hangman
+        txtEndScore.setText(String.format("%d",score));
         PlayPanel.setVisible(false);
         PlayPanel2.setVisible(true);
         
@@ -127,12 +129,9 @@ public class PointClickGUI extends javax.swing.JFrame {
         for(JButton b : buttons){
             b.setEnabled(true);
         }
-        
-        txtScore2.setText(String.format("Score: %d", score));
     }
     
     private void endGame2(){    //Game: Color Buttons
-        txtEndScore.setText(String.format("%d",score));
         PlayPanel2.setVisible(false);
         EndPanel.setVisible(true);
     }
@@ -173,119 +172,64 @@ public class PointClickGUI extends javax.swing.JFrame {
     }
     
     private void genericGameBtnPressed2(ActionEvent evt){   //Game: Color Buttons
-        if(chosenColor == randomColor){
-            score += 100;
-            txtScore2.setText(String.format("Score: %d", score));
-        }
-        else{
-            score += 0;
-        }
+        /* PSEUDOCODE
         
-        randomizeText();
+        if(button = correct color)
+            > score2 += 100
+        else
+            > score2 += 0;
+
+        randomizeText();             //changes color and text
         changeButtonLocation();
-        round++;
-        
-        if(round >= 5){
-            endGame2();
-            updateHighScores();
-        }
+        round++;                    //increase rounds by 1
+
+        if(round >= 5)
+            > endGame2();            
+            > saveHighScore();
+        */
     }
     
     private void randomizeText(){   //Game: Color Buttons
-        randomColorText = r.nextInt(5)+1; //from 1-5
-        randomColor = r.nextInt(5)+1; //from 1-5
+        Random randomword = new Random();
+        int random = randomword.nextInt(colorWordList.length);
+        chosenColorWord = colorWordList[random];
+        //Set our boxes chosen word
+        //TODO: This is for testing. The user won't actually know the word.
+        colorText.setText(chosenColorWord);
         
-        //Color order: colorList = {"RED", "YELLOW", "GREEN", "BLUE", "PURPLE"};
-        colorText.setText(colorList[randomColorText-1]);
-
-        switch(randomColor){
-            case 1:
-                colorText.setForeground(Color.RED);
-                break;
-            case 2:
-                colorText.setForeground(Color.YELLOW);
-                break;
-            case 3:
-                colorText.setForeground(Color.GREEN);
-                break;
-            case 4:
-                colorText.setForeground(Color.BLUE);
-                break;
-            case 5:
-                colorText.setForeground(new Color(128, 0, 128));    //Purple
-                break;
+        Random randomcolor = new Random();
+        randomColorText = randomcolor.nextInt(4);
+        //randomColorText = 1;
+        if (randomColorText == 0){
+            colorText.setForeground(new java.awt.Color(255, 43, 19)); //red
+        }
+        if (randomColorText == 1){
+            colorText.setForeground(new java.awt.Color(17, 197, 33)); //green
+        }
+        if (randomColorText == 2){
+            colorText.setForeground(new java.awt.Color(0, 93, 204)); //blue
+        }
+        if (randomColorText == 3){
+            colorText.setForeground(new java.awt.Color(255, 242, 56)); //yellow
+        }
+        if (randomColorText == 4){
+            colorText.setForeground(new java.awt.Color(139, 11, 255)); //purple
         }
     }
     
-    private void changeButtonLocation(){   //Game: Color Buttons   
-        redButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
-        yellowButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
-        greenButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
-        blueButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
-        purpleButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
-        
-        //check purpleButton overlapping
-        for(int tries = 0; tries <= 50; tries++)
-            if(purpleButton.getBounds().intersects(blueButton.getBounds()) ||
-            purpleButton.getBounds().intersects(greenButton.getBounds()) ||
-            purpleButton.getBounds().intersects(yellowButton.getBounds()) ||
-            purpleButton.getBounds().intersects(redButton.getBounds()) ||
-            purpleButton.getBounds().intersects(colorText.getBounds()) ||
-            purpleButton.getBounds().intersects(jPanel3.getBounds()))
-                purpleButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
-            else
-                break;
-        
-        //check blueButton overlapping
-        for(int tries = 0; tries <= 50; tries++)
-            if(blueButton.getBounds().intersects(purpleButton.getBounds()) ||
-            blueButton.getBounds().intersects(greenButton.getBounds()) ||
-            blueButton.getBounds().intersects(yellowButton.getBounds()) ||
-            blueButton.getBounds().intersects(redButton.getBounds()) ||
-            blueButton.getBounds().intersects(colorText.getBounds()) ||
-            blueButton.getBounds().intersects(jPanel3.getBounds()))
-                blueButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
-            else
-                break;
-        
-        //check greenButton overlapping
-        for(int tries = 0; tries <= 50; tries++)
-            if(greenButton.getBounds().intersects(purpleButton.getBounds()) ||
-            greenButton.getBounds().intersects(blueButton.getBounds()) ||
-            greenButton.getBounds().intersects(yellowButton.getBounds()) ||
-            greenButton.getBounds().intersects(redButton.getBounds()) ||
-            greenButton.getBounds().intersects(colorText.getBounds()) ||
-            greenButton.getBounds().intersects(jPanel3.getBounds()))
-                greenButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
-            else
-                break;  
-        
-        //check yellowButton overlapping
-        for(int tries = 0; tries <= 50; tries++)
-            if(yellowButton.getBounds().intersects(purpleButton.getBounds()) ||
-            yellowButton.getBounds().intersects(blueButton.getBounds()) ||
-            yellowButton.getBounds().intersects(greenButton.getBounds()) ||
-            yellowButton.getBounds().intersects(redButton.getBounds()) ||
-            yellowButton.getBounds().intersects(colorText.getBounds()) ||
-            yellowButton.getBounds().intersects(jPanel3.getBounds()))
-                yellowButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
-            else
-                break; 
-        
-        //check redButton overlapping
-        for(int tries = 0; tries <= 50; tries++)
-            if(redButton.getBounds().intersects(purpleButton.getBounds()) ||
-            redButton.getBounds().intersects(blueButton.getBounds()) ||
-            redButton.getBounds().intersects(greenButton.getBounds()) ||
-            redButton.getBounds().intersects(yellowButton.getBounds()) ||
-            redButton.getBounds().intersects(colorText.getBounds()) ||
-            redButton.getBounds().intersects(jPanel3.getBounds()))
-                redButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
-            else
-                break;  
-        
-        revalidate();
-        repaint();
+    
+    private void changeButtonLocation(JPanel panel){   //Game: Color Buttons
+        Random randomnumber1 = new Random();
+        Random randomnumber2 = new Random();
+       
+        int Xvalue;
+        int Yvalue;
+   
+        for(int counter = 1; counter <= 1; counter++){
+            Xvalue = 2 + randomnumber1.nextInt(498);
+            Yvalue = 60 + randomnumber2.nextInt(240);
+            panel.setBounds (Xvalue, Yvalue, 100, 100);
+        }
     }
     
     private void updateHighScores(){    //Game: Color Buttons
@@ -293,6 +237,14 @@ public class PointClickGUI extends javax.swing.JFrame {
         
     }
 
+    private void setBorder(JPanel panel){
+        panel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, null, new java.awt.Color(0, 0, 0)));
+    }
+    
+    private void resetBorder(JPanel panel){
+        panel.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -353,31 +305,43 @@ public class PointClickGUI extends javax.swing.JFrame {
         headImage = new javax.swing.JLabel();
         PlayPanel2 = new javax.swing.JPanel();
         colorText = new javax.swing.JLabel();
-        redButton = new javax.swing.JButton();
-        purpleButton = new javax.swing.JButton();
-        blueButton = new javax.swing.JButton();
-        greenButton = new javax.swing.JButton();
-        yellowButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         systemTimeText2 = new javax.swing.JTextField();
         txtScore2 = new javax.swing.JTextField();
+        YellowPanel = new javax.swing.JPanel();
+        RedPanel = new javax.swing.JPanel();
+        GreenPanel = new javax.swing.JPanel();
+        BluePanel = new javax.swing.JPanel();
+        PurplePanel = new javax.swing.JPanel();
         HighscorePanel = new javax.swing.JPanel();
         HSLabel = new javax.swing.JLabel();
-        ScoresLabel = new javax.swing.JLabel();
         HSBackButton = new javax.swing.JButton();
+        User1Label = new javax.swing.JLabel();
+        User2Label = new javax.swing.JLabel();
+        User3Label = new javax.swing.JLabel();
+        User4Label = new javax.swing.JLabel();
+        User5Label = new javax.swing.JLabel();
         CreditsPanel = new javax.swing.JPanel();
         CreditsBackButton = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        CreditsTitleLabel = new javax.swing.JLabel();
+        CreditsLabel1 = new javax.swing.JLabel();
+        CreditsLabel2 = new javax.swing.JLabel();
+        CreditsLabel3 = new javax.swing.JLabel();
+        CreditsLabel4 = new javax.swing.JLabel();
         EndPanel = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         txtEndScore = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        DisplayScorePanel = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        YesButton = new javax.swing.JButton();
+        NoButton = new javax.swing.JButton();
+        EnterNamePanel = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        NameTextField = new javax.swing.JTextField();
+        SaveButton = new javax.swing.JButton();
 
         randomTest.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         randomTest.setText("Random word test");
@@ -397,25 +361,28 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("By:  Team SwingSharp");
+        jLabel2.setText("By: Team SwingSharp");
 
         javax.swing.GroupLayout StartPanelLayout = new javax.swing.GroupLayout(StartPanel);
         StartPanel.setLayout(StartPanelLayout);
         StartPanelLayout.setHorizontalGroup(
             StartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StartPanelLayout.createSequentialGroup()
-                .addContainerGap(153, Short.MAX_VALUE)
-                .addGroup(StartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(143, 143, 143))
+            .addGroup(StartPanelLayout.createSequentialGroup()
+                .addContainerGap(96, Short.MAX_VALUE)
+                .addGroup(StartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StartPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(91, 91, 91))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StartPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(224, 224, 224))))
         );
         StartPanelLayout.setVerticalGroup(
             StartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(StartPanelLayout.createSequentialGroup()
-                .addGap(103, 103, 103)
+                .addGap(101, 101, 101)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(89, 89, 89)
+                .addGap(91, 91, 91)
                 .addComponent(jLabel2)
                 .addContainerGap(122, Short.MAX_VALUE))
         );
@@ -729,20 +696,21 @@ public class PointClickGUI extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AButton)
-                    .addComponent(BButton)
-                    .addComponent(CButton)
-                    .addComponent(DButton)
-                    .addComponent(EButton)
-                    .addComponent(FButton)
-                    .addComponent(GButton)
-                    .addComponent(HButton)
-                    .addComponent(IButton)
-                    .addComponent(JButton)
-                    .addComponent(KButton)
-                    .addComponent(LButton)
-                    .addComponent(MButton))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(HButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(AButton)
+                        .addComponent(BButton)
+                        .addComponent(CButton)
+                        .addComponent(DButton)
+                        .addComponent(EButton)
+                        .addComponent(FButton)
+                        .addComponent(GButton)
+                        .addComponent(IButton)
+                        .addComponent(JButton)
+                        .addComponent(KButton)
+                        .addComponent(LButton)
+                        .addComponent(MButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(NButton)
@@ -894,62 +862,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         colorText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         colorText.setText("Color");
         PlayPanel2.add(colorText);
-        colorText.setBounds(240, 40, 110, 30);
-
-        redButton.setBackground(new java.awt.Color(255, 0, 51));
-        redButton.setForeground(new java.awt.Color(255, 0, 102));
-        redButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                redButtonActionPerformed(evt);
-            }
-        });
-        PlayPanel2.add(redButton);
-        redButton.setBounds(40, 60, 100, 100);
-
-        purpleButton.setBackground(new java.awt.Color(153, 0, 255));
-        purpleButton.setForeground(new java.awt.Color(153, 0, 204));
-        purpleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                purpleButtonActionPerformed(evt);
-            }
-        });
-        PlayPanel2.add(purpleButton);
-        purpleButton.setBounds(440, 70, 100, 100);
-
-        blueButton.setBackground(new java.awt.Color(0, 51, 204));
-        blueButton.setForeground(new java.awt.Color(0, 51, 255));
-        blueButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                blueButtonActionPerformed(evt);
-            }
-        });
-        PlayPanel2.add(blueButton);
-        blueButton.setBounds(440, 230, 100, 100);
-
-        greenButton.setBackground(new java.awt.Color(102, 255, 102));
-        greenButton.setForeground(new java.awt.Color(102, 255, 102));
-        greenButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                greenButtonMouseEntered(evt);
-            }
-        });
-        greenButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                greenButtonActionPerformed(evt);
-            }
-        });
-        PlayPanel2.add(greenButton);
-        greenButton.setBounds(240, 230, 100, 100);
-
-        yellowButton.setBackground(new java.awt.Color(255, 255, 51));
-        yellowButton.setForeground(new java.awt.Color(255, 255, 51));
-        yellowButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                yellowButtonActionPerformed(evt);
-            }
-        });
-        PlayPanel2.add(yellowButton);
-        yellowButton.setBounds(50, 230, 100, 100);
+        colorText.setBounds(230, 20, 110, 30);
 
         systemTimeText2.setEditable(false);
         systemTimeText2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -991,13 +904,149 @@ public class PointClickGUI extends javax.swing.JFrame {
         PlayPanel2.add(jPanel3);
         jPanel3.setBounds(450, 0, 150, 60);
 
+        YellowPanel.setBackground(new java.awt.Color(255, 242, 56));
+        YellowPanel.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        YellowPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                YellowPanelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                YellowPanelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                YellowPanelMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout YellowPanelLayout = new javax.swing.GroupLayout(YellowPanel);
+        YellowPanel.setLayout(YellowPanelLayout);
+        YellowPanelLayout.setHorizontalGroup(
+            YellowPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        YellowPanelLayout.setVerticalGroup(
+            YellowPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        PlayPanel2.add(YellowPanel);
+        YellowPanel.setBounds(50, 70, 100, 100);
+
+        RedPanel.setBackground(new java.awt.Color(255, 43, 19));
+        RedPanel.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        RedPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                RedPanelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                RedPanelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                RedPanelMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout RedPanelLayout = new javax.swing.GroupLayout(RedPanel);
+        RedPanel.setLayout(RedPanelLayout);
+        RedPanelLayout.setHorizontalGroup(
+            RedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        RedPanelLayout.setVerticalGroup(
+            RedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        PlayPanel2.add(RedPanel);
+        RedPanel.setBounds(50, 240, 100, 100);
+
+        GreenPanel.setBackground(new java.awt.Color(17, 197, 33));
+        GreenPanel.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        GreenPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                GreenPanelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                GreenPanelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                GreenPanelMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout GreenPanelLayout = new javax.swing.GroupLayout(GreenPanel);
+        GreenPanel.setLayout(GreenPanelLayout);
+        GreenPanelLayout.setHorizontalGroup(
+            GreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        GreenPanelLayout.setVerticalGroup(
+            GreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        PlayPanel2.add(GreenPanel);
+        GreenPanel.setBounds(230, 160, 100, 100);
+
+        BluePanel.setBackground(new java.awt.Color(0, 93, 204));
+        BluePanel.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        BluePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BluePanelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                BluePanelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                BluePanelMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout BluePanelLayout = new javax.swing.GroupLayout(BluePanel);
+        BluePanel.setLayout(BluePanelLayout);
+        BluePanelLayout.setHorizontalGroup(
+            BluePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        BluePanelLayout.setVerticalGroup(
+            BluePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        PlayPanel2.add(BluePanel);
+        BluePanel.setBounds(440, 250, 100, 100);
+
+        PurplePanel.setBackground(new java.awt.Color(139, 11, 255));
+        PurplePanel.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        PurplePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                PurplePanelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                PurplePanelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                PurplePanelMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout PurplePanelLayout = new javax.swing.GroupLayout(PurplePanel);
+        PurplePanel.setLayout(PurplePanelLayout);
+        PurplePanelLayout.setHorizontalGroup(
+            PurplePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        PurplePanelLayout.setVerticalGroup(
+            PurplePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        PlayPanel2.add(PurplePanel);
+        PurplePanel.setBounds(440, 100, 100, 100);
+
         HSLabel.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
         HSLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         HSLabel.setText("Highscores");
-
-        ScoresLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        ScoresLabel.setText("<html>ABC.........00000<br/>ABC.........00000<br/>ABC.........00000<br/>ABC.........00000<br/>ABC.........00000</html>");
-        ScoresLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         HSBackButton.setText("Back");
         HSBackButton.addActionListener(new java.awt.event.ActionListener() {
@@ -1006,6 +1055,16 @@ public class PointClickGUI extends javax.swing.JFrame {
             }
         });
 
+        User1Label.setText("user ........ userscore");
+
+        User2Label.setText("user ........ userscore");
+
+        User3Label.setText("user ........ userscore");
+
+        User4Label.setText("user ........ userscore");
+
+        User5Label.setText("user ........ userscore");
+
         javax.swing.GroupLayout HighscorePanelLayout = new javax.swing.GroupLayout(HighscorePanel);
         HighscorePanel.setLayout(HighscorePanelLayout);
         HighscorePanelLayout.setHorizontalGroup(
@@ -1013,26 +1072,43 @@ public class PointClickGUI extends javax.swing.JFrame {
             .addGroup(HighscorePanelLayout.createSequentialGroup()
                 .addGroup(HighscorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(HighscorePanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(HSBackButton))
+                    .addGroup(HighscorePanelLayout.createSequentialGroup()
                         .addGap(224, 224, 224)
                         .addComponent(HSLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(HighscorePanelLayout.createSequentialGroup()
-                        .addGap(251, 251, 251)
-                        .addComponent(ScoresLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(HighscorePanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(HSBackButton)))
-                .addContainerGap(227, Short.MAX_VALUE))
+                        .addGap(217, 217, 217)
+                        .addGroup(HighscorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(User2Label, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(User1Label, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(User3Label, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(User4Label, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(User5Label, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(217, Short.MAX_VALUE))
         );
         HighscorePanelLayout.setVerticalGroup(
             HighscorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HighscorePanelLayout.createSequentialGroup()
                 .addGap(63, 63, 63)
                 .addComponent(HSLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(ScoresLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addComponent(HSBackButton)
-                .addContainerGap())
+                .addGroup(HighscorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(HighscorePanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(HSBackButton)
+                        .addContainerGap())
+                    .addGroup(HighscorePanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(User1Label, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(User2Label, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(User3Label, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(User4Label, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(User5Label, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(112, Short.MAX_VALUE))))
         );
 
         CreditsBackButton.setText("Back");
@@ -1042,17 +1118,17 @@ public class PointClickGUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
-        jLabel3.setText("Credits");
-        jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        CreditsTitleLabel.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
+        CreditsTitleLabel.setText("Credits");
+        CreditsTitleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        jLabel4.setText("Robert Berger Engle, Bronco #014011517");
+        CreditsLabel1.setText("Robert Berger Engle, Bronco #014011517");
 
-        jLabel5.setText("Cynthia Luong, Bronco #011673490");
+        CreditsLabel2.setText("Cynthia Luong, Bronco #011673490");
 
-        jLabel6.setText("Kenneth Shuto, Bronco #012585989");
+        CreditsLabel3.setText("Kenneth Shuto, Bronco #012585989");
 
-        jLabel7.setText("Rida Siddiqui, Bronco #014147900");
+        CreditsLabel4.setText("Rida Siddiqui, Bronco #014147900");
 
         javax.swing.GroupLayout CreditsPanelLayout = new javax.swing.GroupLayout(CreditsPanel);
         CreditsPanel.setLayout(CreditsPanelLayout);
@@ -1065,26 +1141,26 @@ public class PointClickGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreditsPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(CreditsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7))
+                    .addComponent(CreditsTitleLabel)
+                    .addComponent(CreditsLabel1)
+                    .addComponent(CreditsLabel2)
+                    .addComponent(CreditsLabel3)
+                    .addComponent(CreditsLabel4))
                 .addGap(191, 191, 191))
         );
         CreditsPanelLayout.setVerticalGroup(
             CreditsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CreditsPanelLayout.createSequentialGroup()
                 .addContainerGap(71, Short.MAX_VALUE)
-                .addComponent(jLabel3)
+                .addComponent(CreditsTitleLabel)
                 .addGap(55, 55, 55)
-                .addComponent(jLabel4)
+                .addComponent(CreditsLabel1)
                 .addGap(31, 31, 31)
-                .addComponent(jLabel5)
+                .addComponent(CreditsLabel2)
                 .addGap(33, 33, 33)
-                .addComponent(jLabel6)
+                .addComponent(CreditsLabel3)
                 .addGap(28, 28, 28)
-                .addComponent(jLabel7)
+                .addComponent(CreditsLabel4)
                 .addGap(62, 62, 62)
                 .addComponent(CreditsBackButton)
                 .addContainerGap())
@@ -1160,6 +1236,103 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addContainerGap(97, Short.MAX_VALUE))
         );
 
+        DisplayScorePanel.setMinimumSize(new java.awt.Dimension(300, 200));
+
+        jLabel9.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jLabel9.setText("Would you like to save your score?");
+
+        YesButton.setText("Yes");
+        YesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                YesButtonActionPerformed(evt);
+            }
+        });
+
+        NoButton.setText("No");
+        NoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NoButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout DisplayScorePanelLayout = new javax.swing.GroupLayout(DisplayScorePanel);
+        DisplayScorePanel.setLayout(DisplayScorePanelLayout);
+        DisplayScorePanelLayout.setHorizontalGroup(
+            DisplayScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(DisplayScorePanelLayout.createSequentialGroup()
+                .addGroup(DisplayScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(DisplayScorePanelLayout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel9))
+                    .addGroup(DisplayScorePanelLayout.createSequentialGroup()
+                        .addGap(134, 134, 134)
+                        .addGroup(DisplayScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(NoButton)
+                            .addComponent(YesButton))))
+                .addContainerGap(23, Short.MAX_VALUE))
+        );
+        DisplayScorePanelLayout.setVerticalGroup(
+            DisplayScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(DisplayScorePanelLayout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(jLabel9)
+                .addGap(31, 31, 31)
+                .addComponent(YesButton)
+                .addGap(18, 18, 18)
+                .addComponent(NoButton)
+                .addContainerGap(43, Short.MAX_VALUE))
+        );
+
+        EnterNamePanel.setMinimumSize(new java.awt.Dimension(300, 200));
+
+        jLabel8.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jLabel8.setText("Please Enter your Initials:");
+        jLabel8.setLocation(new java.awt.Point(-32538, -32567));
+
+        NameTextField.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        NameTextField.setText("Enter Initials");
+        NameTextField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        NameTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NameTextFieldActionPerformed(evt);
+            }
+        });
+
+        SaveButton.setText("Save");
+        SaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SaveButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout EnterNamePanelLayout = new javax.swing.GroupLayout(EnterNamePanel);
+        EnterNamePanel.setLayout(EnterNamePanelLayout);
+        EnterNamePanelLayout.setHorizontalGroup(
+            EnterNamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EnterNamePanelLayout.createSequentialGroup()
+                .addContainerGap(43, Short.MAX_VALUE)
+                .addGroup(EnterNamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(NameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(EnterNamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EnterNamePanelLayout.createSequentialGroup()
+                            .addComponent(SaveButton)
+                            .addGap(110, 110, 110))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EnterNamePanelLayout.createSequentialGroup()
+                            .addComponent(jLabel8)
+                            .addGap(39, 39, 39)))))
+        );
+        EnterNamePanelLayout.setVerticalGroup(
+            EnterNamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EnterNamePanelLayout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(jLabel8)
+                .addGap(18, 18, 18)
+                .addComponent(NameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(SaveButton)
+                .addContainerGap(38, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1195,6 +1368,16 @@ public class PointClickGUI extends javax.swing.JFrame {
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(PlayPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(DisplayScorePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(EnterNamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1228,6 +1411,16 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(PlayPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(DisplayScorePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(EnterNamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
@@ -1273,7 +1466,8 @@ public class PointClickGUI extends javax.swing.JFrame {
         round = 0;
         
         randomizeText();
-        changeButtonLocation();
+        //changeButtonLocation();
+        
         
         
         
@@ -1320,6 +1514,13 @@ public class PointClickGUI extends javax.swing.JFrame {
 
     private void EndBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EndBtnActionPerformed
         EndPanel.setVisible(false);
+        /*if (Userscore > LowestHighScore or 5th high score){
+            then display DisplayScorePanel
+      
+        }*/
+        //if user's score is greater than the lowest displayed highscore, when they press the end button
+        //a frame will pop out asking them, if they want to put their highscore on the highscores board, 
+        //if they click yes, let them enter their name, if they click no, go back to displayPanel
         DisplayPanel.setVisible(true);
     }//GEN-LAST:event_EndBtnActionPerformed
 
@@ -1431,30 +1632,27 @@ public class PointClickGUI extends javax.swing.JFrame {
         genericGameBtnPressed(evt);
     }//GEN-LAST:event_BButtonActionPerformed
 
-    private void redButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redButtonActionPerformed
-        chosenColor = 1;
-        genericGameBtnPressed2(evt);
-    }//GEN-LAST:event_redButtonActionPerformed
+    private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
+        String username = NameTextField.getText();
+        User1Label.setText(username + "....." + score);
+    
+    }//GEN-LAST:event_SaveButtonActionPerformed
 
-    private void purpleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purpleButtonActionPerformed
-        chosenColor = 5;
-        genericGameBtnPressed2(evt);
-    }//GEN-LAST:event_purpleButtonActionPerformed
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void blueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blueButtonActionPerformed
-        chosenColor = 4;
-        genericGameBtnPressed2(evt);
-    }//GEN-LAST:event_blueButtonActionPerformed
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void greenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_greenButtonActionPerformed
-        chosenColor = 3;
-        genericGameBtnPressed2(evt);
-    }//GEN-LAST:event_greenButtonActionPerformed
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void yellowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yellowButtonActionPerformed
-        chosenColor = 2;
-        genericGameBtnPressed2(evt);
-    }//GEN-LAST:event_yellowButtonActionPerformed
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     private void systemTimeText2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_systemTimeText2ActionPerformed
         // TODO add your handling code here:
@@ -1464,11 +1662,88 @@ public class PointClickGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtScore2ActionPerformed
 
-    private void greenButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_greenButtonMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_greenButtonMouseEntered
+    private void YesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_YesButtonActionPerformed
+        DisplayScorePanel.setVisible(false);
+        EnterNamePanel.setVisible(true);
+    }//GEN-LAST:event_YesButtonActionPerformed
 
-    
+    private void NoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NoButtonActionPerformed
+        DisplayScorePanel.setVisible(false);
+        DisplayPanel.setVisible(true);
+    }//GEN-LAST:event_NoButtonActionPerformed
+
+    private void NameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameTextFieldActionPerformed
+        
+    }//GEN-LAST:event_NameTextFieldActionPerformed
+
+    private void YellowPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_YellowPanelMouseEntered
+        setBorder(YellowPanel);
+    }//GEN-LAST:event_YellowPanelMouseEntered
+
+    private void YellowPanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_YellowPanelMouseExited
+        resetBorder(YellowPanel);
+    }//GEN-LAST:event_YellowPanelMouseExited
+
+    private void RedPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RedPanelMouseEntered
+        setBorder(RedPanel);
+    }//GEN-LAST:event_RedPanelMouseEntered
+
+    private void RedPanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RedPanelMouseExited
+        resetBorder(RedPanel);
+    }//GEN-LAST:event_RedPanelMouseExited
+
+    private void GreenPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GreenPanelMouseEntered
+        setBorder(GreenPanel);
+    }//GEN-LAST:event_GreenPanelMouseEntered
+
+    private void GreenPanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GreenPanelMouseExited
+        resetBorder(GreenPanel);
+    }//GEN-LAST:event_GreenPanelMouseExited
+
+    private void PurplePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PurplePanelMouseEntered
+        setBorder(PurplePanel);
+    }//GEN-LAST:event_PurplePanelMouseEntered
+
+    private void PurplePanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PurplePanelMouseExited
+        resetBorder(PurplePanel);
+    }//GEN-LAST:event_PurplePanelMouseExited
+
+    private void BluePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BluePanelMouseEntered
+        setBorder(BluePanel);
+    }//GEN-LAST:event_BluePanelMouseEntered
+
+    private void BluePanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BluePanelMouseExited
+        resetBorder(BluePanel);
+    }//GEN-LAST:event_BluePanelMouseExited
+
+    private void YellowPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_YellowPanelMouseClicked
+        //restart color game
+        //if correct choice then update score (100 points for every correct choice)
+       //changeButtonLocation();
+       changeButtonLocation(YellowPanel);
+       changeButtonLocation(PurplePanel);
+       changeButtonLocation(BluePanel);
+       changeButtonLocation(GreenPanel);
+       changeButtonLocation(RedPanel);
+       
+    }//GEN-LAST:event_YellowPanelMouseClicked
+
+    private void RedPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RedPanelMouseClicked
+        // TODO add your handling code here:
+        //changeButtonLocation(RedPanel);
+    }//GEN-LAST:event_RedPanelMouseClicked
+
+    private void GreenPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GreenPanelMouseClicked
+        //changeButtonLocation(GreenPanel);
+    }//GEN-LAST:event_GreenPanelMouseClicked
+
+    private void PurplePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PurplePanelMouseClicked
+       //changeButtonLocation(PurplePanel)
+    }//GEN-LAST:event_PurplePanelMouseClicked
+
+    private void BluePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BluePanelMouseClicked
+        //changeButtonLocation(BluePanel);
+    }//GEN-LAST:event_BluePanelMouseClicked
     
     /**
      * @param args the command line arguments
@@ -1511,17 +1786,26 @@ public class PointClickGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AButton;
     private javax.swing.JButton BButton;
+    private javax.swing.JPanel BluePanel;
     private javax.swing.JButton CButton;
     private javax.swing.JButton CreditsBackButton;
     private javax.swing.JButton CreditsButton;
+    private javax.swing.JLabel CreditsLabel1;
+    private javax.swing.JLabel CreditsLabel2;
+    private javax.swing.JLabel CreditsLabel3;
+    private javax.swing.JLabel CreditsLabel4;
     private javax.swing.JPanel CreditsPanel;
+    private javax.swing.JLabel CreditsTitleLabel;
     private javax.swing.JButton DButton;
     private javax.swing.JLabel DisplayIcon;
     private javax.swing.JPanel DisplayPanel;
+    private javax.swing.JPanel DisplayScorePanel;
     private javax.swing.JButton EButton;
     private javax.swing.JPanel EndPanel;
+    private javax.swing.JPanel EnterNamePanel;
     private javax.swing.JButton FButton;
     private javax.swing.JButton GButton;
+    private javax.swing.JPanel GreenPanel;
     private javax.swing.JButton HButton;
     private javax.swing.JButton HSBackButton;
     private javax.swing.JLabel HSLabel;
@@ -1533,37 +1817,43 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JButton LButton;
     private javax.swing.JButton MButton;
     private javax.swing.JButton NButton;
+    private javax.swing.JTextField NameTextField;
+    private javax.swing.JButton NoButton;
     private javax.swing.JButton OButton;
     private javax.swing.JButton PButton;
     private javax.swing.JButton PlayButton;
     private javax.swing.JPanel PlayPanel;
     private javax.swing.JPanel PlayPanel2;
+    private javax.swing.JPanel PurplePanel;
     private javax.swing.JButton QButton;
     private javax.swing.JButton RButton;
+    private javax.swing.JPanel RedPanel;
     private javax.swing.JButton SButton;
-    private javax.swing.JLabel ScoresLabel;
+    private javax.swing.JButton SaveButton;
     private javax.swing.JPanel StartPanel;
     private javax.swing.JButton TButton;
     private javax.swing.JButton UButton;
+    private javax.swing.JLabel User1Label;
+    private javax.swing.JLabel User2Label;
+    private javax.swing.JLabel User3Label;
+    private javax.swing.JLabel User4Label;
+    private javax.swing.JLabel User5Label;
     private javax.swing.JButton VButton;
     private javax.swing.JButton WButton;
     private javax.swing.JButton XButton;
     private javax.swing.JButton YButton;
+    private javax.swing.JPanel YellowPanel;
+    private javax.swing.JButton YesButton;
     private javax.swing.JButton ZButton;
     private javax.swing.JLabel blankLabel;
-    private javax.swing.JButton blueButton;
     private javax.swing.JLabel bodyImage;
     private javax.swing.JLabel colorText;
-    private javax.swing.JButton greenButton;
     private javax.swing.JLabel headImage;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1573,9 +1863,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JLabel leftArmImage;
     private javax.swing.JLabel leftLegImage;
     private javax.swing.JLabel platformImage;
-    private javax.swing.JButton purpleButton;
     private javax.swing.JTextField randomTest;
-    private javax.swing.JButton redButton;
     private javax.swing.JLabel rightArmImage;
     private javax.swing.JLabel rightLegImage;
     private javax.swing.JButton skipButton;
@@ -1584,6 +1872,5 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JTextField txtEndScore;
     private javax.swing.JTextField txtScore;
     private javax.swing.JTextField txtScore2;
-    private javax.swing.JButton yellowButton;
     // End of variables declaration//GEN-END:variables
 }
