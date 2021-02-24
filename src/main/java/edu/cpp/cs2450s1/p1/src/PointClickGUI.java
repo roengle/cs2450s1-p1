@@ -1720,12 +1720,12 @@ public class PointClickGUI extends javax.swing.JFrame {
         //restart color game
         //if correct choice then update score (100 points for every correct choice)
        //changeButtonLocation();
-       changeButtonLocation(YellowPanel);
+     
        changeButtonLocation(PurplePanel);
        changeButtonLocation(BluePanel);
-       changeButtonLocation(GreenPanel);
        changeButtonLocation(RedPanel);
        changeButtonLocation(YellowPanel);
+       changeButtonLocation(GreenPanel);
        
     }//GEN-LAST:event_YellowPanelMouseClicked
 
