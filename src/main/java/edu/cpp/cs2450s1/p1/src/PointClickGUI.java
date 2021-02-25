@@ -5,6 +5,7 @@ package edu.cpp.cs2450s1.p1.src;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -21,9 +22,12 @@ import java.io.*;
 public class PointClickGUI extends javax.swing.JFrame {
     Random r = new Random();
     String[] wordList = {"abstract", "cemetery", "nurse", "pharmacy", "climbing"};
-    Integer score, score2;
+    String[] colorList = {"RED", "YELLOW", "GREEN", "BLUE", "PURPLE"};
+    Integer score;
     String chosenWord;
-    static int round = 0;
+    static int round = 1;
+    static int randomColorText, randomColor, chosenColor;
+    
 
     /**
      * Creates new form PointClickFrame
@@ -112,7 +116,6 @@ public class PointClickGUI extends javax.swing.JFrame {
      * button. 
      */
     private void endGame(){    //Game: Hangman
-        txtEndScore.setText(String.format("%d",score));
         PlayPanel.setVisible(false);
         PlayPanel2.setVisible(true);
         
@@ -124,9 +127,12 @@ public class PointClickGUI extends javax.swing.JFrame {
         for(JButton b : buttons){
             b.setEnabled(true);
         }
+        
+        txtScore2.setText(String.format("Score: %d", score));
     }
     
     private void endGame2(){    //Game: Color Buttons
+        txtEndScore.setText(String.format("%d",score));
         PlayPanel2.setVisible(false);
         EndPanel.setVisible(true);
     }
@@ -167,39 +173,119 @@ public class PointClickGUI extends javax.swing.JFrame {
     }
     
     private void genericGameBtnPressed2(ActionEvent evt){   //Game: Color Buttons
-        /* PSEUDOCODE
+        if(chosenColor == randomColor){
+            score += 100;
+            txtScore2.setText(String.format("Score: %d", score));
+        }
+        else{
+            score += 0;
+        }
         
-        if(button = correct color)
-            > score2 += 100
-        else
-            > score2 += 0;
-
-        randomizeText();             //changes color and text
+        randomizeText();
         changeButtonLocation();
-        round++;                    //increase rounds by 1
-
-        if(round >= 5)
-            > endGame2();            
-            > saveHighScore();
-        */
+        round++;
+        
+        if(round >= 5){
+            endGame2();
+            updateHighScores();
+        }
     }
     
     private void randomizeText(){   //Game: Color Buttons
-        /* PSEUDOCODE
+        randomColorText = r.nextInt(5)+1; //from 1-5
+        randomColor = r.nextInt(5)+1; //from 1-5
         
-        int randomColorText = x
-        int randomColor = x
-        if(randomColorText = 1) set text to Green
-        if(randomColor = 1) set text color to green
-        //...etc
-        */
+        //Color order: colorList = {"RED", "YELLOW", "GREEN", "BLUE", "PURPLE"};
+        colorText.setText(colorList[randomColorText-1]);
+
+        switch(randomColor){
+            case 1:
+                colorText.setForeground(Color.RED);
+                break;
+            case 2:
+                colorText.setForeground(Color.YELLOW);
+                break;
+            case 3:
+                colorText.setForeground(Color.GREEN);
+                break;
+            case 4:
+                colorText.setForeground(Color.BLUE);
+                break;
+            case 5:
+                colorText.setForeground(new Color(128, 0, 128));    //Purple
+                break;
+        }
     }
     
-    private void changeButtonLocation(){   //Game: Color Buttons
-        /* PSEUDOCODE
+    private void changeButtonLocation(){   //Game: Color Buttons   
+        redButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
+        yellowButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
+        greenButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
+        blueButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
+        purpleButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
         
-        button.setBounds(int randomXCoord, int randomYCoord, int width, int height)
-        */
+        //check purpleButton overlapping
+        for(int tries = 0; tries <= 50; tries++)
+            if(purpleButton.getBounds().intersects(blueButton.getBounds()) ||
+            purpleButton.getBounds().intersects(greenButton.getBounds()) ||
+            purpleButton.getBounds().intersects(yellowButton.getBounds()) ||
+            purpleButton.getBounds().intersects(redButton.getBounds()) ||
+            purpleButton.getBounds().intersects(colorText.getBounds()) ||
+            purpleButton.getBounds().intersects(jPanel3.getBounds()))
+                purpleButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
+            else
+                break;
+        
+        //check blueButton overlapping
+        for(int tries = 0; tries <= 50; tries++)
+            if(blueButton.getBounds().intersects(purpleButton.getBounds()) ||
+            blueButton.getBounds().intersects(greenButton.getBounds()) ||
+            blueButton.getBounds().intersects(yellowButton.getBounds()) ||
+            blueButton.getBounds().intersects(redButton.getBounds()) ||
+            blueButton.getBounds().intersects(colorText.getBounds()) ||
+            blueButton.getBounds().intersects(jPanel3.getBounds()))
+                blueButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
+            else
+                break;
+        
+        //check greenButton overlapping
+        for(int tries = 0; tries <= 50; tries++)
+            if(greenButton.getBounds().intersects(purpleButton.getBounds()) ||
+            greenButton.getBounds().intersects(blueButton.getBounds()) ||
+            greenButton.getBounds().intersects(yellowButton.getBounds()) ||
+            greenButton.getBounds().intersects(redButton.getBounds()) ||
+            greenButton.getBounds().intersects(colorText.getBounds()) ||
+            greenButton.getBounds().intersects(jPanel3.getBounds()))
+                greenButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
+            else
+                break;  
+        
+        //check yellowButton overlapping
+        for(int tries = 0; tries <= 50; tries++)
+            if(yellowButton.getBounds().intersects(purpleButton.getBounds()) ||
+            yellowButton.getBounds().intersects(blueButton.getBounds()) ||
+            yellowButton.getBounds().intersects(greenButton.getBounds()) ||
+            yellowButton.getBounds().intersects(redButton.getBounds()) ||
+            yellowButton.getBounds().intersects(colorText.getBounds()) ||
+            yellowButton.getBounds().intersects(jPanel3.getBounds()))
+                yellowButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
+            else
+                break; 
+        
+        //check redButton overlapping
+        for(int tries = 0; tries <= 50; tries++)
+            if(redButton.getBounds().intersects(purpleButton.getBounds()) ||
+            redButton.getBounds().intersects(blueButton.getBounds()) ||
+            redButton.getBounds().intersects(greenButton.getBounds()) ||
+            redButton.getBounds().intersects(yellowButton.getBounds()) ||
+            redButton.getBounds().intersects(colorText.getBounds()) ||
+            redButton.getBounds().intersects(jPanel3.getBounds()))
+                redButton.setBounds(r.nextInt(500), r.nextInt(300), 100, 100);
+            else
+                break;  
+        
+        revalidate();
+        repaint();
     }
     
     private void updateHighScores(){    //Game: Color Buttons
@@ -267,11 +353,11 @@ public class PointClickGUI extends javax.swing.JFrame {
         headImage = new javax.swing.JLabel();
         PlayPanel2 = new javax.swing.JPanel();
         colorText = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        redButton = new javax.swing.JButton();
+        purpleButton = new javax.swing.JButton();
+        blueButton = new javax.swing.JButton();
+        greenButton = new javax.swing.JButton();
+        yellowButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         systemTimeText2 = new javax.swing.JTextField();
         txtScore2 = new javax.swing.JTextField();
@@ -717,9 +803,8 @@ public class PointClickGUI extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(systemTimeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(skipButton)
@@ -803,52 +888,68 @@ public class PointClickGUI extends javax.swing.JFrame {
         );
 
         PlayPanel2.setPreferredSize(new java.awt.Dimension(600, 400));
-        PlayPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        PlayPanel2.setLayout(null);
 
         colorText.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
         colorText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        colorText.setText("Color text goes here");
-        PlayPanel2.add(colorText, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, -1, -1));
+        colorText.setText("Color");
+        PlayPanel2.add(colorText);
+        colorText.setBounds(240, 40, 110, 30);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon.jpg"))); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        redButton.setBackground(new java.awt.Color(255, 0, 51));
+        redButton.setForeground(new java.awt.Color(255, 0, 102));
+        redButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                redButtonActionPerformed(evt);
             }
         });
-        PlayPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, 100, 100));
+        PlayPanel2.add(redButton);
+        redButton.setBounds(40, 60, 100, 100);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon.jpg"))); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        purpleButton.setBackground(new java.awt.Color(153, 0, 255));
+        purpleButton.setForeground(new java.awt.Color(153, 0, 204));
+        purpleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                purpleButtonActionPerformed(evt);
             }
         });
-        PlayPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 70, 100, 100));
+        PlayPanel2.add(purpleButton);
+        purpleButton.setBounds(440, 70, 100, 100);
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon.jpg"))); // NOI18N
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        blueButton.setBackground(new java.awt.Color(0, 51, 204));
+        blueButton.setForeground(new java.awt.Color(0, 51, 255));
+        blueButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                blueButtonActionPerformed(evt);
             }
         });
-        PlayPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 210, 100, 100));
+        PlayPanel2.add(blueButton);
+        blueButton.setBounds(440, 230, 100, 100);
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon.jpg"))); // NOI18N
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+        greenButton.setBackground(new java.awt.Color(102, 255, 102));
+        greenButton.setForeground(new java.awt.Color(102, 255, 102));
+        greenButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                greenButtonMouseEntered(evt);
             }
         });
-        PlayPanel2.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 220, 100, 100));
-
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon.jpg"))); // NOI18N
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        greenButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                greenButtonActionPerformed(evt);
             }
         });
-        PlayPanel2.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, 100, 100));
+        PlayPanel2.add(greenButton);
+        greenButton.setBounds(240, 230, 100, 100);
+
+        yellowButton.setBackground(new java.awt.Color(255, 255, 51));
+        yellowButton.setForeground(new java.awt.Color(255, 255, 51));
+        yellowButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                yellowButtonActionPerformed(evt);
+            }
+        });
+        PlayPanel2.add(yellowButton);
+        yellowButton.setBounds(50, 230, 100, 100);
 
         systemTimeText2.setEditable(false);
         systemTimeText2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -876,7 +977,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(systemTimeText2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtScore2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 20, Short.MAX_VALUE))
+                .addGap(0, 7, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -887,7 +988,8 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        PlayPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 0, -1, 60));
+        PlayPanel2.add(jPanel3);
+        jPanel3.setBounds(450, 0, 150, 60);
 
         HSLabel.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
         HSLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1329,25 +1431,30 @@ public class PointClickGUI extends javax.swing.JFrame {
         genericGameBtnPressed(evt);
     }//GEN-LAST:event_BButtonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void redButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redButtonActionPerformed
+        chosenColor = 1;
+        genericGameBtnPressed2(evt);
+    }//GEN-LAST:event_redButtonActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void purpleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purpleButtonActionPerformed
+        chosenColor = 5;
+        genericGameBtnPressed2(evt);
+    }//GEN-LAST:event_purpleButtonActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void blueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blueButtonActionPerformed
+        chosenColor = 4;
+        genericGameBtnPressed2(evt);
+    }//GEN-LAST:event_blueButtonActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void greenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_greenButtonActionPerformed
+        chosenColor = 3;
+        genericGameBtnPressed2(evt);
+    }//GEN-LAST:event_greenButtonActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+    private void yellowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yellowButtonActionPerformed
+        chosenColor = 2;
+        genericGameBtnPressed2(evt);
+    }//GEN-LAST:event_yellowButtonActionPerformed
 
     private void systemTimeText2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_systemTimeText2ActionPerformed
         // TODO add your handling code here:
@@ -1356,6 +1463,10 @@ public class PointClickGUI extends javax.swing.JFrame {
     private void txtScore2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtScore2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtScore2ActionPerformed
+
+    private void greenButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_greenButtonMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_greenButtonMouseEntered
 
     
     
@@ -1440,15 +1551,12 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JButton YButton;
     private javax.swing.JButton ZButton;
     private javax.swing.JLabel blankLabel;
+    private javax.swing.JButton blueButton;
     private javax.swing.JLabel bodyImage;
     private javax.swing.JLabel colorText;
+    private javax.swing.JButton greenButton;
     private javax.swing.JLabel headImage;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -1465,7 +1573,9 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JLabel leftArmImage;
     private javax.swing.JLabel leftLegImage;
     private javax.swing.JLabel platformImage;
+    private javax.swing.JButton purpleButton;
     private javax.swing.JTextField randomTest;
+    private javax.swing.JButton redButton;
     private javax.swing.JLabel rightArmImage;
     private javax.swing.JLabel rightLegImage;
     private javax.swing.JButton skipButton;
@@ -1474,5 +1584,6 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JTextField txtEndScore;
     private javax.swing.JTextField txtScore;
     private javax.swing.JTextField txtScore2;
+    private javax.swing.JButton yellowButton;
     // End of variables declaration//GEN-END:variables
 }
