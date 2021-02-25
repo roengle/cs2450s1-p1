@@ -16,6 +16,11 @@ import javax.swing.JButton;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import java.io.*;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import javax.imageio.ImageIO;
 /**
  *
@@ -25,10 +30,12 @@ public class PointClickGUI extends javax.swing.JFrame {
     Random r = new Random();
     String[] wordList = {"abstract", "cemetery", "nurse", "pharmacy", "climbing"};
     String[] colorList = {"RED", "YELLOW", "GREEN", "BLUE", "PURPLE"};
+    static HashMap<String, Integer> userScoreMap = new HashMap<>();
     Integer score;
     String chosenWord;
     static int round = 1;
     static int randomColorText, randomColor, chosenColor;
+    final URL SAVES_PATH = getClass().getResource("/saves/highscores.txt");
     
 
     /**
@@ -188,7 +195,6 @@ public class PointClickGUI extends javax.swing.JFrame {
         round++;
         
         if(round >= 5){
-            endGame2();
             updateHighScores();
         }
     }
@@ -349,8 +355,43 @@ public class PointClickGUI extends javax.swing.JFrame {
     }
     
     private void updateHighScores(){    //Game: Color Buttons
-        
-        
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(new File(SAVES_PATH.toURI())));
+            String inLine = "";
+            userScoreMap = new HashMap<>();
+            while((inLine = br.readLine()) != null){
+                String[] strSplit = inLine.split(" ");
+                String user = strSplit[0];
+                Integer score = Integer.parseInt(strSplit[1]);
+                userScoreMap.put(user, score);
+            }
+            br.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        //Move values into an array
+        int[] valueArr = new int[userScoreMap.size()];
+        Iterator it = userScoreMap.keySet().iterator();
+        int valueArrIndex = 0;
+        while(it.hasNext()){
+            String key = (String)it.next();
+            Integer value = userScoreMap.get(key);
+            valueArr[valueArrIndex] = value;
+            valueArrIndex++;
+        }
+        //Sort array
+        Arrays.sort(valueArr);
+        //Lowest score is in valueArr[0]
+        if(score > valueArr[0] || valueArr.length < 5){
+            newHSScoreLabel.setText(Integer.toString(score));
+            initialEntryTextField.setEnabled(true);
+            initialEntryTextField.setVisible(true);
+            newHSButtonOk.setEnabled(false);
+            PlayPanel2.setVisible(false);
+            NewHSPanel.setVisible(true);
+        }else{
+            endGame2();
+        }
     }
 
     /**
@@ -423,8 +464,9 @@ public class PointClickGUI extends javax.swing.JFrame {
         txtScore2 = new javax.swing.JTextField();
         HighscorePanel = new javax.swing.JPanel();
         HSLabel = new javax.swing.JLabel();
-        ScoresLabel = new javax.swing.JLabel();
         HSBackButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ScoresLabel = new javax.swing.JLabel();
         CreditsPanel = new javax.swing.JPanel();
         CreditsBackButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -438,6 +480,13 @@ public class PointClickGUI extends javax.swing.JFrame {
         txtEndScore = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        NewHSPanel = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        newHSScoreLabel = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        initialEntryTextField = new javax.swing.JTextField();
+        newHSButtonOk = new javax.swing.JButton();
 
         randomTest.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         randomTest.setText("Random word test");
@@ -1099,16 +1148,20 @@ public class PointClickGUI extends javax.swing.JFrame {
         HSLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         HSLabel.setText("Highscores");
 
-        ScoresLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        ScoresLabel.setText("<html>ABC.........00000<br/>ABC.........00000<br/>ABC.........00000<br/>ABC.........00000<br/>ABC.........00000</html>");
-        ScoresLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-
         HSBackButton.setText("Back");
         HSBackButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 HSBackButtonActionPerformed(evt);
             }
         });
+
+        jScrollPane1.setBorder(null);
+
+        ScoresLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        ScoresLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ScoresLabel.setText("<html>ABC.........00000<br/>ABC.........00000<br/>ABC.........00000<br/>ABC.........00000<br/>ABC.........00000</html>");
+        ScoresLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jScrollPane1.setViewportView(ScoresLabel);
 
         javax.swing.GroupLayout HighscorePanelLayout = new javax.swing.GroupLayout(HighscorePanel);
         HighscorePanel.setLayout(HighscorePanelLayout);
@@ -1117,14 +1170,13 @@ public class PointClickGUI extends javax.swing.JFrame {
             .addGroup(HighscorePanelLayout.createSequentialGroup()
                 .addGroup(HighscorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(HighscorePanelLayout.createSequentialGroup()
-                        .addGap(224, 224, 224)
-                        .addComponent(HSLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(HighscorePanelLayout.createSequentialGroup()
-                        .addGap(251, 251, 251)
-                        .addComponent(ScoresLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(HighscorePanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(HSBackButton)))
+                        .addComponent(HSBackButton))
+                    .addGroup(HighscorePanelLayout.createSequentialGroup()
+                        .addGap(224, 224, 224)
+                        .addGroup(HighscorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(HSLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1))))
                 .addContainerGap(227, Short.MAX_VALUE))
         );
         HighscorePanelLayout.setVerticalGroup(
@@ -1132,9 +1184,9 @@ public class PointClickGUI extends javax.swing.JFrame {
             .addGroup(HighscorePanelLayout.createSequentialGroup()
                 .addGap(63, 63, 63)
                 .addComponent(HSLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(ScoresLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                .addGap(21, 21, 21)
                 .addComponent(HSBackButton)
                 .addContainerGap())
         );
@@ -1264,6 +1316,80 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addContainerGap(97, Short.MAX_VALUE))
         );
 
+        NewHSPanel.setMaximumSize(new java.awt.Dimension(600, 400));
+        NewHSPanel.setMinimumSize(new java.awt.Dimension(600, 400));
+
+        jLabel8.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("New High Score!");
+
+        jLabel9.setFont(new java.awt.Font("Courier New", 1, 12)); // NOI18N
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("Your Score:");
+
+        newHSScoreLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        jLabel10.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel10.setText("Please Enter Three Initials Below:");
+
+        initialEntryTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        initialEntryTextField.setEnabled(false);
+        initialEntryTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                initialEntryTextFieldActionPerformed(evt);
+            }
+        });
+        initialEntryTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                initialEntryTextFieldKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                initialEntryTextFieldKeyReleased(evt);
+            }
+        });
+
+        newHSButtonOk.setText("Ok");
+        newHSButtonOk.setEnabled(false);
+        newHSButtonOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newHSButtonOkActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout NewHSPanelLayout = new javax.swing.GroupLayout(NewHSPanel);
+        NewHSPanel.setLayout(NewHSPanelLayout);
+        NewHSPanelLayout.setHorizontalGroup(
+            NewHSPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(NewHSPanelLayout.createSequentialGroup()
+                .addGap(191, 191, 191)
+                .addGroup(NewHSPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(initialEntryTextField)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(newHSScoreLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(newHSButtonOk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(180, Short.MAX_VALUE))
+        );
+        NewHSPanelLayout.setVerticalGroup(
+            NewHSPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(NewHSPanelLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(newHSScoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(initialEntryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(newHSButtonOk)
+                .addContainerGap(62, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1299,6 +1425,11 @@ public class PointClickGUI extends javax.swing.JFrame {
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(PlayPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(NewHSPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1332,6 +1463,11 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(PlayPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(NewHSPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
@@ -1394,6 +1530,53 @@ public class PointClickGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_HSBackButtonActionPerformed
 
     private void HighscoresButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HighscoresButtonActionPerformed
+        //Populate hashmap
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(new File(SAVES_PATH.toURI())));
+            String inLine = "";
+            userScoreMap = new HashMap<>();
+            while((inLine = br.readLine()) != null){
+                String[] strSplit = inLine.split(" ");
+                String user = strSplit[0];
+                Integer score = Integer.parseInt(strSplit[1]);
+                userScoreMap.put(user, score);
+            }
+            br.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        //Move values into an array
+        int[] valueArr = new int[userScoreMap.size()];
+        Iterator it = userScoreMap.keySet().iterator();
+        int valueArrIndex = 0;
+        while(it.hasNext()){
+            String key = (String)it.next();
+            Integer value = userScoreMap.get(key);
+            valueArr[valueArrIndex] = value;
+            valueArrIndex++;
+        }
+        //Sort array
+        Arrays.sort(valueArr);
+        //Loop through array,setting text, looking up key for value, so names are sorted by values
+        //Make buffer to build our string
+        StringBuilder buf = new StringBuilder();
+        buf.append("<html>");
+        for(int i = valueArr.length - 1; i >= 0; i--){
+            it = userScoreMap.keySet().iterator();
+            while(it.hasNext()){
+                String user = (String)it.next();
+                int value = userScoreMap.get(user);
+                if(value == valueArr[i]){
+                    buf.append(String.format("%s...........%d<br/>", user, value));
+                }
+            }
+        }
+        buf.append("</html>");
+        
+        //Set text on high score panel to buffer
+        ScoresLabel.setText(buf.toString());
+        
+        //Display high scores panel
         DisplayPanel.setVisible(false);
         HighscorePanel.setVisible(true);
     }//GEN-LAST:event_HighscoresButtonActionPerformed
@@ -1608,6 +1791,109 @@ public class PointClickGUI extends javax.swing.JFrame {
         genericGameBtnMouseOut(evt, "PURPLE");
     }//GEN-LAST:event_purpleButtonMouseExited
 
+    private void initialEntryTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_initialEntryTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_initialEntryTextFieldActionPerformed
+
+    private void newHSButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newHSButtonOkActionPerformed
+        //Save highscores
+        //Populate hashmap
+        userScoreMap = new HashMap<>();
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(new File(SAVES_PATH.toURI())));
+            String inLine = "";
+            while((inLine = br.readLine()) != null){
+                String[] strSplit = inLine.split(" ");
+                String user = strSplit[0];
+                Integer score = Integer.parseInt(strSplit[1]);
+                userScoreMap.put(user, score);;
+            }
+            br.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        //Move values into an array
+        int[] valueArr = new int[userScoreMap.size()];
+        Iterator it = userScoreMap.keySet().iterator();
+        int valueArrIndex = 0;
+        while(it.hasNext()){
+            String key = (String)it.next();
+            Integer value = userScoreMap.get(key);
+            valueArr[valueArrIndex] = value;
+            valueArrIndex++;
+        }
+        if(valueArr.length < 5){
+            int[] newArr = new int[valueArr.length + 1];
+            System.arraycopy(valueArr, 0, newArr, 0, valueArr.length);
+            newArr[valueArr.length] = score;
+            valueArr = newArr;
+        }else{
+            for(int i = 0; i < valueArr.length; i++){
+                if(valueArr[i] < score){
+                    valueArr[i] = score;
+                    it = userScoreMap.keySet().iterator();
+                    while(it.hasNext()){
+                        String user = (String)it.next();
+                        int value = userScoreMap.get(user);
+                        if(value == valueArr[i]){
+                            userScoreMap.remove(user);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        //Update our text file
+        String newUserEntry = initialEntryTextField.getText();
+        userScoreMap.put(newUserEntry, score);
+        try{
+            FileWriter fw0b = new FileWriter(new File(SAVES_PATH.toURI()), false);
+            PrintWriter pw0b = new PrintWriter(fw0b, false);
+            pw0b.flush();
+            pw0b.close();
+            fw0b.close();
+            BufferedWriter bw = new BufferedWriter(new FileWriter(new File(SAVES_PATH.toURI())));
+            StringBuilder sb = new StringBuilder();
+
+                it = userScoreMap.keySet().iterator();
+                while(it.hasNext()){
+                    String user = (String)it.next();
+                    int value = userScoreMap.get(user);
+                    sb.append(String.format("%s %d\n", user, value));
+                }
+            
+            
+            bw.write(sb.toString());
+            bw.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        //Set panel visibility
+        txtEndScore.setText(Integer.toString(score));
+        NewHSPanel.setVisible(false);
+        EndPanel.setVisible(true);
+        initialEntryTextField.setVisible(false);
+    }//GEN-LAST:event_newHSButtonOkActionPerformed
+
+    private void initialEntryTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_initialEntryTextFieldKeyPressed
+        String intials = initialEntryTextField.getText();
+        if(intials.length() == 3){
+            newHSButtonOk.setEnabled(true);
+        }else{
+            newHSButtonOk.setEnabled(false);
+        }
+    }//GEN-LAST:event_initialEntryTextFieldKeyPressed
+
+    private void initialEntryTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_initialEntryTextFieldKeyReleased
+        String intials = initialEntryTextField.getText();
+        if(intials.length() == 3){
+            newHSButtonOk.setEnabled(true);
+        }else{
+            newHSButtonOk.setEnabled(false);
+        }
+    }//GEN-LAST:event_initialEntryTextFieldKeyReleased
+
     
     
     /**
@@ -1642,6 +1928,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new PointClickGUI().setVisible(true);
+                
             }
         });
 
@@ -1673,6 +1960,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JButton LButton;
     private javax.swing.JButton MButton;
     private javax.swing.JButton NButton;
+    private javax.swing.JPanel NewHSPanel;
     private javax.swing.JButton OButton;
     private javax.swing.JButton PButton;
     private javax.swing.JButton PlayButton;
@@ -1696,22 +1984,29 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JLabel colorText;
     private javax.swing.JButton greenButton;
     private javax.swing.JLabel headImage;
+    private javax.swing.JTextField initialEntryTextField;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JLabel leftArmImage;
     private javax.swing.JLabel leftLegImage;
+    private javax.swing.JButton newHSButtonOk;
+    private javax.swing.JLabel newHSScoreLabel;
     private javax.swing.JLabel platformImage;
     private javax.swing.JButton purpleButton;
     private javax.swing.JTextField randomTest;
