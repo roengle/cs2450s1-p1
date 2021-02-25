@@ -8,6 +8,7 @@ package edu.cpp.cs2450s1.p1.src;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -15,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import java.io.*;
+import javax.imageio.ImageIO;
 /**
  *
  * @author Team SwingSharp
@@ -188,6 +190,64 @@ public class PointClickGUI extends javax.swing.JFrame {
         if(round >= 5){
             endGame2();
             updateHighScores();
+        }
+    }
+    
+    /**
+     * A function to handle the event for when any of the color buttons are hovered over(mouse in). Changes the
+     * icon of the respective button into the hovered version.
+     * 
+     * @param evt the source of the MouseEvent that calls the mouse in
+     * @param color a string (all uppercase) the represents the color of the button
+     */
+    private void genericGameBtnMouseIn(MouseEvent evt, String color){
+        //Get source button
+        JButton source = ((JButton)evt.getSource());
+        switch(color){
+            case "RED":
+                source.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/red_hovered.png")));
+                break;
+            case "GREEN":
+                source.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/green_hovered.png")));
+                break;
+            case "BLUE":
+                source.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/blue_hovered.png")));
+                break;
+            case "YELLOW":
+                source.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/yellow_hovered.png")));
+                break;
+            case "PURPLE":
+                source.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/purple_hovered.png")));
+                break;
+        }
+    }
+    
+    /**
+     * A function to handle the event for when any of the color buttons are however out of (mouse out).
+     * Changes the icon of the respective button into the unhovered version.
+     * 
+     * @param evt the source of the MouseEvent that calls the mouse out
+     * @param color a string (all uppercase) that represents the color of the button
+     */
+    private void genericGameBtnMouseOut(MouseEvent evt, String color){
+        //Get source button
+        JButton source = ((JButton)evt.getSource());
+        switch(color){
+            case "RED":
+                source.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/red_unhovered.png")));
+                break;
+            case "GREEN":
+                source.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/green_unhovered.png")));
+                break;
+            case "BLUE":
+                source.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/blue_unhovered.png")));
+                break;
+            case "YELLOW":
+                source.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/yellow_unhovered.png")));
+                break;
+            case "PURPLE":
+                source.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/purple_unhovered.png")));
+                break;
         }
     }
     
@@ -853,7 +913,7 @@ public class PointClickGUI extends javax.swing.JFrame {
             .addGroup(PlayPanelLayout.createSequentialGroup()
                 .addGap(196, 196, 196)
                 .addComponent(blankLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         PlayPanelLayout.setVerticalGroup(
             PlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -890,14 +950,23 @@ public class PointClickGUI extends javax.swing.JFrame {
         PlayPanel2.setPreferredSize(new java.awt.Dimension(600, 400));
         PlayPanel2.setLayout(null);
 
-        colorText.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
+        colorText.setFont(new java.awt.Font("Courier New", 1, 24)); // NOI18N
         colorText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         colorText.setText("Color");
         PlayPanel2.add(colorText);
-        colorText.setBounds(240, 40, 110, 30);
+        colorText.setBounds(240, 40, 110, 28);
 
-        redButton.setBackground(new java.awt.Color(255, 0, 51));
-        redButton.setForeground(new java.awt.Color(255, 0, 102));
+        redButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/red_unhovered.png"))); // NOI18N
+        redButton.setBorderPainted(false);
+        redButton.setContentAreaFilled(false);
+        redButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                redButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                redButtonMouseExited(evt);
+            }
+        });
         redButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 redButtonActionPerformed(evt);
@@ -906,8 +975,17 @@ public class PointClickGUI extends javax.swing.JFrame {
         PlayPanel2.add(redButton);
         redButton.setBounds(40, 60, 100, 100);
 
-        purpleButton.setBackground(new java.awt.Color(153, 0, 255));
-        purpleButton.setForeground(new java.awt.Color(153, 0, 204));
+        purpleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/purple_unhovered.png"))); // NOI18N
+        purpleButton.setBorderPainted(false);
+        purpleButton.setContentAreaFilled(false);
+        purpleButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                purpleButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                purpleButtonMouseExited(evt);
+            }
+        });
         purpleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 purpleButtonActionPerformed(evt);
@@ -916,8 +994,17 @@ public class PointClickGUI extends javax.swing.JFrame {
         PlayPanel2.add(purpleButton);
         purpleButton.setBounds(440, 70, 100, 100);
 
-        blueButton.setBackground(new java.awt.Color(0, 51, 204));
-        blueButton.setForeground(new java.awt.Color(0, 51, 255));
+        blueButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/blue_unhovered.png"))); // NOI18N
+        blueButton.setBorderPainted(false);
+        blueButton.setContentAreaFilled(false);
+        blueButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                blueButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                blueButtonMouseExited(evt);
+            }
+        });
         blueButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 blueButtonActionPerformed(evt);
@@ -926,11 +1013,15 @@ public class PointClickGUI extends javax.swing.JFrame {
         PlayPanel2.add(blueButton);
         blueButton.setBounds(440, 230, 100, 100);
 
-        greenButton.setBackground(new java.awt.Color(102, 255, 102));
-        greenButton.setForeground(new java.awt.Color(102, 255, 102));
+        greenButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/green_unhovered.png"))); // NOI18N
+        greenButton.setBorderPainted(false);
+        greenButton.setContentAreaFilled(false);
         greenButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 greenButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                greenButtonMouseExited(evt);
             }
         });
         greenButton.addActionListener(new java.awt.event.ActionListener() {
@@ -941,8 +1032,21 @@ public class PointClickGUI extends javax.swing.JFrame {
         PlayPanel2.add(greenButton);
         greenButton.setBounds(240, 230, 100, 100);
 
-        yellowButton.setBackground(new java.awt.Color(255, 255, 51));
-        yellowButton.setForeground(new java.awt.Color(255, 255, 51));
+        yellowButton.setFont(yellowButton.getFont());
+        yellowButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/yellow_unhovered.png"))); // NOI18N
+        yellowButton.setBorderPainted(false);
+        yellowButton.setContentAreaFilled(false);
+        yellowButton.setMaximumSize(new java.awt.Dimension(100, 100));
+        yellowButton.setMinimumSize(new java.awt.Dimension(100, 100));
+        yellowButton.setPreferredSize(new java.awt.Dimension(100, 100));
+        yellowButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                yellowButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                yellowButtonMouseExited(evt);
+            }
+        });
         yellowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 yellowButtonActionPerformed(evt);
@@ -1465,8 +1569,44 @@ public class PointClickGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_txtScore2ActionPerformed
 
     private void greenButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_greenButtonMouseEntered
-        // TODO add your handling code here:
+        genericGameBtnMouseIn(evt, "GREEN");
     }//GEN-LAST:event_greenButtonMouseEntered
+
+    private void redButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_redButtonMouseEntered
+        genericGameBtnMouseIn(evt, "RED");
+    }//GEN-LAST:event_redButtonMouseEntered
+
+    private void redButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_redButtonMouseExited
+        genericGameBtnMouseOut(evt, "RED");
+    }//GEN-LAST:event_redButtonMouseExited
+
+    private void yellowButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_yellowButtonMouseEntered
+        genericGameBtnMouseIn(evt, "YELLOW");
+    }//GEN-LAST:event_yellowButtonMouseEntered
+
+    private void yellowButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_yellowButtonMouseExited
+        genericGameBtnMouseOut(evt, "YELLOW");
+    }//GEN-LAST:event_yellowButtonMouseExited
+
+    private void greenButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_greenButtonMouseExited
+        genericGameBtnMouseOut(evt, "GREEN");
+    }//GEN-LAST:event_greenButtonMouseExited
+
+    private void blueButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blueButtonMouseEntered
+        genericGameBtnMouseIn(evt, "BLUE");
+    }//GEN-LAST:event_blueButtonMouseEntered
+
+    private void blueButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blueButtonMouseExited
+        genericGameBtnMouseOut(evt, "BLUE");
+    }//GEN-LAST:event_blueButtonMouseExited
+
+    private void purpleButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_purpleButtonMouseEntered
+        genericGameBtnMouseIn(evt, "PURPLE");
+    }//GEN-LAST:event_purpleButtonMouseEntered
+
+    private void purpleButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_purpleButtonMouseExited
+        genericGameBtnMouseOut(evt, "PURPLE");
+    }//GEN-LAST:event_purpleButtonMouseExited
 
     
     
