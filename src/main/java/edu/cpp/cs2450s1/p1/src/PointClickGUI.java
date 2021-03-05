@@ -6,20 +6,19 @@ package edu.cpp.cs2450s1.p1.src;
  * and open the template in the editor.
  */
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Paint;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.text.SimpleDateFormat;
+import java.awt.event.*;
+import java.text.*;
 import java.util.Date;
 import java.util.Random;
-import javax.swing.JButton;
-import javax.swing.Timer;
+import javax.swing.*;
 import java.io.*;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import javax.swing.text.*;
 /**
  *
  * @author Team SwingSharp
@@ -28,8 +27,11 @@ public class PointClickGUI extends javax.swing.JFrame {
     Random r = new Random();
     String[] wordList = {"abstract", "cemetery", "nurse", "pharmacy", "climbing"};
     String[] colorList = {"RED", "YELLOW", "GREEN", "BLUE", "PURPLE"};
+    boolean[] sudokuDeductible = new boolean[54];
+    JTextField[] sudokuBoxes = new JTextField[54];
+    int[] sudokuSolution = {3,5,1,9,2,2,9,6,8,5,7,3,1,4,7,2,9,3,8,6,1,4,2,1,2,3,6,8,5,4,9,7,5,9,6,6,7,8,1,3,4,9,8,3,4,5,2,7,6,7,4,6,8,1};
     static HashMap<String, Integer> userScoreMap = new HashMap<>();
-    Integer score;
+    Integer score, sudokuScore;
     String chosenWord;
     static int round = 1;
     static int randomColorText, randomColor, chosenColor;
@@ -46,10 +48,12 @@ public class PointClickGUI extends javax.swing.JFrame {
         DisplayPanel.setVisible(false);
         PlayPanel.setVisible(false);
         PlayPanel2.setVisible(false);
+        PlayPanel3.setVisible(false);
         HighscorePanel.setVisible(false);
         CreditsPanel.setVisible(false);
         EndPanel.setVisible(false);
         randomTest.setVisible(false);
+        NewHSPanel.setVisible(false);
         
         
         
@@ -61,12 +65,13 @@ public class PointClickGUI extends javax.swing.JFrame {
                 SimpleDateFormat sdf = new SimpleDateFormat("MMM d, y | HH:mm:ss");
                 systemTimeText.setText(sdf.format(date));
                 systemTimeText2.setText(sdf.format(date));
+                systemTimeText3.setText(sdf.format(date));
             }
         });
         dateTimer.start();
         
         //Set Screen Change Timer
-        Timer timer = new Timer(3000, new ActionListener(){     //Switches screen after 3 seconds
+        Timer timer = new Timer(3000, new ActionListener(){           //Switches screen after 3 seconds
             public void actionPerformed(ActionEvent e)
             {
                 StartPanel.setVisible(false);
@@ -76,7 +81,35 @@ public class PointClickGUI extends javax.swing.JFrame {
         timer.setRepeats(false);   //Runs once
         timer.start();
         
+        for(int i = 0; i < sudokuDeductible.length; i++)                          //set all boxes deductible
+            sudokuDeductible[i] = true;
+        sudokuBoxes = new JTextField[]{sudokuBox2,sudokuBox3,sudokuBox5,sudokuBox7,sudokuBox8,
+            sudokuBox10,sudokuBox11,sudokuBox12,sudokuBox13,sudokuBox14,sudokuBox15,sudokuBox17,sudokuBox18,
+            sudokuBox19,sudokuBox21,sudokuBox22,sudokuBox23,sudokuBox24,sudokuBox27,
+            sudokuBox29,sudokuBox31,sudokuBox33,sudokuBox36,
+            sudokuBox37,sudokuBox38,sudokuBox39,sudokuBox40,sudokuBox42,sudokuBox43,sudokuBox44,sudokuBox45,
+            sudokuBox46,sudokuBox49,sudokuBox51,sudokuBox53,
+            sudokuBox55,sudokuBox58,sudokuBox59,sudokuBox60,sudokuBox61,sudokuBox63,
+            sudokuBox64,sudokuBox65,sudokuBox67,sudokuBox68,sudokuBox69,sudokuBox70,sudokuBox71,sudokuBox72,
+            sudokuBox74,sudokuBox75,sudokuBox77,sudokuBox79,sudokuBox80};
+        
+        //Alerts user if anything other than 0-9 is pressed or already has a number
+        for(JTextField field : sudokuBoxes){
+            field.addKeyListener(new KeyAdapter() {
+                public void keyTyped(KeyEvent e) {
+                    char c = e.getKeyChar();
+                    if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE)) || field.getText().length() > 0) {
+                        getToolkit().beep();
+                        e.consume();
+                    }
+                }
+            });     
+        }
+        
+        
     }
+
+
         
     /**
      * Is called when the user guesses incorrectly. Deducts 10 from the user's score and adds one limb
@@ -139,9 +172,34 @@ public class PointClickGUI extends javax.swing.JFrame {
     }
     
     private void endGame2(){    //Game: Color Buttons
-        txtEndScore.setText(String.format("%d",score));
         PlayPanel2.setVisible(false);
-        EndPanel.setVisible(true);
+        PlayPanel3.setVisible(true);
+        
+        txtScore4.setText(String.format("Total Score: %d", score+sudokuScore));
+    }
+    
+    
+    private void endGame3(){    //Game: Sudoku
+        txtEndScore.setText(String.format("%d",score));
+        PlayPanel3.setVisible(false);
+        
+        //Reset textfields
+        JTextField[] sudokuBoxes = new JTextField[]{sudokuBox2,sudokuBox3,sudokuBox5,sudokuBox7,sudokuBox8,
+            sudokuBox10,sudokuBox11,sudokuBox12,sudokuBox13,sudokuBox14,sudokuBox15,sudokuBox17,sudokuBox18,
+            sudokuBox19,sudokuBox21,sudokuBox22,sudokuBox23,sudokuBox24,sudokuBox27,
+            sudokuBox29,sudokuBox31,sudokuBox33,sudokuBox36,
+            sudokuBox37,sudokuBox38,sudokuBox39,sudokuBox40,sudokuBox42,sudokuBox43,sudokuBox44,sudokuBox45,
+            sudokuBox46,sudokuBox49,sudokuBox51,sudokuBox53,
+            sudokuBox55,sudokuBox58,sudokuBox59,sudokuBox60,sudokuBox61,sudokuBox63,
+            sudokuBox64,sudokuBox65,sudokuBox67,sudokuBox68,sudokuBox69,sudokuBox70,sudokuBox71,sudokuBox72,
+            sudokuBox74,sudokuBox75,sudokuBox77,sudokuBox79,sudokuBox80};
+        for(int i = 0; i < sudokuBoxes.length; i++)
+            sudokuBoxes[i].setText("");
+        
+        for(int i = 0; i < sudokuDeductible.length; i++)                          //set all boxes deductible
+            sudokuDeductible[i] = true;
+        
+        updateHighScores();
     }
     
     /**
@@ -193,7 +251,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         round++;
         
         if(round >= 5){
-            updateHighScores();
+            endGame2();
         }
     }
     
@@ -352,7 +410,51 @@ public class PointClickGUI extends javax.swing.JFrame {
         repaint();
     }
     
-    private void updateHighScores(){    //Game: Color Buttons
+    
+    private void sudokuSubmit(){        //Game: Sudoku
+        int tempScore = score;
+        boolean sudokuComplete = true;
+        for(int i = 0; i < sudokuBoxes.length; i++){                                        //check all JTextFields
+                if(sudokuBoxes[i].getText().equals("")){                                    //check for blanks
+                    sudokuError();
+                    sudokuComplete = false;
+                    break;
+                }
+                else if(Integer.parseInt(sudokuBoxes[i].getText()) != sudokuSolution[i]){   //compare with solution
+                        if(sudokuDeductible[i] == true){                                    //if wrong and unchecked
+                                sudokuScore -= 10;                                          //deduct score
+                                sudokuDeductible[i] = false;                                //box no longer deductible
+                        }
+                        sudokuComplete = false;                                             //sudoku unfinished
+                }
+        }
+        if(sudokuComplete == true){
+                score += sudokuScore;
+                endGame3();
+        }
+    
+        txtScore3.setText(String.format("Sudoku Score: %d", sudokuScore));
+        tempScore += sudokuScore;
+        txtScore4.setText(String.format("Total Score: %d", tempScore));
+    }
+    
+    private void sudokuError(){
+        JLabel sudokuErrorMsg = new JLabel("Sudoku not completed yet");
+
+        JPanel sudokuErrorPanel = new JPanel();
+        sudokuErrorPanel.add(sudokuErrorMsg);
+
+        getToolkit().beep();
+        JOptionPane.showMessageDialog(null, sudokuErrorPanel);
+    }
+    
+    private void sudokuQuit(){
+        sudokuScore = 0;
+        endGame3();
+    }
+    
+    
+    private void updateHighScores(){    //Universal to all games
         try{
             BufferedReader br = new BufferedReader(new FileReader(new File(SAVES_PATH.toURI())));
             String inLine = "";
@@ -385,10 +487,10 @@ public class PointClickGUI extends javax.swing.JFrame {
             initialEntryTextField.setEnabled(true);
             initialEntryTextField.setVisible(true);
             newHSButtonOk.setEnabled(false);
-            PlayPanel2.setVisible(false);
+            PlayPanel3.setVisible(false);
             NewHSPanel.setVisible(true);
         }else{
-            endGame2();
+            EndPanel.setVisible(true);
         }
     }
 
@@ -465,6 +567,104 @@ public class PointClickGUI extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         systemTimeText2 = new javax.swing.JTextField();
         txtScore2 = new javax.swing.JTextField();
+        PlayPanel3 = new javax.swing.JPanel();
+        sudokuPanel = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        sudokuBox1 = new javax.swing.JLabel();
+        sudokuBox2 = new javax.swing.JTextField();
+        sudokuBox3 = new javax.swing.JTextField();
+        sudokuBox10 = new javax.swing.JTextField();
+        sudokuBox11 = new javax.swing.JTextField();
+        sudokuBox12 = new javax.swing.JTextField();
+        sudokuBox19 = new javax.swing.JTextField();
+        sudokuBox20 = new javax.swing.JLabel();
+        sudokuBox21 = new javax.swing.JTextField();
+        jPanel4 = new javax.swing.JPanel();
+        sudokuBox4 = new javax.swing.JLabel();
+        sudokuBox5 = new javax.swing.JTextField();
+        sudokuBox6 = new javax.swing.JLabel();
+        sudokuBox13 = new javax.swing.JTextField();
+        sudokuBox14 = new javax.swing.JTextField();
+        sudokuBox15 = new javax.swing.JTextField();
+        sudokuBox22 = new javax.swing.JTextField();
+        sudokuBox23 = new javax.swing.JTextField();
+        sudokuBox24 = new javax.swing.JTextField();
+        jPanel7 = new javax.swing.JPanel();
+        sudokuBox7 = new javax.swing.JTextField();
+        sudokuBox8 = new javax.swing.JTextField();
+        sudokuBox9 = new javax.swing.JLabel();
+        sudokuBox16 = new javax.swing.JLabel();
+        sudokuBox17 = new javax.swing.JTextField();
+        sudokuBox18 = new javax.swing.JTextField();
+        sudokuBox25 = new javax.swing.JLabel();
+        sudokuBox26 = new javax.swing.JLabel();
+        sudokuBox27 = new javax.swing.JTextField();
+        jPanel8 = new javax.swing.JPanel();
+        sudokuBox28 = new javax.swing.JLabel();
+        sudokuBox29 = new javax.swing.JTextField();
+        sudokuBox30 = new javax.swing.JLabel();
+        sudokuBox37 = new javax.swing.JTextField();
+        sudokuBox38 = new javax.swing.JTextField();
+        sudokuBox39 = new javax.swing.JTextField();
+        sudokuBox46 = new javax.swing.JTextField();
+        sudokuBox47 = new javax.swing.JLabel();
+        sudokuBox48 = new javax.swing.JLabel();
+        jPanel14 = new javax.swing.JPanel();
+        sudokuBox31 = new javax.swing.JTextField();
+        sudokuBox32 = new javax.swing.JLabel();
+        sudokuBox33 = new javax.swing.JTextField();
+        sudokuBox40 = new javax.swing.JTextField();
+        sudokuBox41 = new javax.swing.JLabel();
+        sudokuBox42 = new javax.swing.JTextField();
+        sudokuBox49 = new javax.swing.JTextField();
+        sudokuBox50 = new javax.swing.JLabel();
+        sudokuBox51 = new javax.swing.JTextField();
+        jPanel11 = new javax.swing.JPanel();
+        sudokuBox34 = new javax.swing.JLabel();
+        sudokuBox35 = new javax.swing.JLabel();
+        sudokuBox36 = new javax.swing.JTextField();
+        sudokuBox43 = new javax.swing.JTextField();
+        sudokuBox44 = new javax.swing.JTextField();
+        sudokuBox45 = new javax.swing.JTextField();
+        sudokuBox52 = new javax.swing.JLabel();
+        sudokuBox53 = new javax.swing.JTextField();
+        sudokuBox54 = new javax.swing.JLabel();
+        jPanel13 = new javax.swing.JPanel();
+        sudokuBox55 = new javax.swing.JTextField();
+        sudokuBox56 = new javax.swing.JLabel();
+        sudokuBox57 = new javax.swing.JLabel();
+        sudokuBox64 = new javax.swing.JTextField();
+        sudokuBox65 = new javax.swing.JTextField();
+        sudokuBox66 = new javax.swing.JLabel();
+        sudokuBox73 = new javax.swing.JLabel();
+        sudokuBox74 = new javax.swing.JTextField();
+        sudokuBox75 = new javax.swing.JTextField();
+        jPanel12 = new javax.swing.JPanel();
+        sudokuBox58 = new javax.swing.JTextField();
+        sudokuBox59 = new javax.swing.JTextField();
+        sudokuBox60 = new javax.swing.JTextField();
+        sudokuBox67 = new javax.swing.JTextField();
+        sudokuBox68 = new javax.swing.JTextField();
+        sudokuBox69 = new javax.swing.JTextField();
+        sudokuBox76 = new javax.swing.JLabel();
+        sudokuBox77 = new javax.swing.JTextField();
+        sudokuBox78 = new javax.swing.JLabel();
+        jPanel15 = new javax.swing.JPanel();
+        sudokuBox61 = new javax.swing.JTextField();
+        sudokuBox62 = new javax.swing.JLabel();
+        sudokuBox63 = new javax.swing.JTextField();
+        sudokuBox70 = new javax.swing.JTextField();
+        sudokuBox71 = new javax.swing.JTextField();
+        sudokuBox72 = new javax.swing.JTextField();
+        sudokuBox79 = new javax.swing.JTextField();
+        sudokuBox80 = new javax.swing.JTextField();
+        sudokuBox81 = new javax.swing.JLabel();
+        sudokuSubmitButton = new javax.swing.JButton();
+        sudokuQuitButton = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        systemTimeText3 = new javax.swing.JTextField();
+        txtScore3 = new javax.swing.JTextField();
+        txtScore4 = new javax.swing.JTextField();
         HighscorePanel = new javax.swing.JPanel();
         HSLabel = new javax.swing.JLabel();
         HSBackButton = new javax.swing.JButton();
@@ -490,98 +690,6 @@ public class PointClickGUI extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         initialEntryTextField = new javax.swing.JTextField();
         newHSButtonOk = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        jTextField14 = new javax.swing.JTextField();
-        jTextField15 = new javax.swing.JTextField();
-        jTextField16 = new javax.swing.JTextField();
-        jTextField17 = new javax.swing.JTextField();
-        jTextField18 = new javax.swing.JTextField();
-        jTextField19 = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
-        jTextField21 = new javax.swing.JTextField();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
-        jTextField11 = new javax.swing.JTextField();
-        jTextField12 = new javax.swing.JTextField();
-        jPanel10 = new javax.swing.JPanel();
-        jTextField22 = new javax.swing.JTextField();
-        jTextField23 = new javax.swing.JTextField();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jTextField26 = new javax.swing.JTextField();
-        jTextField27 = new javax.swing.JTextField();
-        jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        jTextField30 = new javax.swing.JTextField();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel19 = new javax.swing.JLabel();
-        jTextField32 = new javax.swing.JTextField();
-        jLabel37 = new javax.swing.JLabel();
-        jTextField34 = new javax.swing.JTextField();
-        jTextField35 = new javax.swing.JTextField();
-        jTextField36 = new javax.swing.JTextField();
-        jTextField37 = new javax.swing.JTextField();
-        jLabel38 = new javax.swing.JLabel();
-        jLabel39 = new javax.swing.JLabel();
-        jPanel14 = new javax.swing.JPanel();
-        jTextField40 = new javax.swing.JTextField();
-        jLabel40 = new javax.swing.JLabel();
-        jTextField42 = new javax.swing.JTextField();
-        jTextField43 = new javax.swing.JTextField();
-        jLabel41 = new javax.swing.JLabel();
-        jTextField45 = new javax.swing.JTextField();
-        jTextField46 = new javax.swing.JTextField();
-        jLabel42 = new javax.swing.JLabel();
-        jTextField48 = new javax.swing.JTextField();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel43 = new javax.swing.JLabel();
-        jLabel44 = new javax.swing.JLabel();
-        jTextField51 = new javax.swing.JTextField();
-        jTextField52 = new javax.swing.JTextField();
-        jTextField53 = new javax.swing.JTextField();
-        jTextField54 = new javax.swing.JTextField();
-        jLabel46 = new javax.swing.JLabel();
-        jTextField56 = new javax.swing.JTextField();
-        jLabel45 = new javax.swing.JLabel();
-        jPanel13 = new javax.swing.JPanel();
-        jTextField58 = new javax.swing.JTextField();
-        jLabel47 = new javax.swing.JLabel();
-        jLabel48 = new javax.swing.JLabel();
-        jTextField61 = new javax.swing.JTextField();
-        jTextField62 = new javax.swing.JTextField();
-        jLabel49 = new javax.swing.JLabel();
-        jLabel50 = new javax.swing.JLabel();
-        jTextField65 = new javax.swing.JTextField();
-        jTextField66 = new javax.swing.JTextField();
-        jPanel12 = new javax.swing.JPanel();
-        jTextField67 = new javax.swing.JTextField();
-        jTextField68 = new javax.swing.JTextField();
-        jTextField69 = new javax.swing.JTextField();
-        jTextField70 = new javax.swing.JTextField();
-        jTextField71 = new javax.swing.JTextField();
-        jTextField72 = new javax.swing.JTextField();
-        jLabel51 = new javax.swing.JLabel();
-        jTextField74 = new javax.swing.JTextField();
-        jLabel52 = new javax.swing.JLabel();
-        jPanel15 = new javax.swing.JPanel();
-        jTextField76 = new javax.swing.JTextField();
-        jLabel53 = new javax.swing.JLabel();
-        jTextField78 = new javax.swing.JTextField();
-        jTextField79 = new javax.swing.JTextField();
-        jTextField80 = new javax.swing.JTextField();
-        jTextField81 = new javax.swing.JTextField();
-        jTextField82 = new javax.swing.JTextField();
-        jTextField83 = new javax.swing.JTextField();
-        jLabel54 = new javax.swing.JLabel();
 
         randomTest.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         randomTest.setText("Random word test");
@@ -627,7 +735,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         StartPanelLayout.setHorizontalGroup(
             StartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StartPanelLayout.createSequentialGroup()
-                .addContainerGap(593, Short.MAX_VALUE)
+                .addContainerGap(154, Short.MAX_VALUE)
                 .addGroup(StartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -640,7 +748,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(89, 89, 89)
                 .addComponent(jLabel2)
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addContainerGap(116, Short.MAX_VALUE))
         );
 
         DisplayPanel.setPreferredSize(new java.awt.Dimension(600, 400));
@@ -1257,6 +1365,750 @@ public class PointClickGUI extends javax.swing.JFrame {
         PlayPanel2.add(jPanel3);
         jPanel3.setBounds(450, 0, 150, 60);
 
+        PlayPanel3.setPreferredSize(new java.awt.Dimension(600, 400));
+        PlayPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        sudokuPanel.setPreferredSize(new java.awt.Dimension(325, 325));
+        sudokuPanel.setLayout(new java.awt.GridLayout(3, 3));
+
+        jPanel10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel10.setLayout(new java.awt.GridLayout(3, 9));
+
+        sudokuBox1.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox1.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox1.setText("8");
+        sudokuBox1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox1.setOpaque(true);
+        jPanel10.add(sudokuBox1);
+
+        sudokuBox2.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        sudokuBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox2ActionPerformed(evt);
+            }
+        });
+        sudokuBox2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                sudokuBox2KeyTyped(evt);
+            }
+        });
+        jPanel10.add(sudokuBox2);
+
+        sudokuBox3.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox3.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        jPanel10.add(sudokuBox3);
+
+        sudokuBox10.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox10.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox10ActionPerformed(evt);
+            }
+        });
+        jPanel10.add(sudokuBox10);
+
+        sudokuBox11.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox11.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox11.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
+        jPanel10.add(sudokuBox11);
+
+        sudokuBox12.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox12.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox12.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        jPanel10.add(sudokuBox12);
+
+        sudokuBox19.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox19.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox19.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox19ActionPerformed(evt);
+            }
+        });
+        jPanel10.add(sudokuBox19);
+
+        sudokuBox20.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox20.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox20.setText("1");
+        sudokuBox20.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        sudokuBox20.setOpaque(true);
+        jPanel10.add(sudokuBox20);
+
+        sudokuBox21.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox21.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox21.setAlignmentX(0.0F);
+        sudokuBox21.setAlignmentY(0.0F);
+        sudokuBox21.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox21.setMinimumSize(new java.awt.Dimension(26, 26));
+        sudokuBox21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox21ActionPerformed(evt);
+            }
+        });
+        jPanel10.add(sudokuBox21);
+
+        sudokuPanel.add(jPanel10);
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel4.setLayout(new java.awt.GridLayout(3, 3));
+
+        sudokuBox4.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox4.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox4.setText("4");
+        sudokuBox4.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        sudokuBox4.setOpaque(true);
+        jPanel4.add(sudokuBox4);
+
+        sudokuBox5.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox5.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        sudokuBox5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox5ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(sudokuBox5);
+
+        sudokuBox6.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox6.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox6.setText("6");
+        sudokuBox6.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox6.setOpaque(true);
+        jPanel4.add(sudokuBox6);
+
+        sudokuBox13.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox13.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox13.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        jPanel4.add(sudokuBox13);
+
+        sudokuBox14.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox14.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox14.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
+        sudokuBox14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox14ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(sudokuBox14);
+
+        sudokuBox15.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox15.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox15.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        jPanel4.add(sudokuBox15);
+
+        sudokuBox22.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox22.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox22.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox22.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox22ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(sudokuBox22);
+
+        sudokuBox23.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox23.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox23.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        jPanel4.add(sudokuBox23);
+
+        sudokuBox24.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox24.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox24.setAlignmentX(0.0F);
+        sudokuBox24.setAlignmentY(0.0F);
+        sudokuBox24.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox24.setMinimumSize(new java.awt.Dimension(26, 26));
+        sudokuBox24.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox24ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(sudokuBox24);
+
+        sudokuPanel.add(jPanel4);
+
+        jPanel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel7.setLayout(new java.awt.GridLayout(3, 3));
+
+        sudokuBox7.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox7.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox7ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(sudokuBox7);
+
+        sudokuBox8.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox8.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        sudokuBox8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox8ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(sudokuBox8);
+
+        sudokuBox9.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox9.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox9.setText("7");
+        sudokuBox9.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox9.setOpaque(true);
+        jPanel7.add(sudokuBox9);
+
+        sudokuBox16.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox16.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox16.setText("4");
+        sudokuBox16.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox16.setOpaque(true);
+        jPanel7.add(sudokuBox16);
+
+        sudokuBox17.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox17.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox17.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
+        sudokuBox17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox17ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(sudokuBox17);
+
+        sudokuBox18.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox18.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox18.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        jPanel7.add(sudokuBox18);
+
+        sudokuBox25.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox25.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox25.setText("6");
+        sudokuBox25.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox25.setOpaque(true);
+        jPanel7.add(sudokuBox25);
+
+        sudokuBox26.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox26.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox26.setText("5");
+        sudokuBox26.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        sudokuBox26.setOpaque(true);
+        jPanel7.add(sudokuBox26);
+
+        sudokuBox27.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox27.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox27.setAlignmentX(0.0F);
+        sudokuBox27.setAlignmentY(0.0F);
+        sudokuBox27.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox27.setMinimumSize(new java.awt.Dimension(26, 26));
+        sudokuBox27.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox27ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(sudokuBox27);
+
+        sudokuPanel.add(jPanel7);
+
+        jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel8.setLayout(new java.awt.GridLayout(3, 3));
+
+        sudokuBox28.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox28.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox28.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox28.setText("5");
+        sudokuBox28.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox28.setOpaque(true);
+        jPanel8.add(sudokuBox28);
+
+        sudokuBox29.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox29.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox29.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        sudokuBox29.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox29ActionPerformed(evt);
+            }
+        });
+        jPanel8.add(sudokuBox29);
+
+        sudokuBox30.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox30.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox30.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox30.setText("9");
+        sudokuBox30.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox30.setOpaque(true);
+        jPanel8.add(sudokuBox30);
+
+        sudokuBox37.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox37.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox37.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        jPanel8.add(sudokuBox37);
+
+        sudokuBox38.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox38.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox38.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
+        jPanel8.add(sudokuBox38);
+
+        sudokuBox39.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox39.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox39.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        jPanel8.add(sudokuBox39);
+
+        sudokuBox46.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox46.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox46.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox46.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox46ActionPerformed(evt);
+            }
+        });
+        jPanel8.add(sudokuBox46);
+
+        sudokuBox47.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox47.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox47.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox47.setText("4");
+        sudokuBox47.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        sudokuBox47.setOpaque(true);
+        jPanel8.add(sudokuBox47);
+
+        sudokuBox48.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox48.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox48.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox48.setText("8");
+        sudokuBox48.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox48.setOpaque(true);
+        jPanel8.add(sudokuBox48);
+
+        sudokuPanel.add(jPanel8);
+
+        jPanel14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel14.setLayout(new java.awt.GridLayout(3, 3));
+
+        sudokuBox31.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox31.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox31.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox31.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox31ActionPerformed(evt);
+            }
+        });
+        jPanel14.add(sudokuBox31);
+
+        sudokuBox32.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox32.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox32.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox32.setText("3");
+        sudokuBox32.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        sudokuBox32.setOpaque(true);
+        jPanel14.add(sudokuBox32);
+
+        sudokuBox33.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox33.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox33.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        jPanel14.add(sudokuBox33);
+
+        sudokuBox40.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox40.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox40.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox40.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox40ActionPerformed(evt);
+            }
+        });
+        jPanel14.add(sudokuBox40);
+
+        sudokuBox41.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox41.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox41.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox41.setText("7");
+        sudokuBox41.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
+        sudokuBox41.setOpaque(true);
+        jPanel14.add(sudokuBox41);
+
+        sudokuBox42.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox42.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox42.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        jPanel14.add(sudokuBox42);
+
+        sudokuBox49.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox49.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox49.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox49.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox49ActionPerformed(evt);
+            }
+        });
+        jPanel14.add(sudokuBox49);
+
+        sudokuBox50.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox50.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox50.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox50.setText("2");
+        sudokuBox50.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        sudokuBox50.setOpaque(true);
+        jPanel14.add(sudokuBox50);
+
+        sudokuBox51.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox51.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox51.setAlignmentX(0.0F);
+        sudokuBox51.setAlignmentY(0.0F);
+        sudokuBox51.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox51.setMinimumSize(new java.awt.Dimension(26, 26));
+        sudokuBox51.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox51ActionPerformed(evt);
+            }
+        });
+        jPanel14.add(sudokuBox51);
+
+        sudokuPanel.add(jPanel14);
+
+        jPanel11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel11.setLayout(new java.awt.GridLayout(3, 3));
+
+        sudokuBox34.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox34.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox34.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox34.setText("7");
+        sudokuBox34.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox34.setOpaque(true);
+        jPanel11.add(sudokuBox34);
+
+        sudokuBox35.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox35.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox35.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox35.setText("8");
+        sudokuBox35.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        sudokuBox35.setOpaque(true);
+        jPanel11.add(sudokuBox35);
+
+        sudokuBox36.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox36.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox36.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        jPanel11.add(sudokuBox36);
+
+        sudokuBox43.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox43.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox43.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        jPanel11.add(sudokuBox43);
+
+        sudokuBox44.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox44.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox44.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
+        jPanel11.add(sudokuBox44);
+
+        sudokuBox45.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox45.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox45.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        jPanel11.add(sudokuBox45);
+
+        sudokuBox52.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox52.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox52.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox52.setText("1");
+        sudokuBox52.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox52.setOpaque(true);
+        jPanel11.add(sudokuBox52);
+
+        sudokuBox53.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox53.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox53.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        jPanel11.add(sudokuBox53);
+
+        sudokuBox54.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox54.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox54.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox54.setText("3");
+        sudokuBox54.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox54.setOpaque(true);
+        jPanel11.add(sudokuBox54);
+
+        sudokuPanel.add(jPanel11);
+
+        jPanel13.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel13.setLayout(new java.awt.GridLayout(3, 3));
+
+        sudokuBox55.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox55.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox55.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox55.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox55ActionPerformed(evt);
+            }
+        });
+        jPanel13.add(sudokuBox55);
+
+        sudokuBox56.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox56.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox56.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox56.setText("5");
+        sudokuBox56.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        sudokuBox56.setOpaque(true);
+        jPanel13.add(sudokuBox56);
+
+        sudokuBox57.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox57.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox57.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox57.setText("2");
+        sudokuBox57.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox57.setOpaque(true);
+        jPanel13.add(sudokuBox57);
+
+        sudokuBox64.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox64.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox64.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        jPanel13.add(sudokuBox64);
+
+        sudokuBox65.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox65.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox65.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
+        jPanel13.add(sudokuBox65);
+
+        sudokuBox66.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox66.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox66.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox66.setText("1");
+        sudokuBox66.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox66.setOpaque(true);
+        jPanel13.add(sudokuBox66);
+
+        sudokuBox73.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox73.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox73.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox73.setText("3");
+        sudokuBox73.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox73.setOpaque(true);
+        jPanel13.add(sudokuBox73);
+
+        sudokuBox74.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox74.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox74.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        jPanel13.add(sudokuBox74);
+
+        sudokuBox75.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox75.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox75.setAlignmentX(0.0F);
+        sudokuBox75.setAlignmentY(0.0F);
+        sudokuBox75.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox75.setMinimumSize(new java.awt.Dimension(26, 26));
+        sudokuBox75.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox75ActionPerformed(evt);
+            }
+        });
+        jPanel13.add(sudokuBox75);
+
+        sudokuPanel.add(jPanel13);
+
+        jPanel12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel12.setLayout(new java.awt.GridLayout(3, 3));
+
+        sudokuBox58.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox58.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox58.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox58.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox58ActionPerformed(evt);
+            }
+        });
+        jPanel12.add(sudokuBox58);
+
+        sudokuBox59.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox59.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox59.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        sudokuBox59.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox59ActionPerformed(evt);
+            }
+        });
+        jPanel12.add(sudokuBox59);
+
+        sudokuBox60.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox60.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox60.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        jPanel12.add(sudokuBox60);
+
+        sudokuBox67.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox67.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox67.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        jPanel12.add(sudokuBox67);
+
+        sudokuBox68.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox68.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox68.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
+        jPanel12.add(sudokuBox68);
+
+        sudokuBox69.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox69.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox69.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        jPanel12.add(sudokuBox69);
+
+        sudokuBox76.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox76.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox76.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox76.setText("9");
+        sudokuBox76.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox76.setOpaque(true);
+        jPanel12.add(sudokuBox76);
+
+        sudokuBox77.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox77.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox77.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        jPanel12.add(sudokuBox77);
+
+        sudokuBox78.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox78.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox78.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox78.setText("2");
+        sudokuBox78.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox78.setOpaque(true);
+        jPanel12.add(sudokuBox78);
+
+        sudokuPanel.add(jPanel12);
+
+        jPanel15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel15.setLayout(new java.awt.GridLayout(3, 3));
+
+        sudokuBox61.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox61.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox61.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox61.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox61ActionPerformed(evt);
+            }
+        });
+        jPanel15.add(sudokuBox61);
+
+        sudokuBox62.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox62.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox62.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox62.setText("9");
+        sudokuBox62.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        sudokuBox62.setOpaque(true);
+        jPanel15.add(sudokuBox62);
+
+        sudokuBox63.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox63.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox63.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        jPanel15.add(sudokuBox63);
+
+        sudokuBox70.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox70.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox70.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        jPanel15.add(sudokuBox70);
+
+        sudokuBox71.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox71.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox71.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
+        jPanel15.add(sudokuBox71);
+
+        sudokuBox72.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox72.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox72.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
+        jPanel15.add(sudokuBox72);
+
+        sudokuBox79.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox79.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox79.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox79.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuBox79ActionPerformed(evt);
+            }
+        });
+        jPanel15.add(sudokuBox79);
+
+        sudokuBox80.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        sudokuBox80.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox80.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
+        jPanel15.add(sudokuBox80);
+
+        sudokuBox81.setBackground(new java.awt.Color(255, 255, 255));
+        sudokuBox81.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
+        sudokuBox81.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sudokuBox81.setText("5");
+        sudokuBox81.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        sudokuBox81.setOpaque(true);
+        jPanel15.add(sudokuBox81);
+
+        sudokuPanel.add(jPanel15);
+
+        PlayPanel3.add(sudokuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 42, -1, -1));
+
+        sudokuSubmitButton.setText("Submit");
+        sudokuSubmitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuSubmitButtonActionPerformed(evt);
+            }
+        });
+        PlayPanel3.add(sudokuSubmitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 356, -1, -1));
+
+        sudokuQuitButton.setText("Quit");
+        sudokuQuitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuQuitButtonActionPerformed(evt);
+            }
+        });
+        PlayPanel3.add(sudokuQuitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(511, 352, -1, -1));
+
+        systemTimeText3.setEditable(false);
+        systemTimeText3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        systemTimeText3.setText("Feb 8, 2021, | 13:28:07");
+        systemTimeText3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                systemTimeText3ActionPerformed(evt);
+            }
+        });
+
+        txtScore3.setEditable(false);
+        txtScore3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtScore3.setText("Sudoku Score: 540");
+        txtScore3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtScore3ActionPerformed(evt);
+            }
+        });
+
+        txtScore4.setEditable(false);
+        txtScore4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtScore4.setText("Total Score: ");
+        txtScore4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtScore4ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(txtScore3, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(systemTimeText3, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(txtScore4)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(systemTimeText3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtScore3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtScore4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        PlayPanel3.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 0, 130, -1));
+
         HSLabel.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
         HSLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         HSLabel.setText("Highscores");
@@ -1503,693 +2355,6 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel6.setPreferredSize(new java.awt.Dimension(350, 350));
-        jPanel6.setLayout(new java.awt.GridLayout(3, 3));
-
-        jPanel4.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel4.setLayout(new java.awt.GridLayout(3, 3));
-
-        jLabel11.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel11.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("8");
-        jLabel11.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jLabel11.setOpaque(true);
-        jPanel4.add(jLabel11);
-
-        jTextField14.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField14.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField14.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jTextField14.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField14ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(jTextField14);
-
-        jTextField15.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField15.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField15.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jPanel4.add(jTextField15);
-
-        jTextField16.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField16.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField16.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jTextField16.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField16ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(jTextField16);
-
-        jTextField17.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField17.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField17.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
-        jPanel4.add(jTextField17);
-
-        jTextField18.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField18.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField18.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jPanel4.add(jTextField18);
-
-        jTextField19.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField19.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField19.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jTextField19.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField19ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(jTextField19);
-
-        jLabel12.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel12.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("1");
-        jLabel12.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jLabel12.setOpaque(true);
-        jPanel4.add(jLabel12);
-
-        jTextField21.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField21.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField21.setAlignmentX(0.0F);
-        jTextField21.setAlignmentY(0.0F);
-        jTextField21.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jTextField21.setMinimumSize(new java.awt.Dimension(26, 26));
-        jTextField21.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField21ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(jTextField21);
-
-        jPanel6.add(jPanel4);
-
-        jPanel7.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel7.setLayout(new java.awt.GridLayout(3, 3));
-
-        jLabel13.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel13.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setText("4");
-        jLabel13.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jLabel13.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jLabel13.setOpaque(true);
-        jPanel7.add(jLabel13);
-
-        jTextField5.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField5.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
-            }
-        });
-        jPanel7.add(jTextField5);
-
-        jLabel14.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel14.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setText("6");
-        jLabel14.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jLabel14.setOpaque(true);
-        jPanel7.add(jLabel14);
-
-        jTextField10.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField10.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jPanel7.add(jTextField10);
-
-        jTextField6.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField6.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
-            }
-        });
-        jPanel7.add(jTextField6);
-
-        jTextField8.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField8.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jPanel7.add(jTextField8);
-
-        jTextField9.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField9.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jTextField9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField9ActionPerformed(evt);
-            }
-        });
-        jPanel7.add(jTextField9);
-
-        jTextField11.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField11.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField11.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jPanel7.add(jTextField11);
-
-        jTextField12.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField12.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField12.setAlignmentX(0.0F);
-        jTextField12.setAlignmentY(0.0F);
-        jTextField12.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jTextField12.setMinimumSize(new java.awt.Dimension(26, 26));
-        jTextField12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField12ActionPerformed(evt);
-            }
-        });
-        jPanel7.add(jTextField12);
-
-        jPanel6.add(jPanel7);
-
-        jPanel10.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel10.setLayout(new java.awt.GridLayout(3, 3));
-
-        jTextField22.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField22.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField22.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jTextField22.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField22ActionPerformed(evt);
-            }
-        });
-        jPanel10.add(jTextField22);
-
-        jTextField23.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField23.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField23.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jTextField23.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField23ActionPerformed(evt);
-            }
-        });
-        jPanel10.add(jTextField23);
-
-        jLabel15.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel15.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel15.setText("7");
-        jLabel15.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jLabel15.setOpaque(true);
-        jPanel10.add(jLabel15);
-
-        jLabel16.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel16.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel16.setText("4");
-        jLabel16.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jLabel16.setOpaque(true);
-        jPanel10.add(jLabel16);
-
-        jTextField26.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField26.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField26.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
-        jTextField26.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField26ActionPerformed(evt);
-            }
-        });
-        jPanel10.add(jTextField26);
-
-        jTextField27.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField27.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField27.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jPanel10.add(jTextField27);
-
-        jLabel17.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel17.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel17.setText("6");
-        jLabel17.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jLabel17.setOpaque(true);
-        jPanel10.add(jLabel17);
-
-        jLabel18.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel18.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel18.setText("5");
-        jLabel18.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jLabel18.setOpaque(true);
-        jPanel10.add(jLabel18);
-
-        jTextField30.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField30.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField30.setAlignmentX(0.0F);
-        jTextField30.setAlignmentY(0.0F);
-        jTextField30.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jTextField30.setMinimumSize(new java.awt.Dimension(26, 26));
-        jTextField30.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField30ActionPerformed(evt);
-            }
-        });
-        jPanel10.add(jTextField30);
-
-        jPanel6.add(jPanel10);
-
-        jPanel8.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel8.setLayout(new java.awt.GridLayout(3, 3));
-
-        jLabel19.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel19.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel19.setText("5");
-        jLabel19.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jLabel19.setOpaque(true);
-        jPanel8.add(jLabel19);
-
-        jTextField32.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField32.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField32.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jTextField32.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField32ActionPerformed(evt);
-            }
-        });
-        jPanel8.add(jTextField32);
-
-        jLabel37.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel37.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel37.setText("9");
-        jLabel37.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jLabel37.setOpaque(true);
-        jPanel8.add(jLabel37);
-
-        jTextField34.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField34.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField34.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jPanel8.add(jTextField34);
-
-        jTextField35.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField35.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField35.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
-        jPanel8.add(jTextField35);
-
-        jTextField36.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField36.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField36.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jPanel8.add(jTextField36);
-
-        jTextField37.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField37.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField37.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jTextField37.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField37ActionPerformed(evt);
-            }
-        });
-        jPanel8.add(jTextField37);
-
-        jLabel38.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel38.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel38.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel38.setText("4");
-        jLabel38.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jLabel38.setOpaque(true);
-        jPanel8.add(jLabel38);
-
-        jLabel39.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel39.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel39.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel39.setText("8");
-        jLabel39.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jLabel39.setOpaque(true);
-        jPanel8.add(jLabel39);
-
-        jPanel6.add(jPanel8);
-
-        jPanel14.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel14.setLayout(new java.awt.GridLayout(3, 3));
-
-        jTextField40.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField40.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField40.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jTextField40.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField40ActionPerformed(evt);
-            }
-        });
-        jPanel14.add(jTextField40);
-
-        jLabel40.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel40.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel40.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel40.setText("3");
-        jLabel40.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jLabel40.setOpaque(true);
-        jPanel14.add(jLabel40);
-
-        jTextField42.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField42.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField42.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jPanel14.add(jTextField42);
-
-        jTextField43.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField43.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField43.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jTextField43.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField43ActionPerformed(evt);
-            }
-        });
-        jPanel14.add(jTextField43);
-
-        jLabel41.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel41.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel41.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel41.setText("7");
-        jLabel41.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
-        jLabel41.setOpaque(true);
-        jPanel14.add(jLabel41);
-
-        jTextField45.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField45.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField45.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jPanel14.add(jTextField45);
-
-        jTextField46.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField46.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField46.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jTextField46.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField46ActionPerformed(evt);
-            }
-        });
-        jPanel14.add(jTextField46);
-
-        jLabel42.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel42.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel42.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel42.setText("2");
-        jLabel42.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jLabel42.setOpaque(true);
-        jPanel14.add(jLabel42);
-
-        jTextField48.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField48.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField48.setAlignmentX(0.0F);
-        jTextField48.setAlignmentY(0.0F);
-        jTextField48.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jTextField48.setMinimumSize(new java.awt.Dimension(26, 26));
-        jTextField48.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField48ActionPerformed(evt);
-            }
-        });
-        jPanel14.add(jTextField48);
-
-        jPanel6.add(jPanel14);
-
-        jPanel11.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel11.setLayout(new java.awt.GridLayout(3, 3));
-
-        jLabel43.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel43.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel43.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel43.setText("7");
-        jLabel43.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jLabel43.setOpaque(true);
-        jPanel11.add(jLabel43);
-
-        jLabel44.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel44.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel44.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel44.setText("8");
-        jLabel44.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jLabel44.setOpaque(true);
-        jPanel11.add(jLabel44);
-
-        jTextField51.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField51.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField51.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jPanel11.add(jTextField51);
-
-        jTextField52.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField52.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField52.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jPanel11.add(jTextField52);
-
-        jTextField53.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField53.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField53.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
-        jPanel11.add(jTextField53);
-
-        jTextField54.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField54.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField54.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jPanel11.add(jTextField54);
-
-        jLabel46.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel46.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel46.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel46.setText("1");
-        jLabel46.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jLabel46.setOpaque(true);
-        jPanel11.add(jLabel46);
-
-        jTextField56.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField56.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField56.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jPanel11.add(jTextField56);
-
-        jLabel45.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel45.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel45.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel45.setText("3");
-        jLabel45.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jLabel45.setOpaque(true);
-        jPanel11.add(jLabel45);
-
-        jPanel6.add(jPanel11);
-
-        jPanel13.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel13.setLayout(new java.awt.GridLayout(3, 3));
-
-        jTextField58.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField58.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField58.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jTextField58.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField58ActionPerformed(evt);
-            }
-        });
-        jPanel13.add(jTextField58);
-
-        jLabel47.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel47.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel47.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel47.setText("5");
-        jLabel47.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jLabel47.setOpaque(true);
-        jPanel13.add(jLabel47);
-
-        jLabel48.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel48.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel48.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel48.setText("2");
-        jLabel48.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jLabel48.setOpaque(true);
-        jPanel13.add(jLabel48);
-
-        jTextField61.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField61.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField61.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jPanel13.add(jTextField61);
-
-        jTextField62.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField62.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField62.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
-        jPanel13.add(jTextField62);
-
-        jLabel49.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel49.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel49.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel49.setText("1");
-        jLabel49.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jLabel49.setOpaque(true);
-        jPanel13.add(jLabel49);
-
-        jLabel50.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel50.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel50.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel50.setText("3");
-        jLabel50.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jLabel50.setOpaque(true);
-        jPanel13.add(jLabel50);
-
-        jTextField65.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField65.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField65.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jPanel13.add(jTextField65);
-
-        jTextField66.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField66.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField66.setAlignmentX(0.0F);
-        jTextField66.setAlignmentY(0.0F);
-        jTextField66.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jTextField66.setMinimumSize(new java.awt.Dimension(26, 26));
-        jTextField66.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField66ActionPerformed(evt);
-            }
-        });
-        jPanel13.add(jTextField66);
-
-        jPanel6.add(jPanel13);
-
-        jPanel12.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel12.setLayout(new java.awt.GridLayout(3, 3));
-
-        jTextField67.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField67.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField67.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jTextField67.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField67ActionPerformed(evt);
-            }
-        });
-        jPanel12.add(jTextField67);
-
-        jTextField68.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField68.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField68.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jTextField68.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField68ActionPerformed(evt);
-            }
-        });
-        jPanel12.add(jTextField68);
-
-        jTextField69.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField69.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField69.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jPanel12.add(jTextField69);
-
-        jTextField70.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField70.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField70.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jPanel12.add(jTextField70);
-
-        jTextField71.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField71.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField71.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
-        jPanel12.add(jTextField71);
-
-        jTextField72.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField72.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField72.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jPanel12.add(jTextField72);
-
-        jLabel51.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel51.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel51.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel51.setText("9");
-        jLabel51.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jLabel51.setOpaque(true);
-        jPanel12.add(jLabel51);
-
-        jTextField74.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField74.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField74.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jPanel12.add(jTextField74);
-
-        jLabel52.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel52.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel52.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel52.setText("2");
-        jLabel52.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jLabel52.setOpaque(true);
-        jPanel12.add(jLabel52);
-
-        jPanel6.add(jPanel12);
-
-        jPanel15.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel15.setLayout(new java.awt.GridLayout(3, 3));
-
-        jTextField76.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField76.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField76.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jTextField76.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField76ActionPerformed(evt);
-            }
-        });
-        jPanel15.add(jTextField76);
-
-        jLabel53.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel53.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel53.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel53.setText("9");
-        jLabel53.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jLabel53.setOpaque(true);
-        jPanel15.add(jLabel53);
-
-        jTextField78.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField78.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField78.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jPanel15.add(jTextField78);
-
-        jTextField79.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField79.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField79.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jPanel15.add(jTextField79);
-
-        jTextField80.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField80.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField80.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
-        jPanel15.add(jTextField80);
-
-        jTextField81.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField81.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField81.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
-        jPanel15.add(jTextField81);
-
-        jTextField82.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField82.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField82.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jTextField82.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField82ActionPerformed(evt);
-            }
-        });
-        jPanel15.add(jTextField82);
-
-        jTextField83.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jTextField83.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField83.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
-        jPanel15.add(jTextField83);
-
-        jLabel54.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel54.setFont(new java.awt.Font("Bodoni 72", 1, 28)); // NOI18N
-        jLabel54.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel54.setText("5");
-        jLabel54.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jLabel54.setOpaque(true);
-        jPanel15.add(jLabel54);
-
-        jPanel6.add(jPanel15);
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(125, 125, 125)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(125, Short.MAX_VALUE))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(42, Short.MAX_VALUE)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -2233,7 +2398,7 @@ public class PointClickGUI extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PlayPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
@@ -2277,7 +2442,7 @@ public class PointClickGUI extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PlayPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
@@ -2325,6 +2490,9 @@ public class PointClickGUI extends javax.swing.JFrame {
         randomizeText();
         changeButtonLocation();
         
+        //---------SUDOKU CODE-----------------//
+        sudokuScore = 540;
+        txtScore3.setText(String.format("Sudoku Score: %d", sudokuScore));
         
         
     }//GEN-LAST:event_PlayButtonActionPerformed
@@ -2704,101 +2872,125 @@ public class PointClickGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_initialEntryTextFieldKeyReleased
 
-    private void jTextField12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField12ActionPerformed
+    private void sudokuBox24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox24ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField12ActionPerformed
+    }//GEN-LAST:event_sudokuBox24ActionPerformed
 
-    private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
+    private void sudokuBox22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox22ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField9ActionPerformed
+    }//GEN-LAST:event_sudokuBox22ActionPerformed
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void sudokuBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox5ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_sudokuBox5ActionPerformed
 
-    private void jTextField14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField14ActionPerformed
+    private void sudokuBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField14ActionPerformed
+    }//GEN-LAST:event_sudokuBox2ActionPerformed
 
-    private void jTextField19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField19ActionPerformed
+    private void sudokuBox19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox19ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField19ActionPerformed
+    }//GEN-LAST:event_sudokuBox19ActionPerformed
 
-    private void jTextField21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField21ActionPerformed
+    private void sudokuBox21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox21ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField21ActionPerformed
+    }//GEN-LAST:event_sudokuBox21ActionPerformed
 
-    private void jTextField22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField22ActionPerformed
+    private void sudokuBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox7ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField22ActionPerformed
+    }//GEN-LAST:event_sudokuBox7ActionPerformed
 
-    private void jTextField23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField23ActionPerformed
+    private void sudokuBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox8ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField23ActionPerformed
+    }//GEN-LAST:event_sudokuBox8ActionPerformed
 
-    private void jTextField30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField30ActionPerformed
+    private void sudokuBox27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox27ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField30ActionPerformed
+    }//GEN-LAST:event_sudokuBox27ActionPerformed
 
-    private void jTextField32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField32ActionPerformed
+    private void sudokuBox29ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox29ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField32ActionPerformed
+    }//GEN-LAST:event_sudokuBox29ActionPerformed
 
-    private void jTextField37ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField37ActionPerformed
+    private void sudokuBox46ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox46ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField37ActionPerformed
+    }//GEN-LAST:event_sudokuBox46ActionPerformed
 
-    private void jTextField40ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField40ActionPerformed
+    private void sudokuBox31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox31ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField40ActionPerformed
+    }//GEN-LAST:event_sudokuBox31ActionPerformed
 
-    private void jTextField46ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField46ActionPerformed
+    private void sudokuBox49ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox49ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField46ActionPerformed
+    }//GEN-LAST:event_sudokuBox49ActionPerformed
 
-    private void jTextField48ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField48ActionPerformed
+    private void sudokuBox51ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox51ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField48ActionPerformed
+    }//GEN-LAST:event_sudokuBox51ActionPerformed
 
-    private void jTextField58ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField58ActionPerformed
+    private void sudokuBox55ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox55ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField58ActionPerformed
+    }//GEN-LAST:event_sudokuBox55ActionPerformed
 
-    private void jTextField66ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField66ActionPerformed
+    private void sudokuBox75ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox75ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField66ActionPerformed
+    }//GEN-LAST:event_sudokuBox75ActionPerformed
 
-    private void jTextField67ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField67ActionPerformed
+    private void sudokuBox58ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox58ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField67ActionPerformed
+    }//GEN-LAST:event_sudokuBox58ActionPerformed
 
-    private void jTextField68ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField68ActionPerformed
+    private void sudokuBox59ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox59ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField68ActionPerformed
+    }//GEN-LAST:event_sudokuBox59ActionPerformed
 
-    private void jTextField76ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField76ActionPerformed
+    private void sudokuBox61ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox61ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField76ActionPerformed
+    }//GEN-LAST:event_sudokuBox61ActionPerformed
 
-    private void jTextField82ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField82ActionPerformed
+    private void sudokuBox79ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox79ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField82ActionPerformed
+    }//GEN-LAST:event_sudokuBox79ActionPerformed
 
-    private void jTextField16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField16ActionPerformed
+    private void sudokuBox10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox10ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField16ActionPerformed
+    }//GEN-LAST:event_sudokuBox10ActionPerformed
 
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+    private void sudokuBox14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox14ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
+    }//GEN-LAST:event_sudokuBox14ActionPerformed
 
-    private void jTextField26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField26ActionPerformed
+    private void sudokuBox17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox17ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField26ActionPerformed
+    }//GEN-LAST:event_sudokuBox17ActionPerformed
 
-    private void jTextField43ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField43ActionPerformed
+    private void sudokuBox40ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuBox40ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField43ActionPerformed
+    }//GEN-LAST:event_sudokuBox40ActionPerformed
+
+    private void systemTimeText3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_systemTimeText3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_systemTimeText3ActionPerformed
+
+    private void txtScore3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtScore3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtScore3ActionPerformed
+
+    private void txtScore4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtScore4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtScore4ActionPerformed
+
+    private void sudokuSubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuSubmitButtonActionPerformed
+        sudokuSubmit();
+    }//GEN-LAST:event_sudokuSubmitButtonActionPerformed
+
+    private void sudokuQuitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuQuitButtonActionPerformed
+        sudokuQuit();
+    }//GEN-LAST:event_sudokuQuitButtonActionPerformed
+
+    private void sudokuBox2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_sudokuBox2KeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sudokuBox2KeyTyped
 
     
     
@@ -2872,6 +3064,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JButton PlayButton;
     private javax.swing.JPanel PlayPanel;
     private javax.swing.JPanel PlayPanel2;
+    private javax.swing.JPanel PlayPanel3;
     private javax.swing.JButton QButton;
     private javax.swing.JButton RButton;
     private javax.swing.JButton SButton;
@@ -2896,37 +3089,10 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel37;
-    private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel40;
-    private javax.swing.JLabel jLabel41;
-    private javax.swing.JLabel jLabel42;
-    private javax.swing.JLabel jLabel43;
-    private javax.swing.JLabel jLabel44;
-    private javax.swing.JLabel jLabel45;
-    private javax.swing.JLabel jLabel46;
-    private javax.swing.JLabel jLabel47;
-    private javax.swing.JLabel jLabel48;
-    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel50;
-    private javax.swing.JLabel jLabel51;
-    private javax.swing.JLabel jLabel52;
-    private javax.swing.JLabel jLabel53;
-    private javax.swing.JLabel jLabel54;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -2942,7 +3108,6 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
@@ -2950,62 +3115,8 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField14;
-    private javax.swing.JTextField jTextField15;
-    private javax.swing.JTextField jTextField16;
-    private javax.swing.JTextField jTextField17;
-    private javax.swing.JTextField jTextField18;
-    private javax.swing.JTextField jTextField19;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField21;
-    private javax.swing.JTextField jTextField22;
-    private javax.swing.JTextField jTextField23;
-    private javax.swing.JTextField jTextField26;
-    private javax.swing.JTextField jTextField27;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField30;
-    private javax.swing.JTextField jTextField32;
-    private javax.swing.JTextField jTextField34;
-    private javax.swing.JTextField jTextField35;
-    private javax.swing.JTextField jTextField36;
-    private javax.swing.JTextField jTextField37;
-    private javax.swing.JTextField jTextField40;
-    private javax.swing.JTextField jTextField42;
-    private javax.swing.JTextField jTextField43;
-    private javax.swing.JTextField jTextField45;
-    private javax.swing.JTextField jTextField46;
-    private javax.swing.JTextField jTextField48;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField51;
-    private javax.swing.JTextField jTextField52;
-    private javax.swing.JTextField jTextField53;
-    private javax.swing.JTextField jTextField54;
-    private javax.swing.JTextField jTextField56;
-    private javax.swing.JTextField jTextField58;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField61;
-    private javax.swing.JTextField jTextField62;
-    private javax.swing.JTextField jTextField65;
-    private javax.swing.JTextField jTextField66;
-    private javax.swing.JTextField jTextField67;
-    private javax.swing.JTextField jTextField68;
-    private javax.swing.JTextField jTextField69;
-    private javax.swing.JTextField jTextField70;
-    private javax.swing.JTextField jTextField71;
-    private javax.swing.JTextField jTextField72;
-    private javax.swing.JTextField jTextField74;
-    private javax.swing.JTextField jTextField76;
-    private javax.swing.JTextField jTextField78;
-    private javax.swing.JTextField jTextField79;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField80;
-    private javax.swing.JTextField jTextField81;
-    private javax.swing.JTextField jTextField82;
-    private javax.swing.JTextField jTextField83;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JLabel leftArmImage;
     private javax.swing.JLabel leftLegImage;
     private javax.swing.JButton newHSButtonOk;
@@ -3017,11 +3128,98 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JLabel rightArmImage;
     private javax.swing.JLabel rightLegImage;
     private javax.swing.JButton skipButton;
+    private javax.swing.JLabel sudokuBox1;
+    private javax.swing.JTextField sudokuBox10;
+    private javax.swing.JTextField sudokuBox11;
+    private javax.swing.JTextField sudokuBox12;
+    private javax.swing.JTextField sudokuBox13;
+    private javax.swing.JTextField sudokuBox14;
+    private javax.swing.JTextField sudokuBox15;
+    private javax.swing.JLabel sudokuBox16;
+    private javax.swing.JTextField sudokuBox17;
+    private javax.swing.JTextField sudokuBox18;
+    private javax.swing.JTextField sudokuBox19;
+    private javax.swing.JTextField sudokuBox2;
+    private javax.swing.JLabel sudokuBox20;
+    private javax.swing.JTextField sudokuBox21;
+    private javax.swing.JTextField sudokuBox22;
+    private javax.swing.JTextField sudokuBox23;
+    private javax.swing.JTextField sudokuBox24;
+    private javax.swing.JLabel sudokuBox25;
+    private javax.swing.JLabel sudokuBox26;
+    private javax.swing.JTextField sudokuBox27;
+    private javax.swing.JLabel sudokuBox28;
+    private javax.swing.JTextField sudokuBox29;
+    private javax.swing.JTextField sudokuBox3;
+    private javax.swing.JLabel sudokuBox30;
+    private javax.swing.JTextField sudokuBox31;
+    private javax.swing.JLabel sudokuBox32;
+    private javax.swing.JTextField sudokuBox33;
+    private javax.swing.JLabel sudokuBox34;
+    private javax.swing.JLabel sudokuBox35;
+    private javax.swing.JTextField sudokuBox36;
+    private javax.swing.JTextField sudokuBox37;
+    private javax.swing.JTextField sudokuBox38;
+    private javax.swing.JTextField sudokuBox39;
+    private javax.swing.JLabel sudokuBox4;
+    private javax.swing.JTextField sudokuBox40;
+    private javax.swing.JLabel sudokuBox41;
+    private javax.swing.JTextField sudokuBox42;
+    private javax.swing.JTextField sudokuBox43;
+    private javax.swing.JTextField sudokuBox44;
+    private javax.swing.JTextField sudokuBox45;
+    private javax.swing.JTextField sudokuBox46;
+    private javax.swing.JLabel sudokuBox47;
+    private javax.swing.JLabel sudokuBox48;
+    private javax.swing.JTextField sudokuBox49;
+    private javax.swing.JTextField sudokuBox5;
+    private javax.swing.JLabel sudokuBox50;
+    private javax.swing.JTextField sudokuBox51;
+    private javax.swing.JLabel sudokuBox52;
+    private javax.swing.JTextField sudokuBox53;
+    private javax.swing.JLabel sudokuBox54;
+    private javax.swing.JTextField sudokuBox55;
+    private javax.swing.JLabel sudokuBox56;
+    private javax.swing.JLabel sudokuBox57;
+    private javax.swing.JTextField sudokuBox58;
+    private javax.swing.JTextField sudokuBox59;
+    private javax.swing.JLabel sudokuBox6;
+    private javax.swing.JTextField sudokuBox60;
+    private javax.swing.JTextField sudokuBox61;
+    private javax.swing.JLabel sudokuBox62;
+    private javax.swing.JTextField sudokuBox63;
+    private javax.swing.JTextField sudokuBox64;
+    private javax.swing.JTextField sudokuBox65;
+    private javax.swing.JLabel sudokuBox66;
+    private javax.swing.JTextField sudokuBox67;
+    private javax.swing.JTextField sudokuBox68;
+    private javax.swing.JTextField sudokuBox69;
+    private javax.swing.JTextField sudokuBox7;
+    private javax.swing.JTextField sudokuBox70;
+    private javax.swing.JTextField sudokuBox71;
+    private javax.swing.JTextField sudokuBox72;
+    private javax.swing.JLabel sudokuBox73;
+    private javax.swing.JTextField sudokuBox74;
+    private javax.swing.JTextField sudokuBox75;
+    private javax.swing.JLabel sudokuBox76;
+    private javax.swing.JTextField sudokuBox77;
+    private javax.swing.JLabel sudokuBox78;
+    private javax.swing.JTextField sudokuBox79;
+    private javax.swing.JTextField sudokuBox8;
+    private javax.swing.JTextField sudokuBox80;
+    private javax.swing.JLabel sudokuBox81;
+    private javax.swing.JLabel sudokuBox9;
+    private javax.swing.JPanel sudokuPanel;
+    private javax.swing.JButton sudokuQuitButton;
+    private javax.swing.JButton sudokuSubmitButton;
     private javax.swing.JTextField systemTimeText;
     private javax.swing.JTextField systemTimeText2;
+    private javax.swing.JTextField systemTimeText3;
     private javax.swing.JTextField txtEndScore;
     private javax.swing.JTextField txtScore;
     private javax.swing.JTextField txtScore2;
+    private javax.swing.JTextField txtScore3;
+    private javax.swing.JTextField txtScore4;
     private javax.swing.JButton yellowButton;
     // End of variables declaration//GEN-END:variables
 }
