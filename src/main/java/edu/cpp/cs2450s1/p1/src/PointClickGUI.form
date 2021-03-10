@@ -3277,6 +3277,7 @@
                       <Component id="jLabel14" alignment="2" min="-2" pref="246" max="-2" attributes="0"/>
                       <Component id="jLabel15" alignment="2" min="-2" pref="249" max="-2" attributes="0"/>
                       <Component id="jLabel16" alignment="2" min="-2" pref="292" max="-2" attributes="0"/>
+                      <Component id="jLabel17" alignment="2" min="-2" pref="292" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -3288,8 +3289,10 @@
                   <EmptySpace pref="63" max="32767" attributes="0"/>
                   <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jLabel16" min="-2" pref="75" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jLabel16" min="-2" pref="32" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jLabel17" min="-2" pref="32" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                   <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
@@ -3342,7 +3345,7 @@
         <Component class="javax.swing.JButton" name="F1BackButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Back"/>
-            <Property name="toolTipText" type="java.lang.String" value="Click to go back to display page"/>
+            <Property name="toolTipText" type="java.lang.String" value="Click to go back to the current panel"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="F1BackButtonActionPerformed"/>
@@ -3355,6 +3358,15 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Project Name: Point and Click Game v.1.2"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel17">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="sansserif" size="14" style="1"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="text" type="java.lang.String" value="Term: Spring 2021"/>
           </Properties>
         </Component>
       </SubComponents>

@@ -37,6 +37,8 @@ public class PointClickGUI extends javax.swing.JFrame {
     static int round = 1;
     static int randomColorText, randomColor, chosenColor;
     final URL SAVES_PATH = getClass().getResource("/saves/highscores.txt");
+    JPanel currentPanel;
+    JPanel[] allPanels;
     
 
     /**
@@ -45,6 +47,8 @@ public class PointClickGUI extends javax.swing.JFrame {
     public PointClickGUI() {
         
         initComponents();
+        
+        currentPanel = StartPanel;
 
         DisplayPanel.setVisible(false);
         PlayPanel.setVisible(false);
@@ -57,6 +61,9 @@ public class PointClickGUI extends javax.swing.JFrame {
         NewHSPanel.setVisible(false);
         F1Panel.setVisible(false);
         
+        allPanels = new JPanel[]{DisplayPanel, PlayPanel, PlayPanel2, 
+                                    PlayPanel3, HighscorePanel, CreditsPanel, 
+                                    EndPanel, NewHSPanel};
         
         
         //Set System Timer
@@ -72,12 +79,38 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
         dateTimer.start();
         
+        /* F1 key and Esc key functionality */
+        //Create action for F1 key press
+        Action f1MenuAction = new AbstractAction(){
+            public void actionPerformed(ActionEvent e){
+                currentPanel.setVisible(false);
+                F1Panel.setVisible(true);
+            }
+        };
+        //Create action for ESCAPE key press
+        Action escAction = new AbstractAction(){
+            public void actionPerformed(ActionEvent e){
+                System.exit(0);
+            }
+        };
+        //Put the proper keystroke-identifier and identifier-action pairs 
+        //in the input and action maps respectively.
+        for(JPanel p : allPanels){
+            p.getInputMap(2).put(KeyStroke.getKeyStroke("F1"), "f1_menu");
+            p.getInputMap(2).put(KeyStroke.getKeyStroke("ESCAPE"), "esc");
+            
+            p.getActionMap().put("f1_menu", f1MenuAction);
+            p.getActionMap().put("esc", escAction);
+        }
+        
+        
         //Set Screen Change Timer
         Timer timer = new Timer(3000, new ActionListener(){           //Switches screen after 3 seconds
             public void actionPerformed(ActionEvent e)
             {
                 StartPanel.setVisible(false);
                 DisplayPanel.setVisible(true);
+                currentPanel = DisplayPanel;
             }
         });
         timer.setRepeats(false);   //Runs once
@@ -107,8 +140,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                 }
             });     
         }
-        
-        
+
     }
 
 
@@ -160,6 +192,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private void endGame(){    //Game: Hangman
         PlayPanel.setVisible(false);
         PlayPanel2.setVisible(true);
+        currentPanel = PlayPanel2;
         
         //Reset buttons
         JButton[] buttons = new JButton[]{AButton,BButton,CButton,DButton,EButton,FButton,GButton,HButton,IButton, 
@@ -176,6 +209,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private void endGame2(){    //Game: Color Buttons
         PlayPanel2.setVisible(false);
         PlayPanel3.setVisible(true);
+        currentPanel = PlayPanel3;
         
         txtScore4.setText(String.format("Total Score: %d", score+sudokuScore));
     }
@@ -184,6 +218,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private void endGame3(){    //Game: Sudoku
         txtEndScore.setText(String.format("%d",score));
         PlayPanel3.setVisible(false);
+        
         
         
         //Reset textfields
@@ -492,8 +527,10 @@ public class PointClickGUI extends javax.swing.JFrame {
             newHSButtonOk.setEnabled(false);
             PlayPanel3.setVisible(false);
             NewHSPanel.setVisible(true);
+            currentPanel = NewHSPanel;
         }else{
             EndPanel.setVisible(true);
+            currentPanel = EndPanel;
         }
     }
 
@@ -701,6 +738,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         F1BackButton = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
 
         randomTest.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         randomTest.setText("Random word test");
@@ -2487,7 +2525,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         jLabel15.setText("Rida Siddiqui, Bronco #014147900");
 
         F1BackButton.setText("Back");
-        F1BackButton.setToolTipText("Click to go back to display page");
+        F1BackButton.setToolTipText("Click to go back to the current panel");
         F1BackButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 F1BackButtonActionPerformed(evt);
@@ -2497,6 +2535,10 @@ public class PointClickGUI extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel16.setText("Project Name: Point and Click Game v.1.2");
+
+        jLabel17.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel17.setText("Term: Spring 2021");
 
         javax.swing.GroupLayout F1PanelLayout = new javax.swing.GroupLayout(F1Panel);
         F1Panel.setLayout(F1PanelLayout);
@@ -2514,7 +2556,8 @@ public class PointClickGUI extends javax.swing.JFrame {
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         F1PanelLayout.setVerticalGroup(
@@ -2523,8 +2566,10 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addContainerGap(63, Short.MAX_VALUE)
                 .addComponent(jLabel11)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel13)
@@ -2647,6 +2692,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         //Change window visibility
         DisplayPanel.setVisible(false);
         PlayPanel.setVisible(true);
+        currentPanel = PlayPanel;
         
         headImage.setVisible(false);
         bodyImage.setVisible(false);
@@ -2692,11 +2738,13 @@ public class PointClickGUI extends javax.swing.JFrame {
     private void CreditsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreditsButtonActionPerformed
         DisplayPanel.setVisible(false);
         CreditsPanel.setVisible(true);
+        currentPanel = CreditsPanel;
     }//GEN-LAST:event_CreditsButtonActionPerformed
 
     private void HSBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HSBackButtonActionPerformed
         HighscorePanel.setVisible(false);
         DisplayPanel.setVisible(true);
+        currentPanel = DisplayPanel;
     }//GEN-LAST:event_HSBackButtonActionPerformed
 
     private void HighscoresButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HighscoresButtonActionPerformed
@@ -2749,11 +2797,13 @@ public class PointClickGUI extends javax.swing.JFrame {
         //Display high scores panel
         DisplayPanel.setVisible(false);
         HighscorePanel.setVisible(true);
+        currentPanel = HighscorePanel;
     }//GEN-LAST:event_HighscoresButtonActionPerformed
 
     private void CreditsBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreditsBackButtonActionPerformed
         CreditsPanel.setVisible(false);
         DisplayPanel.setVisible(true);
+        currentPanel = DisplayPanel;
     }//GEN-LAST:event_CreditsBackButtonActionPerformed
 
     private void systemTimeTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_systemTimeTextActionPerformed
@@ -2778,6 +2828,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private void EndBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EndBtnActionPerformed
         EndPanel.setVisible(false);
         DisplayPanel.setVisible(true);
+        currentPanel = DisplayPanel;
     }//GEN-LAST:event_EndBtnActionPerformed
 
     private void randomTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomTestActionPerformed
@@ -3042,8 +3093,9 @@ public class PointClickGUI extends javax.swing.JFrame {
         //Set panel visibility
         txtEndScore.setText(Integer.toString(score));
         NewHSPanel.setVisible(false);
-        EndPanel.setVisible(true);
         initialEntryTextField.setVisible(false);
+        EndPanel.setVisible(true);
+        currentPanel = EndPanel;
     }//GEN-LAST:event_newHSButtonOkActionPerformed
 
     private void initialEntryTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_initialEntryTextFieldKeyPressed
@@ -3186,10 +3238,10 @@ public class PointClickGUI extends javax.swing.JFrame {
 
     private void F1BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_F1BackButtonActionPerformed
         // TODO add your handling code here:
+        F1Panel.setVisible(false);
+        currentPanel.setVisible(true);
     }//GEN-LAST:event_F1BackButtonActionPerformed
 
-    
-    
     /**
      * @param args the command line arguments
      */
@@ -3222,7 +3274,6 @@ public class PointClickGUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new PointClickGUI().setVisible(true);
-                
             }
         });
 
@@ -3293,6 +3344,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
