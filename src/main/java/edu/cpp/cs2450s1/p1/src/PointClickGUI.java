@@ -33,6 +33,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     static HashMap<String, Integer> userScoreMap = new HashMap<>();
     Integer score, sudokuScore;
     String chosenWord;
+    String sudokuBlankToolTip = "Enter a number";
     static int round = 1;
     static int randomColorText, randomColor, chosenColor;
     final URL SAVES_PATH = getClass().getResource("/saves/highscores.txt");
@@ -182,6 +183,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private void endGame3(){    //Game: Sudoku
         txtEndScore.setText(String.format("%d",score));
         PlayPanel3.setVisible(false);
+        
         
         //Reset textfields
         JTextField[] sudokuBoxes = new JTextField[]{sudokuBox2,sudokuBox3,sudokuBox5,sudokuBox7,sudokuBox8,
@@ -482,7 +484,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         //Sort array
         Arrays.sort(valueArr);
         //Lowest score is in valueArr[0]
-        if(score > valueArr[0] || valueArr.length < 5){
+        if(score > valueArr[0] || valueArr.length < 5)
             newHSScoreLabel.setText(Integer.toString(score));
             initialEntryTextField.setEnabled(true);
             initialEntryTextField.setVisible(true);
@@ -735,7 +737,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         StartPanelLayout.setHorizontalGroup(
             StartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StartPanelLayout.createSequentialGroup()
-                .addContainerGap(154, Short.MAX_VALUE)
+                .addContainerGap(593, Short.MAX_VALUE)
                 .addGroup(StartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -748,12 +750,13 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(89, 89, 89)
                 .addComponent(jLabel2)
-                .addContainerGap(116, Short.MAX_VALUE))
+                .addContainerGap(175, Short.MAX_VALUE))
         );
 
         DisplayPanel.setPreferredSize(new java.awt.Dimension(600, 400));
 
         PlayButton.setText("Play");
+        PlayButton.setToolTipText("Click to start game");
         PlayButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PlayButtonActionPerformed(evt);
@@ -761,6 +764,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         HighscoresButton.setText("Highscores");
+        HighscoresButton.setToolTipText("Click to view highscores");
         HighscoresButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 HighscoresButtonActionPerformed(evt);
@@ -768,6 +772,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         CreditsButton.setText("Credits");
+        CreditsButton.setToolTipText("Click to view credits");
         CreditsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CreditsButtonActionPerformed(evt);
@@ -776,6 +781,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         DisplayIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         DisplayIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon.jpg"))); // NOI18N
+        DisplayIcon.setToolTipText("SwingSharp's logo");
         DisplayIcon.setMaximumSize(new java.awt.Dimension(190, 184));
         DisplayIcon.setMinimumSize(new java.awt.Dimension(190, 184));
         DisplayIcon.setPreferredSize(new java.awt.Dimension(190, 184));
@@ -814,6 +820,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         blankLabel.setText("_ _ _ _ _ _");
 
         BButton.setText("B");
+        BButton.setToolTipText("Choose B as your guess");
         BButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BButtonActionPerformed(evt);
@@ -821,6 +828,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         EButton.setText("E");
+        EButton.setToolTipText("Choose E as your guess");
         EButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EButtonActionPerformed(evt);
@@ -828,6 +836,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         FButton.setText("F");
+        FButton.setToolTipText("Choose F as your guess");
         FButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 FButtonActionPerformed(evt);
@@ -835,6 +844,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         QButton.setText("Q");
+        QButton.setToolTipText("Choose Q as your guess");
         QButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 QButtonActionPerformed(evt);
@@ -842,6 +852,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         ZButton.setText("Z");
+        ZButton.setToolTipText("Choose Z as your guess");
         ZButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ZButtonActionPerformed(evt);
@@ -849,6 +860,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         PButton.setText("P");
+        PButton.setToolTipText("Choose P as your guess");
         PButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PButtonActionPerformed(evt);
@@ -856,6 +868,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         XButton.setText("X");
+        XButton.setToolTipText("Choose X as your guess");
         XButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 XButtonActionPerformed(evt);
@@ -863,6 +876,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         CButton.setText("C");
+        CButton.setToolTipText("Choose C as your guess");
         CButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CButtonActionPerformed(evt);
@@ -870,6 +884,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         LButton.setText("L");
+        LButton.setToolTipText("Choose L as your guess");
         LButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LButtonActionPerformed(evt);
@@ -877,6 +892,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         TButton.setText("T");
+        TButton.setToolTipText("Choose T as your guess");
         TButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TButtonActionPerformed(evt);
@@ -884,6 +900,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         NButton.setText("N");
+        NButton.setToolTipText("Choose N as your guess");
         NButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NButtonActionPerformed(evt);
@@ -891,6 +908,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         KButton.setText("K");
+        KButton.setToolTipText("Choose K as your guess");
         KButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 KButtonActionPerformed(evt);
@@ -898,6 +916,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         AButton.setText("A");
+        AButton.setToolTipText("Choose A as your guess");
         AButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AButtonActionPerformed(evt);
@@ -905,6 +924,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         GButton.setText("G");
+        GButton.setToolTipText("Choose G as your guess");
         GButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 GButtonActionPerformed(evt);
@@ -912,6 +932,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         MButton.setText("M");
+        MButton.setToolTipText("Choose M as your guess");
         MButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MButtonActionPerformed(evt);
@@ -919,6 +940,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         SButton.setText("S");
+        SButton.setToolTipText("Choose S as your guess");
         SButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SButtonActionPerformed(evt);
@@ -926,6 +948,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         VButton.setText("V");
+        VButton.setToolTipText("Choose V as your guess");
         VButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 VButtonActionPerformed(evt);
@@ -933,6 +956,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         JButton.setText("J");
+        JButton.setToolTipText("Choose J as your guess");
         JButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JButtonActionPerformed(evt);
@@ -940,6 +964,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         OButton.setText("O");
+        OButton.setToolTipText("Choose O as your guess");
         OButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OButtonActionPerformed(evt);
@@ -947,6 +972,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         IButton.setText("I");
+        IButton.setToolTipText("Choose I as your guess");
         IButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 IButtonActionPerformed(evt);
@@ -954,6 +980,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         WButton.setText("W");
+        WButton.setToolTipText("Choose W as your guess");
         WButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 WButtonActionPerformed(evt);
@@ -961,6 +988,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         YButton.setText("Y");
+        YButton.setToolTipText("Choose Y as your guess");
         YButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 YButtonActionPerformed(evt);
@@ -968,6 +996,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         HButton.setText("H");
+        HButton.setToolTipText("Choose H as your guess");
         HButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 HButtonActionPerformed(evt);
@@ -975,6 +1004,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         RButton.setText("R");
+        RButton.setToolTipText("Choose R as your guess");
         RButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RButtonActionPerformed(evt);
@@ -982,6 +1012,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         DButton.setText("D");
+        DButton.setToolTipText("Choose D as your guess");
         DButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DButtonActionPerformed(evt);
@@ -989,6 +1020,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         UButton.setText("U");
+        UButton.setToolTipText("Choose U as your guess");
         UButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 UButtonActionPerformed(evt);
@@ -1102,6 +1134,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         skipButton.setText("Skip");
+        skipButton.setToolTipText("Click Skip to move on to next game");
         skipButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 skipButtonActionPerformed(evt);
@@ -1228,6 +1261,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         colorText.setBounds(240, 40, 110, 28);
 
         redButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/red_unhovered.png"))); // NOI18N
+        redButton.setToolTipText("Red Button");
         redButton.setBorderPainted(false);
         redButton.setContentAreaFilled(false);
         redButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1247,6 +1281,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         redButton.setBounds(40, 60, 100, 100);
 
         purpleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/purple_unhovered.png"))); // NOI18N
+        purpleButton.setToolTipText("Purple Button");
         purpleButton.setBorderPainted(false);
         purpleButton.setContentAreaFilled(false);
         purpleButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1304,6 +1339,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         greenButton.setBounds(240, 230, 100, 100);
 
         yellowButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/yellow_unhovered.png"))); // NOI18N
+        yellowButton.setToolTipText("Yellow Button");
         yellowButton.setBorderPainted(false);
         yellowButton.setContentAreaFilled(false);
         yellowButton.setMaximumSize(new java.awt.Dimension(100, 100));
@@ -1384,6 +1420,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox2.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox2.setToolTipText(sudokuBlankToolTip);
         sudokuBox2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
         sudokuBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1399,11 +1436,13 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox3.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox3.setToolTipText(sudokuBlankToolTip);
         sudokuBox3.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
         jPanel10.add(sudokuBox3);
 
         sudokuBox10.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox10.setToolTipText(sudokuBlankToolTip);
         sudokuBox10.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
         sudokuBox10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1414,16 +1453,19 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox11.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox11.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox11.setToolTipText(sudokuBlankToolTip);
         sudokuBox11.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
         jPanel10.add(sudokuBox11);
 
         sudokuBox12.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox12.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox12.setToolTipText(sudokuBlankToolTip);
         sudokuBox12.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
         jPanel10.add(sudokuBox12);
 
         sudokuBox19.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox19.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox19.setToolTipText(sudokuBlankToolTip);
         sudokuBox19.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
         sudokuBox19.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1442,6 +1484,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox21.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox21.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox21.setToolTipText(sudokuBlankToolTip);
         sudokuBox21.setAlignmentX(0.0F);
         sudokuBox21.setAlignmentY(0.0F);
         sudokuBox21.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
@@ -1469,6 +1512,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox5.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox5.setToolTipText(sudokuBlankToolTip);
         sudokuBox5.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
         sudokuBox5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1487,11 +1531,13 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox13.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox13.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox13.setToolTipText(sudokuBlankToolTip);
         sudokuBox13.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
         jPanel4.add(sudokuBox13);
 
         sudokuBox14.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox14.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox14.setToolTipText(sudokuBlankToolTip);
         sudokuBox14.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
         sudokuBox14.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1502,11 +1548,13 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox15.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox15.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox15.setToolTipText(sudokuBlankToolTip);
         sudokuBox15.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
         jPanel4.add(sudokuBox15);
 
         sudokuBox22.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox22.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox22.setToolTipText(sudokuBlankToolTip);
         sudokuBox22.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
         sudokuBox22.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1517,11 +1565,13 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox23.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox23.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox23.setToolTipText(sudokuBlankToolTip);
         sudokuBox23.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
         jPanel4.add(sudokuBox23);
 
         sudokuBox24.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox24.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox24.setToolTipText(sudokuBlankToolTip);
         sudokuBox24.setAlignmentX(0.0F);
         sudokuBox24.setAlignmentY(0.0F);
         sudokuBox24.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
@@ -1540,6 +1590,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox7.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox7.setToolTipText(sudokuBlankToolTip);
         sudokuBox7.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
         sudokuBox7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1550,6 +1601,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox8.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox8.setToolTipText(sudokuBlankToolTip);
         sudokuBox8.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
         sudokuBox8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1576,6 +1628,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox17.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox17.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox17.setToolTipText(sudokuBlankToolTip);
         sudokuBox17.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
         sudokuBox17.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1586,6 +1639,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox18.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox18.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox18.setToolTipText(sudokuBlankToolTip);
         sudokuBox18.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
         jPanel7.add(sudokuBox18);
 
@@ -1607,6 +1661,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox27.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox27.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox27.setToolTipText(sudokuBlankToolTip);
         sudokuBox27.setAlignmentX(0.0F);
         sudokuBox27.setAlignmentY(0.0F);
         sudokuBox27.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
@@ -1633,6 +1688,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox29.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox29.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox29.setToolTipText(sudokuBlankToolTip);
         sudokuBox29.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
         sudokuBox29.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1651,21 +1707,25 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox37.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox37.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox37.setToolTipText(sudokuBlankToolTip);
         sudokuBox37.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
         jPanel8.add(sudokuBox37);
 
         sudokuBox38.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox38.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox38.setToolTipText(sudokuBlankToolTip);
         sudokuBox38.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
         jPanel8.add(sudokuBox38);
 
         sudokuBox39.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox39.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox39.setToolTipText(sudokuBlankToolTip);
         sudokuBox39.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
         jPanel8.add(sudokuBox39);
 
         sudokuBox46.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox46.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox46.setToolTipText(sudokuBlankToolTip);
         sudokuBox46.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
         sudokuBox46.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1697,6 +1757,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox31.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox31.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox31.setToolTipText(sudokuBlankToolTip);
         sudokuBox31.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
         sudokuBox31.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1715,11 +1776,13 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox33.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox33.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox33.setToolTipText(sudokuBlankToolTip);
         sudokuBox33.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
         jPanel14.add(sudokuBox33);
 
         sudokuBox40.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox40.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox40.setToolTipText(sudokuBlankToolTip);
         sudokuBox40.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
         sudokuBox40.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1738,11 +1801,13 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox42.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox42.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox42.setToolTipText(sudokuBlankToolTip);
         sudokuBox42.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
         jPanel14.add(sudokuBox42);
 
         sudokuBox49.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox49.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox49.setToolTipText(sudokuBlankToolTip);
         sudokuBox49.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
         sudokuBox49.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1761,6 +1826,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox51.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox51.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox51.setToolTipText(sudokuBlankToolTip);
         sudokuBox51.setAlignmentX(0.0F);
         sudokuBox51.setAlignmentY(0.0F);
         sudokuBox51.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
@@ -1795,21 +1861,25 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox36.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox36.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox36.setToolTipText(sudokuBlankToolTip);
         sudokuBox36.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
         jPanel11.add(sudokuBox36);
 
         sudokuBox43.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox43.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox43.setToolTipText(sudokuBlankToolTip);
         sudokuBox43.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
         jPanel11.add(sudokuBox43);
 
         sudokuBox44.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox44.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox44.setToolTipText(sudokuBlankToolTip);
         sudokuBox44.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
         jPanel11.add(sudokuBox44);
 
         sudokuBox45.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox45.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox45.setToolTipText(sudokuBlankToolTip);
         sudokuBox45.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
         jPanel11.add(sudokuBox45);
 
@@ -1823,6 +1893,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox53.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox53.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox53.setToolTipText(sudokuBlankToolTip);
         sudokuBox53.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
         jPanel11.add(sudokuBox53);
 
@@ -1841,6 +1912,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox55.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox55.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox55.setToolTipText(sudokuBlankToolTip);
         sudokuBox55.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
         sudokuBox55.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1867,11 +1939,13 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox64.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox64.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox64.setToolTipText(sudokuBlankToolTip);
         sudokuBox64.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
         jPanel13.add(sudokuBox64);
 
         sudokuBox65.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox65.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox65.setToolTipText(sudokuBlankToolTip);
         sudokuBox65.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
         jPanel13.add(sudokuBox65);
 
@@ -1893,11 +1967,13 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox74.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox74.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox74.setToolTipText(sudokuBlankToolTip);
         sudokuBox74.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
         jPanel13.add(sudokuBox74);
 
         sudokuBox75.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox75.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox75.setToolTipText(sudokuBlankToolTip);
         sudokuBox75.setAlignmentX(0.0F);
         sudokuBox75.setAlignmentY(0.0F);
         sudokuBox75.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
@@ -1916,6 +1992,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox58.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox58.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox58.setToolTipText(sudokuBlankToolTip);
         sudokuBox58.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
         sudokuBox58.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1926,6 +2003,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox59.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox59.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox59.setToolTipText(sudokuBlankToolTip);
         sudokuBox59.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
         sudokuBox59.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1936,21 +2014,25 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox60.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox60.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox60.setToolTipText(sudokuBlankToolTip);
         sudokuBox60.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
         jPanel12.add(sudokuBox60);
 
         sudokuBox67.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox67.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox67.setToolTipText(sudokuBlankToolTip);
         sudokuBox67.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
         jPanel12.add(sudokuBox67);
 
         sudokuBox68.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox68.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox68.setToolTipText(sudokuBlankToolTip);
         sudokuBox68.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
         jPanel12.add(sudokuBox68);
 
         sudokuBox69.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox69.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox69.setToolTipText(sudokuBlankToolTip);
         sudokuBox69.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
         jPanel12.add(sudokuBox69);
 
@@ -1964,6 +2046,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox77.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox77.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox77.setToolTipText(sudokuBlankToolTip);
         sudokuBox77.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
         jPanel12.add(sudokuBox77);
 
@@ -1982,6 +2065,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox61.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox61.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox61.setToolTipText(sudokuBlankToolTip);
         sudokuBox61.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
         sudokuBox61.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2000,26 +2084,31 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox63.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox63.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox63.setToolTipText(sudokuBlankToolTip);
         sudokuBox63.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
         jPanel15.add(sudokuBox63);
 
         sudokuBox70.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox70.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox70.setToolTipText(sudokuBlankToolTip);
         sudokuBox70.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
         jPanel15.add(sudokuBox70);
 
         sudokuBox71.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox71.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox71.setToolTipText(sudokuBlankToolTip);
         sudokuBox71.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
         jPanel15.add(sudokuBox71);
 
         sudokuBox72.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox72.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox72.setToolTipText(sudokuBlankToolTip);
         sudokuBox72.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(102, 102, 102)));
         jPanel15.add(sudokuBox72);
 
         sudokuBox79.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox79.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox79.setToolTipText(sudokuBlankToolTip);
         sudokuBox79.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(102, 102, 102)));
         sudokuBox79.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2030,6 +2119,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         sudokuBox80.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         sudokuBox80.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        sudokuBox80.setToolTipText(sudokuBlankToolTip);
         sudokuBox80.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(102, 102, 102)));
         jPanel15.add(sudokuBox80);
 
@@ -2046,6 +2136,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         PlayPanel3.add(sudokuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 42, -1, -1));
 
         sudokuSubmitButton.setText("Submit");
+        sudokuSubmitButton.setToolTipText("Click Submit when Sudoku is complete ");
         sudokuSubmitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sudokuSubmitButtonActionPerformed(evt);
@@ -2054,6 +2145,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         PlayPanel3.add(sudokuSubmitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 356, -1, -1));
 
         sudokuQuitButton.setText("Quit");
+        sudokuQuitButton.setToolTipText("Click Quit to exit Sudoku game");
         sudokuQuitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sudokuQuitButtonActionPerformed(evt);
@@ -2114,6 +2206,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         HSLabel.setText("Highscores");
 
         HSBackButton.setText("Back");
+        HSBackButton.setToolTipText("Click to go back to display page");
         HSBackButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 HSBackButtonActionPerformed(evt);
@@ -2157,6 +2250,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         );
 
         CreditsBackButton.setText("Back");
+        CreditsBackButton.setToolTipText("Click to go back to display page");
         CreditsBackButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CreditsBackButtonActionPerformed(evt);
@@ -2242,6 +2336,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         jTextField3.setBorder(null);
 
         jButton1.setText("End");
+        jButton1.setToolTipText("Click to end game");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EndBtnActionPerformed(evt);
@@ -2299,6 +2394,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         jLabel10.setText("Please Enter Three Initials Below:");
 
         initialEntryTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        initialEntryTextField.setToolTipText("Enter initials here");
         initialEntryTextField.setEnabled(false);
         initialEntryTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2315,6 +2411,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         });
 
         newHSButtonOk.setText("Ok");
+        newHSButtonOk.setToolTipText("Click when done inputting initials");
         newHSButtonOk.setEnabled(false);
         newHSButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
