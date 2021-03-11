@@ -219,6 +219,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     
     private void endGame3(){    //Game: Sudoku
         txtEndScore.setText(String.format("%d",score));
+        PlayPanel3.setVisible(false);
         
         //Reset textfields
         JTextField[] sudokuBoxes = new JTextField[]{sudokuBox2,sudokuBox3,sudokuBox5,sudokuBox7,sudokuBox8,
@@ -560,6 +561,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                 currentPanel = NewHSPanel;
             }else{
                 //Is not a new high score
+                PlayPanel3.setVisible(false);
                 EndPanel.setVisible(true);
                 currentPanel = EndPanel;
             }
