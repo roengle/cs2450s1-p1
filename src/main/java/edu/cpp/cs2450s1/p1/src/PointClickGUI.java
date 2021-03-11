@@ -82,6 +82,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         /* F1 key and Esc key functionality */
         //Create action for F1 key press
         Action f1MenuAction = new AbstractAction(){
+            @Override
             public void actionPerformed(ActionEvent e){
                 currentPanel.setVisible(false);
                 F1Panel.setVisible(true);
@@ -89,6 +90,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         };
         //Create action for ESCAPE key press
         Action escAction = new AbstractAction(){
+            @Override
             public void actionPerformed(ActionEvent e){
                 System.exit(0);
             }
@@ -217,9 +219,6 @@ public class PointClickGUI extends javax.swing.JFrame {
     
     private void endGame3(){    //Game: Sudoku
         txtEndScore.setText(String.format("%d",score));
-        PlayPanel3.setVisible(false);
-        
-        
         
         //Reset textfields
         JTextField[] sudokuBoxes = new JTextField[]{sudokuBox2,sudokuBox3,sudokuBox5,sudokuBox7,sudokuBox8,
@@ -491,18 +490,37 @@ public class PointClickGUI extends javax.swing.JFrame {
         endGame3();
     }
     
-    
-    private void updateHighScores(){    //Universal to all games
+    /**
+     * Checks to see if the user's end score is a new high score. If so, goes to a new 
+     * panel where they can input their high score.
+     */
+    private void updateHighScores(){
+        //Keep track of our high score file
+        boolean fileEmpty = false;
+        //Try-catch for file reading incase I/OException thrown
         try{
+            //Construct a buffered reader
             BufferedReader br = new BufferedReader(new FileReader(new File(SAVES_PATH.toURI())));
-            String inLine = "";
+            //Set the first line of the buffered reader
+            String inLine = br.readLine();
+            //Reset our userScoreMap
             userScoreMap = new HashMap<>();
-            while((inLine = br.readLine()) != null){
-                String[] strSplit = inLine.split(" ");
-                String user = strSplit[0];
-                Integer score = Integer.parseInt(strSplit[1]);
-                userScoreMap.put(user, score);
+            //If our file is empty, update our boolean value
+            if(inLine == null){
+                //Text file is empty, no scores are inputted
+                fileEmpty = true;
+            }else{
+                //Text file isn't empty
+                while(inLine != null){
+                    //Read file and update our userscore map as needed
+                    String[] strSplit = inLine.split(" ");
+                    String user = strSplit[0];
+                    Integer score = Integer.parseInt(strSplit[1]);
+                    userScoreMap.put(user, score);
+                    inLine = br.readLine();
+                }
             }
+            //Close our buffered reader
             br.close();
         }catch(Exception e){
             e.printStackTrace();
@@ -519,8 +537,9 @@ public class PointClickGUI extends javax.swing.JFrame {
         }
         //Sort array
         Arrays.sort(valueArr);
-        //Lowest score is in valueArr[0]
-        if(score > valueArr[0] || valueArr.length < 5){
+        //If our file is empty, tread it as a new high score
+        if(fileEmpty){
+            //File is empty, so there will definitely be a new high score
             newHSScoreLabel.setText(Integer.toString(score));
             initialEntryTextField.setEnabled(true);
             initialEntryTextField.setVisible(true);
@@ -529,9 +548,22 @@ public class PointClickGUI extends javax.swing.JFrame {
             NewHSPanel.setVisible(true);
             currentPanel = NewHSPanel;
         }else{
-            EndPanel.setVisible(true);
-            currentPanel = EndPanel;
-        }
+            //Our file isn't empty, so use our pre-exisiting new high score logic.
+            if(score > valueArr[0] || valueArr.length < 5){
+                //Our score is above the lowest high score or there aren't 5 highscores yet
+                newHSScoreLabel.setText(Integer.toString(score));
+                initialEntryTextField.setEnabled(true);
+                initialEntryTextField.setVisible(true);
+                newHSButtonOk.setEnabled(false);
+                PlayPanel3.setVisible(false);
+                NewHSPanel.setVisible(true);
+                currentPanel = NewHSPanel;
+            }else{
+                //Is not a new high score
+                EndPanel.setVisible(true);
+                currentPanel = EndPanel;
+            }
+        }   
     }
 
     /**
