@@ -3163,7 +3163,11 @@
                       <Component id="jLabel9" max="32767" attributes="0"/>
                       <Component id="newHSScoreLabel" max="32767" attributes="0"/>
                       <Component id="jLabel10" max="32767" attributes="0"/>
-                      <Component id="newHSButtonOk" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="newHSButtonOk" min="-2" pref="110" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="newHSButonCancel" min="-2" pref="110" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace pref="180" max="32767" attributes="0"/>
               </Group>
@@ -3183,8 +3187,11 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="initialEntryTextField" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="newHSButtonOk" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="newHSButtonOk" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="newHSButonCancel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="62" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -3242,6 +3249,15 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newHSButtonOkActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="newHSButonCancel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Cancel"/>
+            <Property name="toolTipText" type="java.lang.String" value="Click when done inputting initials"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newHSButonCancelActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

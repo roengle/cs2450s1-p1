@@ -63,7 +63,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         
         allPanels = new JPanel[]{DisplayPanel, PlayPanel, PlayPanel2, 
                                     PlayPanel3, HighscorePanel, CreditsPanel, 
-                                    EndPanel, NewHSPanel};
+                                    EndPanel, NewHSPanel, F1Panel};
         
         
         //Set System Timer
@@ -764,6 +764,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         initialEntryTextField = new javax.swing.JTextField();
         newHSButtonOk = new javax.swing.JButton();
+        newHSButonCancel = new javax.swing.JButton();
         F1Panel = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -2503,6 +2504,14 @@ public class PointClickGUI extends javax.swing.JFrame {
             }
         });
 
+        newHSButonCancel.setText("Cancel");
+        newHSButonCancel.setToolTipText("Click when done inputting initials");
+        newHSButonCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newHSButonCancelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout NewHSPanelLayout = new javax.swing.GroupLayout(NewHSPanel);
         NewHSPanel.setLayout(NewHSPanelLayout);
         NewHSPanelLayout.setHorizontalGroup(
@@ -2515,7 +2524,10 @@ public class PointClickGUI extends javax.swing.JFrame {
                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(newHSScoreLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(newHSButtonOk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(NewHSPanelLayout.createSequentialGroup()
+                        .addComponent(newHSButtonOk, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(newHSButonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(180, Short.MAX_VALUE))
         );
         NewHSPanelLayout.setVerticalGroup(
@@ -2532,8 +2544,10 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(initialEntryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(newHSButtonOk)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(NewHSPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(newHSButtonOk)
+                    .addComponent(newHSButonCancel))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         F1Panel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -3109,14 +3123,13 @@ public class PointClickGUI extends javax.swing.JFrame {
             fw0b.close();
             BufferedWriter bw = new BufferedWriter(new FileWriter(new File(SAVES_PATH.toURI())));
             StringBuilder sb = new StringBuilder();
-
-                it = userScoreMap.keySet().iterator();
-                while(it.hasNext()){
-                    String user = (String)it.next();
-                    int value = userScoreMap.get(user);
-                    sb.append(String.format("%s %d\n", user, value));
-                }
             
+            it = userScoreMap.keySet().iterator();
+            while(it.hasNext()){
+                String user = (String)it.next();
+                int value = userScoreMap.get(user);
+                sb.append(String.format("%s %d\n", user, value));
+            }
             
             bw.write(sb.toString());
             bw.close();
@@ -3276,6 +3289,15 @@ public class PointClickGUI extends javax.swing.JFrame {
         currentPanel.setVisible(true);
     }//GEN-LAST:event_F1BackButtonActionPerformed
 
+    private void newHSButonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newHSButonCancelActionPerformed
+        //Set panel visibility
+        txtEndScore.setText(Integer.toString(score));
+        NewHSPanel.setVisible(false);
+        initialEntryTextField.setVisible(false);
+        EndPanel.setVisible(true);
+        currentPanel = EndPanel;
+    }//GEN-LAST:event_newHSButonCancelActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -3409,6 +3431,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JLabel leftArmImage;
     private javax.swing.JLabel leftLegImage;
+    private javax.swing.JButton newHSButonCancel;
     private javax.swing.JButton newHSButtonOk;
     private javax.swing.JLabel newHSScoreLabel;
     private javax.swing.JLabel platformImage;
