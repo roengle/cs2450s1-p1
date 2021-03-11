@@ -1409,6 +1409,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         purpleButton.setBounds(440, 70, 100, 100);
 
         blueButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/blue_unhovered.png"))); // NOI18N
+        blueButton.setToolTipText("Blue button");
         blueButton.setBorderPainted(false);
         blueButton.setContentAreaFilled(false);
         blueButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1428,6 +1429,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         blueButton.setBounds(440, 230, 100, 100);
 
         greenButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buttons/green_unhovered.png"))); // NOI18N
+        greenButton.setToolTipText("Green button");
         greenButton.setBorderPainted(false);
         greenButton.setContentAreaFilled(false);
         greenButton.addMouseListener(new java.awt.event.MouseAdapter() {

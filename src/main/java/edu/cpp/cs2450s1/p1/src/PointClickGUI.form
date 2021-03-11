@@ -979,6 +979,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/images/buttons/blue_unhovered.png"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Blue button"/>
             <Property name="borderPainted" type="boolean" value="false"/>
             <Property name="contentAreaFilled" type="boolean" value="false"/>
           </Properties>
@@ -998,6 +999,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/images/buttons/green_unhovered.png"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Green button"/>
             <Property name="borderPainted" type="boolean" value="false"/>
             <Property name="contentAreaFilled" type="boolean" value="false"/>
           </Properties>
