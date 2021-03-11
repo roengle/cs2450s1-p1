@@ -452,29 +452,52 @@ public class PointClickGUI extends javax.swing.JFrame {
     private void sudokuSubmit(){        //Game: Sudoku
         int tempScore = score;
         boolean sudokuComplete = true;
+        boolean hasBlanks = false;
         for(int i = 0; i < sudokuBoxes.length; i++){                                        //check all JTextFields
                 if(sudokuBoxes[i].getText().equals("")){                                    //check for blanks
                     sudokuError();
                     sudokuComplete = false;
+                    hasBlanks = true;
                     break;
                 }
-                else if(Integer.parseInt(sudokuBoxes[i].getText()) != sudokuSolution[i]){   //compare with solution
-                        if(sudokuDeductible[i] == true){                                    //if wrong and unchecked
-                                sudokuScore -= 10;                                          //deduct score
-                                sudokuDeductible[i] = false;                                //box no longer deductible
-                        }
-                        sudokuComplete = false;                                             //sudoku unfinished
-                }
+        }
+        if(!hasBlanks){
+            for(int i = 0; i < sudokuBoxes.length; i++){
+                    if(Integer.parseInt(sudokuBoxes[i].getText()) != sudokuSolution[i]){        //compare with solution
+                            if(sudokuDeductible[i] == true){                                    //if wrong and unchecked
+                                    sudokuScore -= 10;                                          //deduct score
+                                    sudokuDeductible[i] = false;                                //box no longer deductible
+                            }
+                            sudokuComplete = false;                                             //sudoku unfinished
+                    }
+                    else{
+                        sudokuDeductible[i] = false;                                            //if correct, no longer deductible
+                    }
+            }
         }
         if(sudokuComplete == true){
                 score += sudokuScore;
                 endGame3();
         }
+        else if(!hasBlanks&&!sudokuComplete){
+            sudokuAgain();
+        }
     
         txtScore3.setText(String.format("Sudoku Score: %d", sudokuScore));
         tempScore += sudokuScore;
         txtScore4.setText(String.format("Total Score: %d", tempScore));
+        
     }
+    
+    private void sudokuAgain(){
+        JLabel sudokuErrorMsg = new JLabel("Sudoku incorrect, Try again");
+
+        JPanel sudokuErrorPanel = new JPanel();
+        sudokuErrorPanel.add(sudokuErrorMsg);
+
+        getToolkit().beep();
+        JOptionPane.showMessageDialog(null, sudokuErrorPanel);
+    }    
     
     private void sudokuError(){
         JLabel sudokuErrorMsg = new JLabel("Sudoku not completed yet");
