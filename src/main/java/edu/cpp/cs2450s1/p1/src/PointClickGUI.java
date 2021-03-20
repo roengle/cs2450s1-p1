@@ -33,7 +33,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     static HashMap<String, Integer> userScoreMap = new HashMap<>();
     Integer score, sudokuScore;
     String chosenWord;
-    String sudokuBlankToolTip = "Enter a number";
+    String sudokuBlankToolTip = "Enter a number (1-9)";
     static int round = 1;
     static int randomColorText, randomColor, chosenColor;
     final URL SAVES_PATH = getClass().getResource("/saves/highscores.txt");
@@ -60,10 +60,11 @@ public class PointClickGUI extends javax.swing.JFrame {
         randomTest.setVisible(false);
         NewHSPanel.setVisible(false);
         F1Panel.setVisible(false);
+        PlayPongPanel.setVisible(false);
         
         allPanels = new JPanel[]{DisplayPanel, PlayPanel, PlayPanel2, 
                                     PlayPanel3, HighscorePanel, CreditsPanel, 
-                                    EndPanel, NewHSPanel, F1Panel};
+                                    EndPanel, NewHSPanel, F1Panel, PlayPongPanel};
         
         
         //Set System Timer
@@ -105,6 +106,54 @@ public class PointClickGUI extends javax.swing.JFrame {
             p.getActionMap().put("esc", escAction);
         }
         
+        //Game: Pong
+    
+    Action upAction1 = new AbstractAction(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                int x_pos = Paddle1Label.getX();
+                int y_pos = Paddle1Label.getY();
+                Paddle1Label.setLocation(x_pos, y_pos-10); 
+            }
+ 
+        };
+        Action downAction1 = new AbstractAction(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                int x_pos = Paddle1Label.getX();
+                int y_pos = Paddle1Label.getY();
+                Paddle1Label.setLocation(x_pos, y_pos+10); 
+            }
+ 
+        };
+        Action upAction2 = new AbstractAction(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                int x_pos = Paddle2Label.getX();
+                int y_pos = Paddle2Label.getY();
+                Paddle2Label.setLocation(x_pos, y_pos-10); 
+            }
+ 
+        };
+        Action downAction2 = new AbstractAction(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                int x_pos = Paddle2Label.getX();
+                int y_pos = Paddle2Label.getY();
+                Paddle2Label.setLocation(x_pos, y_pos+10); 
+            }
+ 
+        };
+        
+        Paddle1Label.getInputMap(2).put(KeyStroke.getKeyStroke('w'), "up1");
+        Paddle1Label.getActionMap().put("up1", upAction1);
+        Paddle1Label.getInputMap(2).put(KeyStroke.getKeyStroke('s'), "down1");
+        Paddle1Label.getActionMap().put("down1", downAction1);
+        Paddle2Label.getInputMap(2).put(KeyStroke.getKeyStroke("UP"), "up2");
+        Paddle2Label.getActionMap().put("up2", upAction2);
+        Paddle2Label.getInputMap(2).put(KeyStroke.getKeyStroke("DOWN"), "down2");
+        Paddle2Label.getActionMap().put("down2", downAction2);
+    
         
         //Set Screen Change Timer
         Timer timer = new Timer(3000, new ActionListener(){           //Switches screen after 3 seconds
@@ -514,6 +563,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         endGame3();
     }
     
+    
     /**
      * Checks to see if the user's end score is a new high score. If so, goes to a new 
      * panel where they can input their high score.
@@ -614,7 +664,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         HighscoresButton = new javax.swing.JButton();
         CreditsButton = new javax.swing.JButton();
         DisplayIcon = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        PlayPongButton = new javax.swing.JButton();
         PlayPanel = new javax.swing.JPanel();
         platformImage = new javax.swing.JLabel();
         blankLabel = new javax.swing.JLabel();
@@ -798,6 +848,19 @@ public class PointClickGUI extends javax.swing.JFrame {
         F1BackButton = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
+        PlayPongPanel = new javax.swing.JPanel();
+        PongScreenPanel = new javax.swing.JPanel();
+        Paddle1Label = new javax.swing.JLabel();
+        Paddle2Label = new javax.swing.JLabel();
+        BallLabel = new javax.swing.JLabel();
+        jPanel24 = new javax.swing.JPanel();
+        systemTimeText4 = new javax.swing.JTextField();
+        QuitPongButton = new javax.swing.JButton();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
 
         randomTest.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         randomTest.setText("Random word test");
@@ -895,7 +958,13 @@ public class PointClickGUI extends javax.swing.JFrame {
         DisplayIcon.setMinimumSize(new java.awt.Dimension(190, 184));
         DisplayIcon.setPreferredSize(new java.awt.Dimension(190, 184));
 
-        jButton2.setText("Play Pong");
+        PlayPongButton.setText("Play Pong");
+        PlayPongButton.setToolTipText("Click to play Pong Game");
+        PlayPongButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PlayPongButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout DisplayPanelLayout = new javax.swing.GroupLayout(DisplayPanel);
         DisplayPanel.setLayout(DisplayPanelLayout);
@@ -908,7 +977,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                     .addComponent(HighscoresButton)
                     .addComponent(CreditsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(DisplayIcon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(PlayPongButton))
                 .addContainerGap(204, Short.MAX_VALUE))
         );
         DisplayPanelLayout.setVerticalGroup(
@@ -919,7 +988,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addComponent(PlayButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(PlayPongButton)
                 .addGap(7, 7, 7)
                 .addComponent(HighscoresButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -2661,6 +2730,110 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        PlayPongPanel.setPreferredSize(new java.awt.Dimension(600, 400));
+        PlayPongPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        PongScreenPanel.setBackground(new java.awt.Color(0, 0, 0));
+        PongScreenPanel.setPreferredSize(new java.awt.Dimension(325, 325));
+
+        Paddle1Label.setBackground(new java.awt.Color(255, 255, 255));
+        Paddle1Label.setForeground(new java.awt.Color(255, 255, 255));
+        Paddle1Label.setText("");
+        Paddle1Label.setToolTipText("<html>" + "Player 1:" + "<br>" + "Use 'w' to move up" + "<br>" + "Use 's' to move down" + "</html>");
+        Paddle1Label.setOpaque(true);
+
+        Paddle2Label.setBackground(new java.awt.Color(255, 255, 255));
+        Paddle2Label.setForeground(new java.awt.Color(255, 255, 255));
+        Paddle2Label.setText("");
+        Paddle2Label.setToolTipText("<html>" + "Player 2:" + "<br>" + "Use \"UP\" arrow to move up" + "<br>" + "Use \"DOWN\" arrow to move down" + "</html>");
+        Paddle2Label.setOpaque(true);
+
+        BallLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/small white ball.png"))); // NOI18N
+        BallLabel.setText("jLabel25");
+        BallLabel.setToolTipText("Press \"SPACE\" to move ball");
+
+        javax.swing.GroupLayout PongScreenPanelLayout = new javax.swing.GroupLayout(PongScreenPanel);
+        PongScreenPanel.setLayout(PongScreenPanelLayout);
+        PongScreenPanelLayout.setHorizontalGroup(
+            PongScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PongScreenPanelLayout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(Paddle1Label, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(114, 114, 114)
+                .addComponent(BallLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
+                .addComponent(Paddle2Label, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37))
+        );
+        PongScreenPanelLayout.setVerticalGroup(
+            PongScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PongScreenPanelLayout.createSequentialGroup()
+                .addContainerGap(102, Short.MAX_VALUE)
+                .addGroup(PongScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Paddle1Label, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Paddle2Label, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BallLabel))
+                .addGap(102, 102, 102))
+        );
+
+        PlayPongPanel.add(PongScreenPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 350, 290));
+
+        systemTimeText4.setEditable(false);
+        systemTimeText4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        systemTimeText4.setText("Feb 8, 2021, | 13:28:07");
+        systemTimeText4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                systemTimeText4ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel24Layout = new javax.swing.GroupLayout(jPanel24);
+        jPanel24.setLayout(jPanel24Layout);
+        jPanel24Layout.setHorizontalGroup(
+            jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(systemTimeText4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+        );
+        jPanel24Layout.setVerticalGroup(
+            jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel24Layout.createSequentialGroup()
+                .addComponent(systemTimeText4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        PlayPongPanel.add(jPanel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 0, 130, 30));
+
+        QuitPongButton.setText("Quit");
+        QuitPongButton.setToolTipText("Click Quit to exit Pong game");
+        QuitPongButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                QuitPongButtonActionPerformed(evt);
+            }
+        });
+        PlayPongPanel.add(QuitPongButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 350, -1, -1));
+
+        jLabel21.setFont(new java.awt.Font("LEMON MILK", 0, 12)); // NOI18N
+        jLabel21.setText("Player 2 Score:");
+        PlayPongPanel.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 80, -1, -1));
+
+        jLabel20.setFont(new java.awt.Font("LEMON MILK", 0, 12)); // NOI18N
+        jLabel20.setText("Player 1 Score:");
+        PlayPongPanel.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, 20));
+
+        jLabel23.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel23.setText("0");
+        PlayPongPanel.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 100, 60, 50));
+
+        jLabel22.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel22.setText("0");
+        PlayPongPanel.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 60, 50));
+
+        jLabel24.setFont(new java.awt.Font("LEMON MILK", 0, 24)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(0, 255, 204));
+        jLabel24.setText("PONG");
+        PlayPongPanel.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -2711,6 +2884,11 @@ public class PointClickGUI extends javax.swing.JFrame {
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(F1Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(239, Short.MAX_VALUE)
+                    .addComponent(PlayPongPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(220, 220, 220)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2760,6 +2938,11 @@ public class PointClickGUI extends javax.swing.JFrame {
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(F1Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(19, Short.MAX_VALUE)
+                    .addComponent(PlayPongPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
         );
 
         pack();
@@ -3329,6 +3512,23 @@ public class PointClickGUI extends javax.swing.JFrame {
         currentPanel = EndPanel;
     }//GEN-LAST:event_newHSButonCancelActionPerformed
 
+    private void systemTimeText4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_systemTimeText4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_systemTimeText4ActionPerformed
+
+    private void PlayPongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayPongButtonActionPerformed
+        DisplayPanel.setVisible(false);
+        PlayPongPanel.setVisible(true);
+        currentPanel = PlayPongPanel;
+    }//GEN-LAST:event_PlayPongButtonActionPerformed
+
+    private void QuitPongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuitPongButtonActionPerformed
+        PlayPongPanel.setVisible(false);
+        DisplayPanel.setVisible(true);
+        currentPanel = DisplayPanel;
+        
+    }//GEN-LAST:event_QuitPongButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -3370,6 +3570,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AButton;
     private javax.swing.JButton BButton;
+    private javax.swing.JLabel BallLabel;
     private javax.swing.JButton CButton;
     private javax.swing.JButton CreditsBackButton;
     private javax.swing.JButton CreditsButton;
@@ -3397,11 +3598,17 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JPanel NewHSPanel;
     private javax.swing.JButton OButton;
     private javax.swing.JButton PButton;
+    private javax.swing.JLabel Paddle1Label;
+    private javax.swing.JLabel Paddle2Label;
     private javax.swing.JButton PlayButton;
     private javax.swing.JPanel PlayPanel;
     private javax.swing.JPanel PlayPanel2;
     private javax.swing.JPanel PlayPanel3;
+    private javax.swing.JButton PlayPongButton;
+    private javax.swing.JPanel PlayPongPanel;
+    private javax.swing.JPanel PongScreenPanel;
     private javax.swing.JButton QButton;
+    private javax.swing.JButton QuitPongButton;
     private javax.swing.JButton RButton;
     private javax.swing.JButton SButton;
     private javax.swing.JLabel ScoresLabel;
@@ -3421,7 +3628,6 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JLabel headImage;
     private javax.swing.JTextField initialEntryTextField;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
@@ -3434,6 +3640,11 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -3449,6 +3660,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -3560,6 +3772,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JTextField systemTimeText;
     private javax.swing.JTextField systemTimeText2;
     private javax.swing.JTextField systemTimeText3;
+    private javax.swing.JTextField systemTimeText4;
     private javax.swing.JTextField txtEndScore;
     private javax.swing.JTextField txtScore;
     private javax.swing.JTextField txtScore2;
