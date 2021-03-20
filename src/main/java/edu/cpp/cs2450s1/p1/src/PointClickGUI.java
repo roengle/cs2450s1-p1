@@ -614,6 +614,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         HighscoresButton = new javax.swing.JButton();
         CreditsButton = new javax.swing.JButton();
         DisplayIcon = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         PlayPanel = new javax.swing.JPanel();
         platformImage = new javax.swing.JLabel();
         blankLabel = new javax.swing.JLabel();
@@ -894,6 +895,8 @@ public class PointClickGUI extends javax.swing.JFrame {
         DisplayIcon.setMinimumSize(new java.awt.Dimension(190, 184));
         DisplayIcon.setPreferredSize(new java.awt.Dimension(190, 184));
 
+        jButton2.setText("Play Pong");
+
         javax.swing.GroupLayout DisplayPanelLayout = new javax.swing.GroupLayout(DisplayPanel);
         DisplayPanel.setLayout(DisplayPanelLayout);
         DisplayPanelLayout.setHorizontalGroup(
@@ -904,7 +907,8 @@ public class PointClickGUI extends javax.swing.JFrame {
                     .addComponent(PlayButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(HighscoresButton)
                     .addComponent(CreditsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(DisplayIcon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(DisplayIcon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
                 .addContainerGap(204, Short.MAX_VALUE))
         );
         DisplayPanelLayout.setVerticalGroup(
@@ -914,11 +918,13 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addComponent(DisplayIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(PlayButton)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addGap(7, 7, 7)
                 .addComponent(HighscoresButton)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(CreditsButton)
-                .addGap(63, 63, 63))
+                .addGap(51, 51, 51))
         );
 
         platformImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Hangman_Base.png"))); // NOI18N
@@ -2572,7 +2578,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addGroup(NewHSPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(newHSButtonOk)
                     .addComponent(newHSButonCancel))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         F1Panel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -2636,7 +2642,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         F1PanelLayout.setVerticalGroup(
             F1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(F1PanelLayout.createSequentialGroup()
-                .addContainerGap(63, Short.MAX_VALUE)
+                .addContainerGap(62, Short.MAX_VALUE)
                 .addComponent(jLabel11)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2659,7 +2665,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(StartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
+            .addComponent(StartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1059, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -3415,6 +3421,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JLabel headImage;
     private javax.swing.JTextField initialEntryTextField;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
