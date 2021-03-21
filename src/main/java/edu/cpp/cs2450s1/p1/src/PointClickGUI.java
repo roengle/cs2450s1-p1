@@ -39,6 +39,8 @@ public class PointClickGUI extends javax.swing.JFrame {
     final URL SAVES_PATH = getClass().getResource("/saves/highscores.txt");
     JPanel currentPanel;
     JPanel[] allPanels;
+    boolean spacePressed = false;
+    boolean pongScored = false;
     
 
     /**
@@ -69,6 +71,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         
         //Set System Timer
         Timer dateTimer = new Timer(1000, new ActionListener(){ //Updates every second
+            @Override
             public void actionPerformed(ActionEvent e)
             {
                 Date date = new Date();                                 
@@ -76,6 +79,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                 systemTimeText.setText(sdf.format(date));
                 systemTimeText2.setText(sdf.format(date));
                 systemTimeText3.setText(sdf.format(date));
+                systemTimeText4.setText(sdf.format(date));
             }
         });
         dateTimer.start();
@@ -96,19 +100,29 @@ public class PointClickGUI extends javax.swing.JFrame {
                 System.exit(0);
             }
         };
+        //Create action for SPACE key press
+        Action spaceAction = new AbstractAction(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                spacePressed = true;
+                pongRun();
+            }
+        };
         //Put the proper keystroke-identifier and identifier-action pairs 
         //in the input and action maps respectively.
         for(JPanel p : allPanels){
             p.getInputMap(2).put(KeyStroke.getKeyStroke("F1"), "f1_menu");
             p.getInputMap(2).put(KeyStroke.getKeyStroke("ESCAPE"), "esc");
+            p.getInputMap(2).put(KeyStroke.getKeyStroke("SPACE"), "space");
             
             p.getActionMap().put("f1_menu", f1MenuAction);
             p.getActionMap().put("esc", escAction);
+            p.getActionMap().put("space", spaceAction);
         }
         
         //Game: Pong
     
-    Action upAction1 = new AbstractAction(){
+        Action upAction1 = new AbstractAction(){
             @Override
             public void actionPerformed(ActionEvent e){
                 int x_pos = Paddle1Label.getX();
@@ -142,8 +156,9 @@ public class PointClickGUI extends javax.swing.JFrame {
                 int y_pos = Paddle2Label.getY();
                 Paddle2Label.setLocation(x_pos, y_pos+10); 
             }
- 
         };
+        
+        
         
         Paddle1Label.getInputMap(2).put(KeyStroke.getKeyStroke('w'), "up1");
         Paddle1Label.getActionMap().put("up1", upAction1);
@@ -157,6 +172,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         
         //Set Screen Change Timer
         Timer timer = new Timer(3000, new ActionListener(){           //Switches screen after 3 seconds
+            @Override
             public void actionPerformed(ActionEvent e)
             {
                 StartPanel.setVisible(false);
@@ -497,7 +513,6 @@ public class PointClickGUI extends javax.swing.JFrame {
         repaint();
     }
     
-    
     private void sudokuSubmit(){        //Game: Sudoku
         int tempScore = score;
         boolean sudokuComplete = true;
@@ -562,7 +577,42 @@ public class PointClickGUI extends javax.swing.JFrame {
         sudokuScore = 0;
         endGame3();
     }
-    
+        
+    private void pongRun(){
+        int ballSpeedX = 3;     //randomized later on
+        int ballSpeedY = 3;
+        
+        if(spacePressed){
+            pongScored = false;
+            Timer pongTimer = new Timer(20, new ActionListener(){           //runs at 50 fps
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    //starting directino for ball
+                    BallLabel.setLocation(BallLabel.getX()+ballSpeedX, BallLabel.getY()+ballSpeedY);
+                    
+                    //add conditional statemets to let the ball bounce
+                        //Ex: if(ball touches bottom of panel) ballSpeedY = -ballSpeedY
+                    
+                    //allow players to move
+                                        
+                    
+                    //keep track of who scores
+                        /*
+                        if(player scores){
+                            pongScored = true;
+                            player score += 10;
+                        }
+                        */
+                    
+                    if(!PlayPongPanel.isVisible() || pongScored)
+                        ((Timer)e.getSource()).stop();
+                }
+            });
+            pongTimer.start();
+            
+        }
+    }
     
     /**
      * Checks to see if the user's end score is a new high score. If so, goes to a new 
@@ -891,7 +941,9 @@ public class PointClickGUI extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(600, 420));
         setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         StartPanel.setMaximumSize(new java.awt.Dimension(600, 400));
         StartPanel.setPreferredSize(new java.awt.Dimension(600, 400));
@@ -922,8 +974,10 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(89, 89, 89)
                 .addComponent(jLabel2)
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
+
+        getContentPane().add(StartPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         DisplayPanel.setPreferredSize(new java.awt.Dimension(600, 400));
 
@@ -995,6 +1049,10 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addComponent(CreditsButton)
                 .addGap(51, 51, 51))
         );
+
+        getContentPane().add(DisplayPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        PlayPanel.setPreferredSize(new java.awt.Dimension(600, 400));
 
         platformImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Hangman_Base.png"))); // NOI18N
 
@@ -1434,6 +1492,8 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        getContentPane().add(PlayPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
         PlayPanel2.setPreferredSize(new java.awt.Dimension(600, 400));
         PlayPanel2.setLayout(null);
 
@@ -1585,6 +1645,8 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         PlayPanel2.add(jPanel3);
         jPanel3.setBounds(450, 0, 150, 60);
+
+        getContentPane().add(PlayPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         PlayPanel3.setPreferredSize(new java.awt.Dimension(600, 400));
         PlayPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -2386,6 +2448,10 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         PlayPanel3.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 0, 130, -1));
 
+        getContentPane().add(PlayPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        HighscorePanel.setPreferredSize(new java.awt.Dimension(600, 400));
+
         HSLabel.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
         HSLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         HSLabel.setText("Highscores");
@@ -2428,11 +2494,15 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addGap(63, 63, 63)
                 .addComponent(HSLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
                 .addGap(21, 21, 21)
                 .addComponent(HSBackButton)
                 .addContainerGap())
         );
+
+        getContentPane().add(HighscorePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        CreditsPanel.setPreferredSize(new java.awt.Dimension(600, 400));
 
         CreditsBackButton.setText("Back");
         CreditsBackButton.setToolTipText("Click to go back to display page");
@@ -2461,7 +2531,7 @@ public class PointClickGUI extends javax.swing.JFrame {
             .addGroup(CreditsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(CreditsBackButton)
-                .addContainerGap(526, Short.MAX_VALUE))
+                .addContainerGap(535, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreditsPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(CreditsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
@@ -2490,7 +2560,10 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        getContentPane().add(CreditsPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
         EndPanel.setMinimumSize(new java.awt.Dimension(600, 400));
+        EndPanel.setPreferredSize(new java.awt.Dimension(600, 400));
 
         jTextField1.setEditable(false);
         jTextField1.setFont(new java.awt.Font("Courier New", 1, 36)); // NOI18N
@@ -2561,8 +2634,11 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        getContentPane().add(EndPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
         NewHSPanel.setMaximumSize(new java.awt.Dimension(600, 400));
         NewHSPanel.setMinimumSize(new java.awt.Dimension(600, 400));
+        NewHSPanel.setPreferredSize(new java.awt.Dimension(600, 400));
 
         jLabel8.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -2628,7 +2704,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                         .addComponent(newHSButtonOk, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(newHSButonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(180, Short.MAX_VALUE))
+                .addContainerGap(174, Short.MAX_VALUE))
         );
         NewHSPanelLayout.setVerticalGroup(
             NewHSPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2649,6 +2725,8 @@ public class PointClickGUI extends javax.swing.JFrame {
                     .addComponent(newHSButonCancel))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        getContentPane().add(NewHSPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         F1Panel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         F1Panel.setEnabled(false);
@@ -2711,7 +2789,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         F1PanelLayout.setVerticalGroup(
             F1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(F1PanelLayout.createSequentialGroup()
-                .addContainerGap(62, Short.MAX_VALUE)
+                .addContainerGap(74, Short.MAX_VALUE)
                 .addComponent(jLabel11)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2729,6 +2807,8 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addComponent(F1BackButton)
                 .addContainerGap())
         );
+
+        getContentPane().add(F1Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         PlayPongPanel.setPreferredSize(new java.awt.Dimension(600, 400));
         PlayPongPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -2748,8 +2828,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         Paddle2Label.setToolTipText("<html>" + "Player 2:" + "<br>" + "Use \"UP\" arrow to move up" + "<br>" + "Use \"DOWN\" arrow to move down" + "</html>");
         Paddle2Label.setOpaque(true);
 
-        BallLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/small white ball.png"))); // NOI18N
-        BallLabel.setText("jLabel25");
+        BallLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pongball.png"))); // NOI18N
         BallLabel.setToolTipText("Press \"SPACE\" to move ball");
 
         javax.swing.GroupLayout PongScreenPanelLayout = new javax.swing.GroupLayout(PongScreenPanel);
@@ -2759,9 +2838,9 @@ public class PointClickGUI extends javax.swing.JFrame {
             .addGroup(PongScreenPanelLayout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(Paddle1Label, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(114, 114, 114)
-                .addComponent(BallLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
+                .addGap(116, 116, 116)
+                .addComponent(BallLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
                 .addComponent(Paddle2Label, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37))
         );
@@ -2772,7 +2851,9 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addGroup(PongScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Paddle1Label, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Paddle2Label, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BallLabel))
+                    .addGroup(PongScreenPanelLayout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(BallLabel)))
                 .addGap(102, 102, 102))
         );
 
@@ -2834,116 +2915,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         jLabel24.setText("PONG");
         PlayPongPanel.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(StartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1059, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(CreditsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(PlayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(HighscorePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(DisplayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(EndPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(PlayPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(NewHSPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(PlayPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(F1Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(239, Short.MAX_VALUE)
-                    .addComponent(PlayPongPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(220, 220, 220)))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(StartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(CreditsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(PlayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(HighscorePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(DisplayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(EndPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(6, 6, 6)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(PlayPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(NewHSPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(PlayPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(F1Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(19, Short.MAX_VALUE)
-                    .addComponent(PlayPongPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
-        );
+        getContentPane().add(PlayPongPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -3526,6 +3498,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         PlayPongPanel.setVisible(false);
         DisplayPanel.setVisible(true);
         currentPanel = DisplayPanel;
+        spacePressed = false;
         
     }//GEN-LAST:event_QuitPongButtonActionPerformed
 
