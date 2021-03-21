@@ -31,7 +31,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     JTextField[] sudokuBoxes = new JTextField[54];
     int[] sudokuSolution = {3,5,1,9,2,2,9,6,8,5,7,3,1,4,7,2,9,3,8,6,1,4,2,1,2,3,6,8,5,4,9,7,5,9,6,6,7,8,1,3,4,9,8,3,4,5,2,7,6,7,4,6,8,1};
     static HashMap<String, Integer> userScoreMap = new HashMap<>();
-    Integer score, sudokuScore;
+    Integer score, sudokuScore, player1Score, player2Score;
     String chosenWord;
     String sudokuBlankToolTip = "Enter a number (1-9)";
     static int round = 1;
@@ -41,6 +41,9 @@ public class PointClickGUI extends javax.swing.JFrame {
     JPanel[] allPanels;
     boolean spacePressed = false;
     boolean pongScored = false;
+    static int balldX = 3, balldY = 4;      //randomized later on
+    boolean wPressed, sPressed, downPressed, upPressed;
+    
     
 
     /**
@@ -108,16 +111,88 @@ public class PointClickGUI extends javax.swing.JFrame {
                 pongRun();
             }
         };
+        //Create action for W key press
+        Action wPressedAction = new AbstractAction(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                wPressed = true;
+            }
+        };
+        //Create action for W key release
+        Action wReleasedAction = new AbstractAction(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                wPressed = false;
+            }
+        };
+        //Create action for S key press
+        Action sPressedAction = new AbstractAction(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                sPressed = true;
+                }
+        };
+        //Create action for S key release
+        Action sReleasedAction = new AbstractAction(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                sPressed = false;
+                }
+        };
+        //Create action for down key press
+        Action downPressedAction = new AbstractAction(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                downPressed = true;
+            }
+        };
+        //Create action for down key release
+        Action downReleasedAction = new AbstractAction(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                downPressed = false;
+            }
+        };
+        //Create action for up key press
+        Action upPressedAction = new AbstractAction(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                upPressed = true;
+                }
+        };
+        //Create action for up key release
+        Action upReleasedAction = new AbstractAction(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                upPressed = false;
+                }
+        };
         //Put the proper keystroke-identifier and identifier-action pairs 
         //in the input and action maps respectively.
         for(JPanel p : allPanels){
             p.getInputMap(2).put(KeyStroke.getKeyStroke("F1"), "f1_menu");
             p.getInputMap(2).put(KeyStroke.getKeyStroke("ESCAPE"), "esc");
             p.getInputMap(2).put(KeyStroke.getKeyStroke("SPACE"), "space");
+            p.getInputMap(2).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, false), "wPressed");
+            p.getInputMap(2).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, true), "wReleased");
+            p.getInputMap(2).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0, false), "SPressed");
+            p.getInputMap(2).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0, true), "SReleased");
+            p.getInputMap(2).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, false), "downPressed");
+            p.getInputMap(2).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, true), "downReleased");
+            p.getInputMap(2).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false), "upPressed");
+            p.getInputMap(2).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, true), "upReleased");
             
             p.getActionMap().put("f1_menu", f1MenuAction);
             p.getActionMap().put("esc", escAction);
             p.getActionMap().put("space", spaceAction);
+            p.getActionMap().put("wPressed", wPressedAction);
+            p.getActionMap().put("wReleased", wReleasedAction);
+            p.getActionMap().put("SPressed", sPressedAction);
+            p.getActionMap().put("SReleased", sReleasedAction);
+            p.getActionMap().put("downPressed", downPressedAction);
+            p.getActionMap().put("downReleased", downReleasedAction);
+            p.getActionMap().put("upPressed", upPressedAction);
+            p.getActionMap().put("upReleased", upReleasedAction);
         }
         
         //Game: Pong
@@ -159,7 +234,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         };
         
         
-        
+        /*
         Paddle1Label.getInputMap(2).put(KeyStroke.getKeyStroke('w'), "up1");
         Paddle1Label.getActionMap().put("up1", upAction1);
         Paddle1Label.getInputMap(2).put(KeyStroke.getKeyStroke('s'), "down1");
@@ -168,7 +243,7 @@ public class PointClickGUI extends javax.swing.JFrame {
         Paddle2Label.getActionMap().put("up2", upAction2);
         Paddle2Label.getInputMap(2).put(KeyStroke.getKeyStroke("DOWN"), "down2");
         Paddle2Label.getActionMap().put("down2", downAction2);
-    
+        */
         
         //Set Screen Change Timer
         Timer timer = new Timer(3000, new ActionListener(){           //Switches screen after 3 seconds
@@ -577,41 +652,84 @@ public class PointClickGUI extends javax.swing.JFrame {
         sudokuScore = 0;
         endGame3();
     }
+    
+    private void resetBall(){
+        BallLabel.setLocation(PongScreenPanel.getWidth()/2, PongScreenPanel.getHeight()/2);
+        Paddle1Label.setLocation(Paddle1Label.getX(), PongScreenPanel.getHeight()/2 - 40);
+        Paddle2Label.setLocation(Paddle1Label.getX(), PongScreenPanel.getHeight()/2 - 40);
+    }
         
     private void pongRun(){
-        int ballSpeedX = 3;     //randomized later on
-        int ballSpeedY = 3;
-        
         if(spacePressed){
             pongScored = false;
             Timer pongTimer = new Timer(20, new ActionListener(){           //runs at 50 fps
                 @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    //starting directino for ball
-                    BallLabel.setLocation(BallLabel.getX()+ballSpeedX, BallLabel.getY()+ballSpeedY);
+                public void actionPerformed(ActionEvent e){
+                    //both balldX and balldY should be randomized (preferably from about -4 to 4 and not 0)***************
+                    //starting direction for ball
+                    BallLabel.setLocation(BallLabel.getX()+balldX, BallLabel.getY()+balldY);
                     
-                    //add conditional statemets to let the ball bounce
-                        //Ex: if(ball touches bottom of panel) ballSpeedY = -ballSpeedY
+                    //ball hits top and bottom
+                    if(BallLabel.getY() >= PongScreenPanel.getHeight()-10 || BallLabel.getY() <= 0)
+                        balldY = -balldY;
                     
-                    //allow players to move
-                                        
+                    //ball hits left and right paddle
+                    if((BallLabel.getX() <= 30 && (BallLabel.getY() >= Paddle1Label.getY() && BallLabel.getY() <= Paddle1Label.getY() + Paddle1Label.getHeight())) ||
+                    BallLabel.getX() >= 310 && (BallLabel.getY() >= Paddle2Label.getY() && BallLabel.getY() <= Paddle2Label.getY() + Paddle2Label.getHeight()))
+                        balldX = -balldX;
                     
-                    //keep track of who scores
-                        /*
-                        if(player scores){
-                            pongScored = true;
-                            player score += 10;
-                        }
-                        */
+                    //ball hits right wall
+                    if(BallLabel.getX() >= PongScreenPanel.getWidth()-10){
+                        pongScored = true;
+                        player1Score += 10;
+                        player1ScoreText.setText("" + player1Score);
+                        if(player1Score >= 100)
+                            player1Wins();
+                    }
                     
-                    if(!PlayPongPanel.isVisible() || pongScored)
+                    //ball hits left wall
+                    if(BallLabel.getX() <= 0){
+                        pongScored = true;
+                        player2Score += 10;
+                        player2ScoreText.setText("" + player2Score);
+                        if(player2Score >= 100)
+                            player2Wins();
+                    }
+
+                    if(!PlayPongPanel.isVisible() || pongScored){
                         ((Timer)e.getSource()).stop();
+                        resetBall();
+                    }
+                    
+                    if(wPressed){
+                        if(Paddle1Label.getY() > 0)
+                            Paddle1Label.setLocation(Paddle1Label.getX(), Paddle1Label.getY()-5);
+                    }
+                    if(sPressed)
+                        if(Paddle1Label.getY() < 220)
+                            Paddle1Label.setLocation(Paddle1Label.getX(), Paddle1Label.getY()+5);
+                    if(upPressed){
+                        if(Paddle2Label.getY() > 0)
+                            Paddle2Label.setLocation(Paddle2Label.getX(), Paddle2Label.getY()-5);
+                    }
+                    if(downPressed)
+                        if(Paddle2Label.getY() < 220)
+                            Paddle2Label.setLocation(Paddle2Label.getX(), Paddle2Label.getY()+5);
                 }
+                
             });
             pongTimer.start();
             
         }
+    }
+    
+    private void player1Wins(){
+        //go to display that shows player1 won
+        //display has an end button that goes to the display screen
+    }
+    
+    private void player2Wins(){
+        //same as player1Wins()
     }
     
     /**
@@ -908,8 +1026,8 @@ public class PointClickGUI extends javax.swing.JFrame {
         QuitPongButton = new javax.swing.JButton();
         jLabel21 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
+        player2ScoreText = new javax.swing.JLabel();
+        player1ScoreText = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
 
         randomTest.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -941,7 +1059,6 @@ public class PointClickGUI extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(600, 420));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -2814,19 +2931,21 @@ public class PointClickGUI extends javax.swing.JFrame {
         PlayPongPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         PongScreenPanel.setBackground(new java.awt.Color(0, 0, 0));
-        PongScreenPanel.setPreferredSize(new java.awt.Dimension(325, 325));
+        PongScreenPanel.setPreferredSize(new java.awt.Dimension(350, 300));
 
         Paddle1Label.setBackground(new java.awt.Color(255, 255, 255));
         Paddle1Label.setForeground(new java.awt.Color(255, 255, 255));
         Paddle1Label.setText("");
         Paddle1Label.setToolTipText("<html>" + "Player 1:" + "<br>" + "Use 'w' to move up" + "<br>" + "Use 's' to move down" + "</html>");
         Paddle1Label.setOpaque(true);
+        Paddle1Label.setPreferredSize(new java.awt.Dimension(10, 80));
 
         Paddle2Label.setBackground(new java.awt.Color(255, 255, 255));
         Paddle2Label.setForeground(new java.awt.Color(255, 255, 255));
         Paddle2Label.setText("");
         Paddle2Label.setToolTipText("<html>" + "Player 2:" + "<br>" + "Use \"UP\" arrow to move up" + "<br>" + "Use \"DOWN\" arrow to move down" + "</html>");
         Paddle2Label.setOpaque(true);
+        Paddle2Label.setPreferredSize(new java.awt.Dimension(10, 80));
 
         BallLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pongball.png"))); // NOI18N
         BallLabel.setToolTipText("Press \"SPACE\" to move ball");
@@ -2836,28 +2955,29 @@ public class PointClickGUI extends javax.swing.JFrame {
         PongScreenPanelLayout.setHorizontalGroup(
             PongScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PongScreenPanelLayout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(Paddle1Label, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(116, 116, 116)
+                .addGap(20, 20, 20)
+                .addComponent(Paddle1Label, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 141, Short.MAX_VALUE)
                 .addComponent(BallLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
-                .addComponent(Paddle2Label, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37))
+                .addGap(139, 139, 139)
+                .addComponent(Paddle2Label, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
         PongScreenPanelLayout.setVerticalGroup(
             PongScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PongScreenPanelLayout.createSequentialGroup()
-                .addContainerGap(102, Short.MAX_VALUE)
+            .addGroup(PongScreenPanelLayout.createSequentialGroup()
+                .addContainerGap(118, Short.MAX_VALUE)
                 .addGroup(PongScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Paddle1Label, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Paddle2Label, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(PongScreenPanelLayout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(BallLabel)))
+                    .addComponent(Paddle1Label, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Paddle2Label, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(102, 102, 102))
+            .addGroup(PongScreenPanelLayout.createSequentialGroup()
+                .addGap(144, 144, 144)
+                .addComponent(BallLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        PlayPongPanel.add(PongScreenPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 350, 290));
+        PlayPongPanel.add(PongScreenPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, -1, -1));
 
         systemTimeText4.setEditable(false);
         systemTimeText4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -2900,15 +3020,15 @@ public class PointClickGUI extends javax.swing.JFrame {
         jLabel20.setText("Player 1 Score:");
         PlayPongPanel.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, 20));
 
-        jLabel23.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel23.setText("0");
-        PlayPongPanel.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 100, 60, 50));
+        player2ScoreText.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        player2ScoreText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        player2ScoreText.setText("0");
+        PlayPongPanel.add(player2ScoreText, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 100, 60, 50));
 
-        jLabel22.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel22.setText("0");
-        PlayPongPanel.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 60, 50));
+        player1ScoreText.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        player1ScoreText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        player1ScoreText.setText("0");
+        PlayPongPanel.add(player1ScoreText, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 60, 50));
 
         jLabel24.setFont(new java.awt.Font("LEMON MILK", 0, 24)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(0, 255, 204));
@@ -3492,6 +3612,11 @@ public class PointClickGUI extends javax.swing.JFrame {
         DisplayPanel.setVisible(false);
         PlayPongPanel.setVisible(true);
         currentPanel = PlayPongPanel;
+        player1Score = 0;
+        player2Score = 0;
+        player1ScoreText.setText(player1Score + "");
+        player2ScoreText.setText(player2Score + "");
+        resetBall();
     }//GEN-LAST:event_PlayPongButtonActionPerformed
 
     private void QuitPongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuitPongButtonActionPerformed
@@ -3615,8 +3740,6 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -3652,6 +3775,8 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JButton newHSButtonOk;
     private javax.swing.JLabel newHSScoreLabel;
     private javax.swing.JLabel platformImage;
+    private javax.swing.JLabel player1ScoreText;
+    private javax.swing.JLabel player2ScoreText;
     private javax.swing.JButton purpleButton;
     private javax.swing.JTextField randomTest;
     private javax.swing.JButton redButton;

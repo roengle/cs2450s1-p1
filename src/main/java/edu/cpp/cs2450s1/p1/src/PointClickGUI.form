@@ -55,9 +55,6 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[600, 420]"/>
-    </Property>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
@@ -3363,12 +3360,12 @@
               <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[325, 325]"/>
+              <Dimension value="[350, 300]"/>
             </Property>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="120" y="60" width="350" height="290"/>
+              <AbsoluteConstraints x="120" y="60" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
 
@@ -3376,29 +3373,30 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                      <Component id="Paddle1Label" min="-2" pref="16" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="116" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="Paddle1Label" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="141" max="32767" attributes="0"/>
                       <Component id="BallLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="118" max="32767" attributes="0"/>
-                      <Component id="Paddle2Label" min="-2" pref="16" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="139" max="-2" attributes="0"/>
+                      <Component id="Paddle2Label" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="102" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace pref="118" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="Paddle1Label" alignment="3" min="-2" pref="86" max="-2" attributes="0"/>
-                          <Component id="Paddle2Label" alignment="3" min="-2" pref="86" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                              <Component id="BallLabel" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="Paddle1Label" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="Paddle2Label" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="102" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="144" max="-2" attributes="0"/>
+                      <Component id="BallLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -3419,6 +3417,9 @@
                   <Connection code="&quot;&lt;html&gt;&quot; + &quot;Player 1:&quot; + &quot;&lt;br&gt;&quot; + &quot;Use &apos;w&apos; to move up&quot; + &quot;&lt;br&gt;&quot; + &quot;Use &apos;s&apos; to move down&quot; + &quot;&lt;/html&gt;&quot;" type="code"/>
                 </Property>
                 <Property name="opaque" type="boolean" value="true"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[10, 80]"/>
+                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="Paddle2Label">
@@ -3436,6 +3437,9 @@
                   <Connection code="&quot;&lt;html&gt;&quot; + &quot;Player 2:&quot; + &quot;&lt;br&gt;&quot; + &quot;Use \&quot;UP\&quot; arrow to move up&quot; + &quot;&lt;br&gt;&quot; + &quot;Use \&quot;DOWN\&quot; arrow to move down&quot; + &quot;&lt;/html&gt;&quot;" type="code"/>
                 </Property>
                 <Property name="opaque" type="boolean" value="true"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[10, 80]"/>
+                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="BallLabel">
@@ -3525,7 +3529,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel23">
+        <Component class="javax.swing.JLabel" name="player2ScoreText">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Lucida Grande" size="24" style="0"/>
@@ -3535,11 +3539,11 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="500" y="100" width="60" height="50"/>
+              <AbsoluteConstraints x="490" y="100" width="60" height="50"/>
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel22">
+        <Component class="javax.swing.JLabel" name="player1ScoreText">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Lucida Grande" size="24" style="0"/>
@@ -3549,7 +3553,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="30" y="100" width="60" height="50"/>
+              <AbsoluteConstraints x="20" y="100" width="60" height="50"/>
             </Constraint>
           </Constraints>
         </Component>
