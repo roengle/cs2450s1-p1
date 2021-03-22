@@ -40,7 +40,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     JPanel currentPanel;
     JPanel[] allPanels;
     boolean spacePressed = false;
-    boolean pongScored = false;
+    boolean pongScored = true;
     static int balldX = 3, balldY = 4;      //randomized later on
     boolean wPressed, sPressed, downPressed, upPressed;
     
@@ -660,7 +660,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     }
         
     private void pongRun(){
-        if(spacePressed){
+        if(spacePressed && pongScored){
             pongScored = false;
             Random r = new Random();
             do{
@@ -674,7 +674,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e){
                     
-                    //both balldX and balldY should be randomized (preferably from about -4 to 4 and not 0)***************
+                    //both balldX and balldY are randomized
                     //starting direction for ball
                     BallLabel.setLocation(BallLabel.getX()+balldX, BallLabel.getY()+balldY);
                     
