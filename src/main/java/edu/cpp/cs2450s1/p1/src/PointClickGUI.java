@@ -662,9 +662,18 @@ public class PointClickGUI extends javax.swing.JFrame {
     private void pongRun(){
         if(spacePressed){
             pongScored = false;
+            Random r = new Random();
+            do{
+                balldX = r.nextInt(9) - 4;
+            }while(balldX == 0);
+            do{
+                balldY = r.nextInt(9) - 4;
+            }while(balldY == 0);
+            
             Timer pongTimer = new Timer(20, new ActionListener(){           //runs at 50 fps
                 @Override
                 public void actionPerformed(ActionEvent e){
+                    
                     //both balldX and balldY should be randomized (preferably from about -4 to 4 and not 0)***************
                     //starting direction for ball
                     BallLabel.setLocation(BallLabel.getX()+balldX, BallLabel.getY()+balldY);
