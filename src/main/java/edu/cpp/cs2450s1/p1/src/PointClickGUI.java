@@ -66,10 +66,12 @@ public class PointClickGUI extends javax.swing.JFrame {
         NewHSPanel.setVisible(false);
         F1Panel.setVisible(false);
         PlayPongPanel.setVisible(false);
+        PongDonePanel.setVisible(false);
         
         allPanels = new JPanel[]{DisplayPanel, PlayPanel, PlayPanel2, 
                                     PlayPanel3, HighscorePanel, CreditsPanel, 
-                                    EndPanel, NewHSPanel, F1Panel, PlayPongPanel};
+                                    EndPanel, NewHSPanel, F1Panel, PlayPongPanel,
+                                    PongDonePanel};
         
         
         //Set System Timer
@@ -733,12 +735,21 @@ public class PointClickGUI extends javax.swing.JFrame {
     }
     
     private void player1Wins(){
-        //go to display that shows player1 won
-        //display has an end button that goes to the display screen
+        String winnerText = String.format("Player %s Wins!", "One");
+        pongToEndScreen(winnerText);
     }
     
     private void player2Wins(){
-        //same as player1Wins()
+        String winnerText = String.format("Player %s Wins!", "Two");
+        pongToEndScreen(winnerText);
+    }
+    
+    private void pongToEndScreen(String winnerText){
+        LabelPongWinner.setText(winnerText);
+        
+        this.currentPanel.setVisible(false);
+        PongDonePanel.setVisible(true);
+        this.currentPanel = PongDonePanel;
     }
     
     /**
@@ -1038,6 +1049,11 @@ public class PointClickGUI extends javax.swing.JFrame {
         player2ScoreText = new javax.swing.JLabel();
         player1ScoreText = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
+        PongDonePanel = new javax.swing.JPanel();
+        jLabel25 = new javax.swing.JLabel();
+        LabelPongWinner = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        ButtonPongWinReturn = new javax.swing.JButton();
 
         randomTest.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         randomTest.setText("Random word test");
@@ -3046,6 +3062,61 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         getContentPane().add(PlayPongPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
+        PongDonePanel.setMaximumSize(new java.awt.Dimension(600, 400));
+        PongDonePanel.setMinimumSize(new java.awt.Dimension(600, 400));
+
+        jLabel25.setFont(new java.awt.Font("LEMON MILK", 0, 24)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(0, 255, 204));
+        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel25.setText("PONG");
+
+        LabelPongWinner.setFont(new java.awt.Font("DialogInput", 1, 24)); // NOI18N
+        LabelPongWinner.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LabelPongWinner.setText("Player X Wins!");
+
+        jLabel27.setFont(new java.awt.Font("DialogInput", 1, 24)); // NOI18N
+        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel27.setText("GG!");
+
+        ButtonPongWinReturn.setText("Return");
+        ButtonPongWinReturn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonPongWinReturnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout PongDonePanelLayout = new javax.swing.GroupLayout(PongDonePanel);
+        PongDonePanel.setLayout(PongDonePanelLayout);
+        PongDonePanelLayout.setHorizontalGroup(
+            PongDonePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PongDonePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PongDonePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(LabelPongWinner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(PongDonePanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(ButtonPongWinReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        PongDonePanelLayout.setVerticalGroup(
+            PongDonePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PongDonePanelLayout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jLabel25)
+                .addGap(18, 18, 18)
+                .addComponent(LabelPongWinner, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(ButtonPongWinReturn)
+                .addContainerGap(73, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(PongDonePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -3636,6 +3707,12 @@ public class PointClickGUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_QuitPongButtonActionPerformed
 
+    private void ButtonPongWinReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonPongWinReturnActionPerformed
+        this.currentPanel.setVisible(false);
+        DisplayPanel.setVisible(true);
+        currentPanel = DisplayPanel;
+    }//GEN-LAST:event_ButtonPongWinReturnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -3678,6 +3755,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JButton AButton;
     private javax.swing.JButton BButton;
     private javax.swing.JLabel BallLabel;
+    private javax.swing.JButton ButtonPongWinReturn;
     private javax.swing.JButton CButton;
     private javax.swing.JButton CreditsBackButton;
     private javax.swing.JButton CreditsButton;
@@ -3700,6 +3778,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JButton JButton;
     private javax.swing.JButton KButton;
     private javax.swing.JButton LButton;
+    private javax.swing.JLabel LabelPongWinner;
     private javax.swing.JButton MButton;
     private javax.swing.JButton NButton;
     private javax.swing.JPanel NewHSPanel;
@@ -3713,6 +3792,7 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JPanel PlayPanel3;
     private javax.swing.JButton PlayPongButton;
     private javax.swing.JPanel PlayPongPanel;
+    private javax.swing.JPanel PongDonePanel;
     private javax.swing.JPanel PongScreenPanel;
     private javax.swing.JButton QButton;
     private javax.swing.JButton QuitPongButton;
@@ -3750,6 +3830,8 @@ public class PointClickGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
