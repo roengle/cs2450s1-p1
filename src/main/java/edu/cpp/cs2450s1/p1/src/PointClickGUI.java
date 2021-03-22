@@ -702,6 +702,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                     //ball hits right wall
                     if(BallLabel.getX() >= PongScreenPanel.getWidth()-20){
                         pongScored = true;
+                        pongTurn=3;
                         player1Score += 10;
                         player1ScoreText.setText("" + player1Score);
                         if(player1Score >= 100)
@@ -711,6 +712,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                     //ball hits left wall
                     if(BallLabel.getX() <= 10){
                         pongScored = true;
+                        pongTurn=3;
                         player2Score += 10;
                         player2ScoreText.setText("" + player2Score);
                         if(player2Score >= 100)
