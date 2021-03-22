@@ -41,8 +41,9 @@ public class PointClickGUI extends javax.swing.JFrame {
     JPanel[] allPanels;
     boolean spacePressed = false;
     boolean pongScored = true;
-    static int balldX = 3, balldY = 4;      //randomized later on
+    static int balldX, balldY;      //Ball position
     boolean wPressed, sPressed, downPressed, upPressed;
+    static int pongTurn = 3;        //Tracks Pong player turns
     
     
 
@@ -687,12 +688,19 @@ public class PointClickGUI extends javax.swing.JFrame {
                         balldY = -balldY;
                     
                     //ball hits left and right paddle
-                    if((BallLabel.getX() <= 30 && (BallLabel.getY() >= Paddle1Label.getY() && BallLabel.getY() <= Paddle1Label.getY() + Paddle1Label.getHeight())) ||
-                    BallLabel.getX() >= 310 && (BallLabel.getY() >= Paddle2Label.getY() && BallLabel.getY() <= Paddle2Label.getY() + Paddle2Label.getHeight()))
+                    if(BallLabel.getX() <= 30 && (pongTurn!=2) && (BallLabel.getY() >= Paddle1Label.getY() && BallLabel.getY() <= Paddle1Label.getY() + Paddle1Label.getHeight())){
                         balldX = -balldX;
+                        pongTurn=2;
+                    }
+
+                    
+                    if(BallLabel.getX() >= 310 && (pongTurn!=1) && (BallLabel.getY() >= Paddle2Label.getY() && BallLabel.getY() <= Paddle2Label.getY() + Paddle2Label.getHeight())){
+                        balldX = -balldX;
+                        pongTurn=1;
+                    }
                     
                     //ball hits right wall
-                    if(BallLabel.getX() >= PongScreenPanel.getWidth()-10){
+                    if(BallLabel.getX() >= PongScreenPanel.getWidth()-20){
                         pongScored = true;
                         player1Score += 10;
                         player1ScoreText.setText("" + player1Score);
@@ -701,7 +709,7 @@ public class PointClickGUI extends javax.swing.JFrame {
                     }
                     
                     //ball hits left wall
-                    if(BallLabel.getX() <= 0){
+                    if(BallLabel.getX() <= 10){
                         pongScored = true;
                         player2Score += 10;
                         player2ScoreText.setText("" + player2Score);
