@@ -109,8 +109,10 @@ public class PointClickGUI extends javax.swing.JFrame {
         Action spaceAction = new AbstractAction(){
             @Override
             public void actionPerformed(ActionEvent e){
-                spacePressed = true;
-                pongRun();
+                if(currentPanel == PlayPongPanel){
+                    spacePressed = true;
+                    pongRun();
+                }
             }
         };
         //Create action for W key press
@@ -3700,10 +3702,10 @@ public class PointClickGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_PlayPongButtonActionPerformed
 
     private void QuitPongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuitPongButtonActionPerformed
+        pongScored = true;
         PlayPongPanel.setVisible(false);
         DisplayPanel.setVisible(true);
         currentPanel = DisplayPanel;
-        spacePressed = false;
         
     }//GEN-LAST:event_QuitPongButtonActionPerformed
 
