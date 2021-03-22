@@ -2914,7 +2914,7 @@ public class PointClickGUI extends javax.swing.JFrame {
 
         jLabel16.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel16.setText("Project Name: Point and Click Game v.1.2");
+        jLabel16.setText("Project Name: Point and Click Game v.1.3");
 
         jLabel17.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -3106,12 +3106,12 @@ public class PointClickGUI extends javax.swing.JFrame {
                 .addGroup(PongDonePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(LabelPongWinner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE))
+                    .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
+                    .addGroup(PongDonePanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(ButtonPongWinReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(PongDonePanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ButtonPongWinReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         PongDonePanelLayout.setVerticalGroup(
             PongDonePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
